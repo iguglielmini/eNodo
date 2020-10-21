@@ -6,9 +6,13 @@
  * @flow strict-local
  */
 
+import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 
-import { Header } from 'react-native/Libraries/NewAppScreen';
+/* Component */
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import Routes from './routes';
 
 class App extends Component {
   constructor(props) {
@@ -18,7 +22,14 @@ class App extends Component {
   }
 
   render() {
-    return <Header />;
+    return (
+      <>
+        <NavigationContainer>
+          <StatusBar backgroundColor="transparent" barStyle="dark-content" />
+          <Routes />
+        </NavigationContainer>
+      </>
+    );
   }
 }
 
