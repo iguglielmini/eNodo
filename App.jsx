@@ -8,21 +8,18 @@
 
 import React, { Component } from 'react';
 
-import {
-  Header
-} from 'react-native/Libraries/NewAppScreen';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
+
+    this.state = {};
   }
 
-  render(){
-    return (
-      <Header />
-    );
+  render() {
+    return <Header />;
   }
-  
-};
+}
 
 export default App;

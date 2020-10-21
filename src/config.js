@@ -7,8 +7,8 @@ const ConfigProd = require('./config-envs/config-prod');
 const ENV_MAP = {
   dev: ConfigDev,
   qa: ConfigQa,
+  prod: ConfigProd,
   staging: ConfigStaging,
-  prod: ConfigProd
 };
 
 module.exports = ENV_MAP[env.toLocaleLowerCase()];
