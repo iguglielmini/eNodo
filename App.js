@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <>
         <NavigationContainer>
-          <StatusBar backgroundColor="transparent" barStyle="dark-content" />
+          <StatusBar backgroundColor="#e5e5e5" barStyle="dark-content" />
           <Routes />
         </NavigationContainer>
       </>
