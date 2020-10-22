@@ -1,20 +1,61 @@
 import React from 'react';
-import Svg, { G, Path, Circle } from 'react-native-svg';
+import PropTypes from 'prop-types';
+import Svg, { Line, Circle } from 'react-native-svg';
 
-const SvgComponent = props => (
-  <Svg {...props} viewBox="0 0 80 80">
-    <G stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <G transform="translate(-148.000000, -348.000000)" fill-rule="nonzero">
-        <G transform="translate(72.000000, 348.000000)">
-          <G transform="translate(76.000000, 0.000000)">
-            <Path d="M76.4444444,80 C75.53472,80 74.6249956,79.6527822 73.93056,78.9583289 L53.8906311,58.9192711 C52.5017422,57.5312533 52.5017422,55.27952 53.8906311,53.8915022 C55.27952,52.5026133 57.5295289,52.5026133 58.9184,53.8915022 L78.9583289,73.93056 C80.3472178,75.3185778 80.3472178,77.5703111 78.9583289,78.9583289 C78.2638933,79.6527822 77.3541689,80 76.4444444,80 Z" fill="#7EB0C3" />
-            <Circle fill="#DDEFFE" cx="33.7777778" cy="33.7777778" r="32" />
-            <Path d="M33.7777778,67.5555556 C15.1527822,67.5555556 4.97379915e-14,52.4027733 4.97379915e-14,33.7777778 C4.97379915e-14,15.1527822 15.1527822,4.97379915e-14 33.7777778,4.97379915e-14 C52.4027733,4.97379915e-14 67.5555556,15.1527822 67.5555556,33.7777778 C67.5555556,52.4027733 52.4027733,67.5555556 33.7777778,67.5555556 Z M33.7777778,3.55555556 C17.1128533,3.55555556 3.55555556,17.1128533 3.55555556,33.7777778 C3.55555556,50.4427022 17.1128533,64 33.7777778,64 C50.4427022,64 64,50.4427022 64,33.7777778 C64,17.1128533 50.4427022,3.55555556 33.7777778,3.55555556 Z" fill="#C2D1D6" />
-          </G>
-        </G>
-      </G>
-    </G>
-  </Svg>
+const Search = ({ size, color }) => (
+  <>
+    <Svg
+      fill="none"
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <Circle cx="5.5" cy="8.5" r="4.75" stroke={color} strokeWidth="1.5" />
+      <Line
+        x1="8.88848"
+        y1="12.2277"
+        x2="13.2304"
+        y2="16.5696"
+        stroke={color}
+        strokeWidth="1.5"
+      />
+      <Line
+        x1="14"
+        y1="7.25"
+        x2="23"
+        y2="7.25"
+        stroke={color}
+        strokeWidth="1.5"
+      />
+      <Line
+        x1="16"
+        y1="13.25"
+        x2="23"
+        y2="13.25"
+        stroke={color}
+        strokeWidth="1.5"
+      />
+      <Line
+        x1="3"
+        y1="19.25"
+        x2="23"
+        y2="19.25"
+        stroke={color}
+        strokeWidth="1.5"
+      />
+    </Svg>
+  </>
 );
 
-export default SvgComponent;
+Search.propTypes = {
+  size: PropTypes.number,
+  color: PropTypes.string,
+};
+
+Search.defaultProps = {
+  size: 22,
+  color: '#0D0D0D',
+};
+
+export default Search;

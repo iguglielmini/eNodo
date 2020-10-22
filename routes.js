@@ -1,30 +1,44 @@
 import React from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 /* Routes */
-
 import Home from './src/pages/Home';
 import Search from './src/pages/Search';
 import Product from './src/pages/Product';
 import Profile from './src/pages/Profile';
 
-const Tab = createMaterialBottomTabNavigator();
+/* Icons */
+import SearchIcon from './src/assets/svg/search';
+import ProductIcon from './src/assets/svg/product';
+import ProfileIcon from './src/assets/svg/profile';
+import ScheduleIcon from './src/assets/svg/schedule';
+
+const Tab = createBottomTabNavigator();
 
 const Routes = () => {
   return (
     <Tab.Navigator
-      inactiveColor="rgba(0,0,0,0.5)"
-      activeColor="#000000"
-      barStyle={{ backgroundColor: '#E5E5E5' }}
+      initialRouteName="Home"
+      tabBarOptions={{
+        tabStyle: {
+          height: 50,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          backgroundColor: '#ffffff',
+        },
+        activeTintColor: '#000000',
+        inactiveTintColor: 'rgba(0,0,0,0.5)',
+      }}
     >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: 'Home',
+          title: '',
+          // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
+            <ProductIcon name="product" color={color} size={26} />
           ),
         }}
       />
@@ -32,9 +46,10 @@ const Routes = () => {
         name="Search"
         component={Search}
         options={{
-          tabBarLabel: 'Search',
+          title: '',
+          // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
+            <SearchIcon name="search" color={color} size={26} />
           ),
         }}
       />
@@ -42,9 +57,10 @@ const Routes = () => {
         name="Product"
         component={Product}
         options={{
-          tabBarLabel: 'Product',
+          title: '',
+          // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
+            <ScheduleIcon name="schedule" color={color} size={26} />
           ),
         }}
       />
@@ -52,9 +68,10 @@ const Routes = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: 'Profile',
+          title: '',
+          // eslint-disable-next-line react/prop-types
           tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
+            <ProfileIcon name="profile" color={color} size={26} />
           ),
         }}
       />
