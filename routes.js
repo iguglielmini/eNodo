@@ -18,6 +18,7 @@ const Tab = createBottomTabNavigator();
 const Routes = () => {
   return (
     <Tab.Navigator
+      lazy
       initialRouteName="Home"
       tabBarOptions={{
         tabStyle: {
