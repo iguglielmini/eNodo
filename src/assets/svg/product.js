@@ -8,7 +8,7 @@ const Product = ({ size, color }) => (
       fill="none"
       width={size}
       height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      viewBox="0 0 22 20"
       xmlns="http://www.w3.org/2000/svg"
     >
       <Path

@@ -8,7 +8,7 @@ const Search = ({ size, color }) => (
       fill="none"
       width={size}
       height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
       <Circle cx="5.5" cy="8.5" r="4.75" stroke={color} strokeWidth="1.5" />
