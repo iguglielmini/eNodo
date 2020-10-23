@@ -23,13 +23,17 @@ const Section = ({ children, theme, style }) => (
 
 Section.propTypes = {
   theme: PropTypes.string,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
   style: PropTypes.objectOf(PropTypes.any),
 };
 
 Section.defaultProps = {
   style: {},
   theme: 'transparent',
+  children: null,
 };
 
 export default Section;

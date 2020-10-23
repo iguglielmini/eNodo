@@ -4,7 +4,7 @@ import { ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 /* Components */
 import Title from '../../components/Title';
 import Section from '../../components/Section';
-import CardProduct from '../../components/CardProduct';
+
 /* Icons */
 import BagIcon from '../../assets/svg/bag';
 import FavoriteIcon from '../../assets/svg/favorite';
@@ -16,7 +16,7 @@ const Styles = StyleSheet.create({
   },
 });
 
-function Home() {
+function ProductDetails() {
   return (
     <>
       <ScrollView horizontal={false} alwaysBounceVertical>
@@ -29,7 +29,6 @@ function Home() {
               <BagIcon name="Bag" size={24} />
             </TouchableOpacity>
           </Title>
-          <CardProduct />
         </Section>
         {/* Branding */}
         <Section style={{ paddingTop: 16 }}>
@@ -38,7 +37,6 @@ function Home() {
         {/* Realease */}
         <Section style={{ paddingTop: 48 }} theme="dark">
           <Title title="Novidades" theme="dark" />
-          {/* <CardProduct /> */}
         </Section>
         {/* Search about doubt */}
         <Section style={{ paddingTop: 80 }}>
@@ -49,4 +47,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default ProductDetails;
