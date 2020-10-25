@@ -6107,6 +6107,13 @@ react-native-cardview@^2.0.5:
   dependencies:
     prop-types "^15.6.0"
 
+react-native-carousel-cards@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-carousel-cards/-/react-native-carousel-cards-1.2.1.tgz#6d744cec8bebc09351f3f7d4ae697cd5fc5515da"
+  integrity sha512-5JUeDaRYnKL/8vg+dOXiIkKBjX5vuDQFwUnQP3xndmmpsuWHaJT0DX5I73HJNj0D9pFTqGjW1g20pLN7C5tREQ==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-date-picker@^3.0.2:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.2.5.tgz#351836282fc909e5c4de3d490846fcae16794c20"

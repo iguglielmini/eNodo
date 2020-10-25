@@ -19,6 +19,7 @@ import FavoriteIcon from '../../assets/svg/favorite';
 /* Images */
 import BelImage from '../../assets/images/bel.png';
 import KissImage from '../../assets/images/kiss.png';
+import FilterButton from '../../components/FilterButton';
 
 const Styles = StyleSheet.create({
   bagIcon: {
@@ -86,6 +87,7 @@ function Home() {
         {/* Search about doubt */}
         <Section style={{ paddingTop: 80 }}>
           <Title title="O que você procura?" />
+          <FilterButton />
           <Accordion />
         </Section>
         {/* End search about doubt */}
