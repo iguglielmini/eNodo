@@ -24,7 +24,7 @@ const Styles = StyleSheet.create({
     color: '#ffffff',
   },
   container: {
-    paddingHorizontal: 32,
+    paddingHorizontal: 16,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
   },
