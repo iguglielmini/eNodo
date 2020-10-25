@@ -38,9 +38,7 @@ const Routes = () => {
         options={{
           title: '',
           // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => (
-            <ProductIcon name="product" color={color} size={26} />
-          ),
+          tabBarIcon: ({ color }) => <ProductIcon color={color} size={26} />,
         }}
       />
       <Tab.Screen
@@ -49,9 +47,7 @@ const Routes = () => {
         options={{
           title: '',
           // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => (
-            <SearchIcon name="search" color={color} size={26} />
-          ),
+          tabBarIcon: ({ color }) => <SearchIcon color={color} size={26} />,
         }}
       />
       <Tab.Screen
@@ -60,9 +56,7 @@ const Routes = () => {
         options={{
           title: '',
           // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => (
-            <ScheduleIcon name="schedule" color={color} size={26} />
-          ),
+          tabBarIcon: ({ color }) => <ScheduleIcon color={color} size={26} />,
         }}
       />
       <Tab.Screen
@@ -71,9 +65,7 @@ const Routes = () => {
         options={{
           title: '',
           // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => (
-            <ProfileIcon name="profile" color={color} size={26} />
-          ),
+          tabBarIcon: ({ color }) => <ProfileIcon color={color} size={26} />,
         }}
       />
     </Tab.Navigator>

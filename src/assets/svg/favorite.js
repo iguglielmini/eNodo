@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Svg, { Path } from 'react-native-svg';
 
-const Favorite = ({ size, color }) => (
+const Favorite = ({ size, color, fill }) => (
   <>
     <Svg
-      fill="none"
+      fill={fill}
       width={size}
       height={size}
       viewBox="0 0 22 18"
@@ -21,12 +21,14 @@ const Favorite = ({ size, color }) => (
 );
 
 Favorite.propTypes = {
+  fill: PropTypes.string,
   size: PropTypes.number,
   color: PropTypes.string,
 };
 
 Favorite.defaultProps = {
   size: 22,
+  fill: 'none',
   color: '#0D0D0D',
 };
 

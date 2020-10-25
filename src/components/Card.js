@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 
 /* Icons */
+import StarIcon from '../assets/svg/star';
 import FavoriteIcon from '../assets/svg/favorite';
 
 const Styles = StyleSheet.create({
@@ -17,6 +24,8 @@ const Styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 16,
     marginBottom: 24,
+    fontWeight: '400',
+    fontFamily: 'Inter',
   },
   favoriteBtn: {
     right: 14,
@@ -35,12 +44,15 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  priceItem: {
+  priceText: {
     fontSize: 15,
+    fontWeight: '400',
+    fontFamily: 'Inter',
+  },
+  priceItem: {
     color: '#db207f',
   },
   pricelater: {
-    fontSize: 15,
     marginLeft: 10,
     color: '#A1A6AF',
     textDecorationLine: 'line-through',
@@ -51,36 +63,71 @@ const Styles = StyleSheet.create({
   light: {
     color: '#000000',
   },
+  discount: {
+    top: -24,
+    right: 15,
+    width: 48,
+    height: 48,
+    position: 'absolute',
+  },
+  discountText: {
+    top: 14,
+    left: 12,
+    fontSize: 13,
+    color: '#DB207F',
+    fontWeight: '500',
+    fontFamily: 'Inter',
+    position: 'absolute',
+  },
 });
 
-function Card({ item, style, theme }) {
+function Card({ item, style, theme, onClick, onClickFavorite }) {
   return (
-    <View style={[style, Styles.card]}>
-      <View style={Styles.containerImage}>
-        <TouchableOpacity style={Styles.favoriteBtn} onPress={() => {}}>
-          <FavoriteIcon name="Favorite" size={24} />
-        </TouchableOpacity>
-      </View>
-      <Text style={[Styles[theme], Styles.description]}>
-        {item.titleProduct}
-      </Text>
-      <View style={Styles.priceContainer}>
-        <Text style={Styles.priceItem}>R$ {item.titlePrice}</Text>
-        <Text style={Styles.pricelater}>R$ {item.titlePriceLater}</Text>
-      </View>
-    </View>
+    <>
+      <TouchableOpacity style={[Styles.card, style]} onPress={() => onClick()}>
+        <ImageBackground style={Styles.containerImage} resizeMode="cover">
+          {item.discount && (
+            <View style={Styles.discount}>
+              <StarIcon size={48} />
+              <Text style={Styles.discountText}>{item.discount}%</Text>
+            </View>
+          )}
+          <TouchableOpacity
+            style={Styles.favoriteBtn}
+            onPress={() => onClickFavorite()}
+          >
+            <FavoriteIcon size={24} />
+          </TouchableOpacity>
+        </ImageBackground>
+        <Text style={[Styles[theme], Styles.description]}>
+          {item.titleProduct}
+        </Text>
+        <View style={Styles.priceContainer}>
+          <Text style={[Styles.priceText, Styles.priceItem]}>
+            R$ {item.titlePrice}
+          </Text>
+          <Text style={[Styles.priceText, Styles.pricelater]}>
+            R$ {item.titlePriceLater}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </>
   );
 }
 
 Card.propTypes = {
   theme: PropTypes.string,
+  onClick: PropTypes.func,
+  onClickFavorite: PropTypes.func,
   style: PropTypes.objectOf(PropTypes.any),
   item: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 Card.defaultProps = {
-  style: {},
+  style: null,
   theme: 'light',
+  onClick: () => {},
+  onClickFavorite: () => {},
 };
 
 export default Card;
