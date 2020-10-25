@@ -29,6 +29,7 @@ const CardList = [
   },
   {
     id: 4,
+    discount: 20,
     titleProduct: 'Moroccanoil Volume Extra - Condicionador 250ml',
     titlePrice: '22,90',
     titlePriceLater: '25,90',
@@ -53,15 +54,14 @@ function ListCard({ theme }) {
       <View style={Styles.container}>
         {CardList.map((item, index) => {
           const key = index;
+          const isOdd = key % 2 === 1;
 
-          if (key % 2 === 0)
-            return <Card key={key} item={item} theme={theme} />;
           return (
             <Card
               key={key}
               item={item}
               theme={theme}
-              style={{ marginTop: 64 }}
+              style={{ marginTop: isOdd ? 64 : 0 }}
             />
           );
         })}

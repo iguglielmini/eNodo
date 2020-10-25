@@ -9,6 +9,7 @@ const Styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '700',
+    fontFamily: 'Inter',
   },
   row: {
     flexDirection: 'row',
@@ -29,9 +30,9 @@ const Styles = StyleSheet.create({
   },
 });
 
-const Title = ({ title, children, theme, style }) => (
-  <View style={[style, Styles.container, Styles.flex, Styles.row]}>
-    <Text style={[Styles.title, Styles[theme]]}>{title}</Text>
+const Title = ({ title, children, theme, style, styleFont }) => (
+  <View style={[Styles.container, Styles.flex, Styles.row, style]}>
+    <Text style={[Styles.title, Styles[theme], styleFont]}>{title}</Text>
     {children && (
       <View style={[Styles.flex, Styles.row, Styles.actionButtons]}>
         {children}
@@ -44,13 +45,15 @@ Title.propTypes = {
   theme: PropTypes.string,
   title: PropTypes.string.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
+  styleFont: PropTypes.objectOf(PropTypes.any),
   children: PropTypes.arrayOf(PropTypes.element),
 };
 
 Title.defaultProps = {
-  style: {},
+  style: null,
   children: null,
   theme: 'light',
+  styleFont: null,
 };
 
 export default Title;

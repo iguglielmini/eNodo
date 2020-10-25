@@ -18,7 +18,7 @@ const Styles = StyleSheet.create({
 });
 
 const Section = ({ children, theme, style }) => (
-  <View style={[style, Styles.container, Styles[theme]]}>{children}</View>
+  <View style={[Styles.container, Styles[theme], style]}>{children}</View>
 );
 
 Section.propTypes = {
@@ -31,7 +31,7 @@ Section.propTypes = {
 };
 
 Section.defaultProps = {
-  style: {},
+  style: null,
   children: null,
   theme: 'transparent',
 };
