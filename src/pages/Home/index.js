@@ -11,11 +11,7 @@ import {
 import Title from '../../components/Title';
 import Section from '../../components/Section';
 import ListCard from '../../components/ListCard';
-<<<<<<< HEAD
 import Accordion from '../../components/Accordion';
-=======
-
->>>>>>> 018f6c160a168fc9e54301b754f814b00d00ec86
 /* Icons */
 import BagIcon from '../../assets/svg/bag';
 import FavoriteIcon from '../../assets/svg/favorite';
