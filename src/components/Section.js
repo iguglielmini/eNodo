@@ -32,8 +32,8 @@ Section.propTypes = {
 
 Section.defaultProps = {
   style: {},
-  theme: 'transparent',
   children: null,
+  theme: 'transparent',
 };
 
 export default Section;

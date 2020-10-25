@@ -29,8 +29,8 @@ const Styles = StyleSheet.create({
   },
 });
 
-const Title = ({ title, children, theme }) => (
-  <View style={[Styles.container, Styles.flex, Styles.row]}>
+const Title = ({ title, children, theme, style }) => (
+  <View style={[style, Styles.container, Styles.flex, Styles.row]}>
     <Text style={[Styles.title, Styles[theme]]}>{title}</Text>
     {children && (
       <View style={[Styles.flex, Styles.row, Styles.actionButtons]}>
@@ -43,10 +43,12 @@ const Title = ({ title, children, theme }) => (
 Title.propTypes = {
   theme: PropTypes.string,
   title: PropTypes.string.isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
   children: PropTypes.arrayOf(PropTypes.element),
 };
 
 Title.defaultProps = {
+  style: {},
   children: null,
   theme: 'light',
 };
