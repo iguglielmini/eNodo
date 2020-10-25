@@ -16,7 +16,6 @@ const Styles = StyleSheet.create({
   card: {
     width: 175,
     maxHeight: 400,
-    marginHorizontal: 15,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },

@@ -12,6 +12,9 @@ import Title from '../../components/Title';
 import Section from '../../components/Section';
 import ListCard from '../../components/ListCard';
 import Accordion from '../../components/Accordion';
+import IntroCard from '../../components/IntroCard';
+import ImageIntroCard from '../../components/ImageIntroCard';
+
 /* Icons */
 import BagIcon from '../../assets/svg/bag';
 import FavoriteIcon from '../../assets/svg/favorite';
@@ -25,6 +28,16 @@ const Styles = StyleSheet.create({
     marginTop: -3,
     marginLeft: 36,
   },
+  section: {
+    paddingHorizontal: 16,
+  },
+  belSection: {
+    paddingTop: 48,
+    paddingHorizontal: 16,
+  },
+  belTitle: {
+    paddingHorizontal: 16,
+  },
   belContainer: {
     marginBottom: 55,
     flexDirection: 'row',
@@ -32,7 +45,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   belImage: {
-    marginLeft: 32,
+    marginLeft: 16,
   },
   kissImage: {
     width: 115,
@@ -46,7 +59,7 @@ function Home() {
     <>
       <ScrollView alwaysBounceVertical>
         {/* Promo */}
-        <Section style={{ paddingTop: 64 }}>
+        <Section style={{ paddingTop: 64, ...Styles.section }}>
           <Title title={`Promos \nda Semana`} style={{ marginBottom: 64 }}>
             <TouchableOpacity onPress={() => {}}>
               <FavoriteIcon name="Favorite" size={24} />
@@ -60,25 +73,31 @@ function Home() {
         {/* End Promo */}
 
         {/* Marcas */}
-        <Section style={{ paddingTop: 16 }}>
+        <Section style={{ paddingTop: 16, ...Styles.section }}>
           <Title title="Marcas" />
         </Section>
         {/* End Marcas */}
 
         {/* Realease */}
-        <Section style={{ paddingTop: 48 }}>
-          <Title title={`Queri\ndinhos`} styleFont={{ fontSize: 46 }} />
+        <Section style={[Styles.belSection, Styles.section]}>
+          <Title
+            title={`Queri\ndinhos`}
+            style={Styles.belTitle}
+            styleFont={{ fontSize: 46 }}
+          />
           <View style={Styles.belContainer}>
             <Image source={BelImage} style={Styles.belImage} />
             <Image source={KissImage} style={Styles.kissImage} />
           </View>
+          <IntroCard />
           <ListCard />
         </Section>
         {/* End Realease */}
 
         {/* Novidades */}
-        <Section style={{ paddingTop: 48 }} theme="dark">
+        <Section style={{ paddingTop: 48, ...Styles.section }} theme="dark">
           <Title title="Novidades" theme="dark" />
+          <ImageIntroCard />
           <ListCard theme="dark" />
         </Section>
         {/* End Novidades */}

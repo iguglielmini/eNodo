@@ -61,7 +61,10 @@ function ListCard({ theme }) {
               key={key}
               item={item}
               theme={theme}
-              style={{ marginTop: isOdd ? 64 : 0 }}
+              style={{
+                marginTop: isOdd ? 64 : 0,
+                marginLeft: isOdd ? 25 : 0,
+              }}
             />
           );
         })}
