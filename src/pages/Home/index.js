@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import Title from '../../components/Title';
 import Section from '../../components/Section';
 import ListCard from '../../components/ListCard';
+import Accordion from '../../components/Accordion';
 /* Icons */
 import BagIcon from '../../assets/svg/bag';
 import FavoriteIcon from '../../assets/svg/favorite';
@@ -47,6 +48,7 @@ function Home() {
         {/* Search about doubt */}
         <Section style={{ paddingTop: 80 }}>
           <Title title="O que você procura?" />
+          <Accordion />
         </Section>
       </ScrollView>
     </>
