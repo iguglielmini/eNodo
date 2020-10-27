@@ -27,10 +27,7 @@ Section.propTypes = {
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]),
-  style: PropTypes.oneOfType(
-    PropTypes.arrayOf(PropTypes.any),
-    PropTypes.objectOf(PropTypes.any)
-  ),
+  style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 Section.defaultProps = {
