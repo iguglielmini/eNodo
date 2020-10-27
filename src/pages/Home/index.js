@@ -13,7 +13,9 @@ import Section from '../../components/Section';
 import ListCard from '../../components/ListCard';
 import Accordion from '../../components/Accordion';
 import IntroCard from '../../components/IntroCard';
+import FilterButton from '../../components/FilterButton';
 import ImageIntroCard from '../../components/ImageIntroCard';
+import CarouselBranding from '../../components/CarouselBranding';
 
 /* Icons */
 import BagIcon from '../../assets/svg/bag';
@@ -22,7 +24,6 @@ import FavoriteIcon from '../../assets/svg/favorite';
 /* Images */
 import BelImage from '../../assets/images/bel.png';
 import KissImage from '../../assets/images/kiss.png';
-import FilterButton from '../../components/FilterButton';
 
 const Styles = StyleSheet.create({
   bagIcon: {
@@ -76,6 +77,7 @@ function Home() {
         {/* Marcas */}
         <Section style={{ paddingTop: 16, ...Styles.section }}>
           <Title title="Marcas" />
+          <CarouselBranding />
         </Section>
         {/* End Marcas */}
 

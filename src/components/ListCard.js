@@ -12,7 +12,7 @@ const CardList = [
     titlePrice: '22,90',
     titlePriceLater: '25,90',
     imgStart: '',
-    discount: '5',
+    discount: '15',
   },
   {
     id: 2,
