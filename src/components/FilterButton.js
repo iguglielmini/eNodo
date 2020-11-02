@@ -4,10 +4,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 const Styles = StyleSheet.create({
   card: {
     width: 105,
-    marginHorizontal: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 48,
+    marginHorizontal: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   description: {
     fontSize: 14,
@@ -17,10 +17,9 @@ const Styles = StyleSheet.create({
     fontFamily: 'Inter',
   },
   containerImage: {
-    height: 72,
     width: 72,
+    height: 72,
     borderRadius: 72,
-    backgroundColor: '#e5e5e5',
   },
   container: {
     flex: 1,

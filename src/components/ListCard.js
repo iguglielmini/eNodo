@@ -50,7 +50,11 @@ const Styles = StyleSheet.create({
   },
 });
 
-function ListCard({ theme }) {
+function ListCard({ theme, navigation }) {
+  function handleShowDetailProduct(id) {
+    navigation.navigate('ProductDetails', { id });
+  }
+
   return (
     <>
       <View style={Styles.container}>
@@ -63,6 +67,7 @@ function ListCard({ theme }) {
               key={key}
               item={item}
               theme={theme}
+              onClick={() => handleShowDetailProduct(item.id)}
               style={{
                 marginTop: isOdd ? 64 : 0,
                 marginLeft: isOdd ? 25 : 0,
@@ -77,6 +82,7 @@ function ListCard({ theme }) {
 
 ListCard.propTypes = {
   theme: PropTypes.string,
+  navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 ListCard.defaultProps = {

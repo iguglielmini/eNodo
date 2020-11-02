@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
-function ProductDetails() {
+function ProductDetails({ route }) {
+  const { id } = route.params;
+
   return (
     <>
       <View>
@@ -10,5 +13,9 @@ function ProductDetails() {
     </>
   );
 }
+
+ProductDetails.propTypes = {
+  route: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default ProductDetails;

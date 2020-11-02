@@ -2,16 +2,16 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 /* Routes */
-import Home from './src/pages/Home';
-import Search from './src/pages/Search';
-import Product from './src/pages/Product';
-import Profile from './src/pages/Profile';
+import Home from './Home';
+import Search from './Search';
+import Product from './Product';
+import Profile from './Profile';
 
 /* Icons */
-import SearchIcon from './src/assets/svg/search';
-import ProductIcon from './src/assets/svg/product';
-import ProfileIcon from './src/assets/svg/profile';
-import ScheduleIcon from './src/assets/svg/schedule';
+import SearchIcon from '../assets/svg/search';
+import ProductIcon from '../assets/svg/product';
+import ProfileIcon from '../assets/svg/profile';
+import ScheduleIcon from '../assets/svg/schedule';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,8 +37,7 @@ const Routes = () => {
         component={Home}
         options={{
           title: '',
-          // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => <ProductIcon color={color} size={26} />,
+          tabBarIcon: ProductIcon,
         }}
       />
       <Tab.Screen
@@ -46,8 +45,7 @@ const Routes = () => {
         component={Search}
         options={{
           title: '',
-          // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => <SearchIcon color={color} size={26} />,
+          tabBarIcon: SearchIcon,
         }}
       />
       <Tab.Screen
@@ -55,8 +53,7 @@ const Routes = () => {
         component={Product}
         options={{
           title: '',
-          // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => <ScheduleIcon color={color} size={26} />,
+          tabBarIcon: ScheduleIcon,
         }}
       />
       <Tab.Screen
@@ -64,8 +61,7 @@ const Routes = () => {
         component={Profile}
         options={{
           title: '',
-          // eslint-disable-next-line react/prop-types
-          tabBarIcon: ({ color }) => <ProfileIcon color={color} size={26} />,
+          tabBarIcon: ProfileIcon,
         }}
       />
     </Tab.Navigator>

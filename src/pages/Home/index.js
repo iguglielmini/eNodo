@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 /* Components */
 import Title from '../../components/Title';
@@ -56,7 +57,7 @@ const Styles = StyleSheet.create({
   },
 });
 
-function Home() {
+function Home({ navigation }) {
   return (
     <>
       <ScrollView alwaysBounceVertical>
@@ -70,7 +71,7 @@ function Home() {
               <BagIcon name="Bag" size={24} />
             </TouchableOpacity>
           </Title>
-          <ListCard />
+          <ListCard navigation={navigation} />
         </Section>
         {/* End Promo */}
 
@@ -93,7 +94,7 @@ function Home() {
             <Image source={KissImage} style={Styles.kissImage} />
           </View>
           <IntroCard />
-          <ListCard />
+          <ListCard navigation={navigation} />
         </Section>
         {/* End Realease */}
 
@@ -101,7 +102,7 @@ function Home() {
         <Section style={{ paddingTop: 48, ...Styles.section }} theme="dark">
           <Title title="Novidades" theme="dark" />
           <ImageIntroCard />
-          <ListCard theme="dark" />
+          <ListCard theme="dark" navigation={navigation} />
         </Section>
         {/* End Novidades */}
 
@@ -116,5 +117,9 @@ function Home() {
     </>
   );
 }
+
+Home.propTypes = {
+  navigation: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default Home;
