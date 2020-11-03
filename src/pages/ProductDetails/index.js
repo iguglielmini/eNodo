@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 /* component */
-import CarouselProduct from '../../components/CarouselProduct';
+import ListCard from '../../components/ListCard';
 import DetailIcon from '../../assets/svg/detail';
+import CarouselProduct from '../../components/CarouselProduct';
 
 const Styles = StyleSheet.create({
   containerTitle: {
@@ -44,9 +51,63 @@ const Styles = StyleSheet.create({
     color: '#000000',
     opacity: 0.5,
   },
+  ContainerClientPay: {
+    padding: 18,
+  },
+  ClientPayTitle: {
+    fontSize: 18,
+    color: '#070814',
+    marginTop: 40,
+    marginBottom: 40,
+    width: '50%',
+  },
+  budget: {
+    marginBottom: 40,
+    fontSize: 12,
+  },
+  ContainerFloatButon: {
+    backgroundColor: '#F3F3F3',
+    borderTopColor: 'rgba(0,0,0,0.1)',
+    borderWidth: 1,
+    padding: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  priceDescription: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  priceTitles: {
+    flexDirection: 'row',
+    marginBottom: 5,
+  },
+  newPrice: {
+    color: '#DB207F',
+    marginRight: 10,
+  },
+  lastPrice: {
+    color: '#a1a6af',
+    textDecorationLine: 'line-through',
+  },
+  HowPayment: {
+    fontWeight: '400',
+    color: '#0d0d0d',
+  },
+  buttonPayment: {
+    backgroundColor: '#0d0d0d',
+    borderRadius: 5,
+    padding: 20,
+    width: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  payTitleButton: {
+    color: '#f1f1f1',
+  },
 });
 
-function ProductDetails({ route }) {
+function ProductDetails({ route, navigation }) {
   const { id } = route.params;
 
   return (
@@ -83,13 +144,46 @@ function ProductDetails({ route }) {
             </View>
           </View>
         </View>
+        {/* Compre Junto Area */}
+        <View style={Styles.ContainerClientPay}>
+          <Text style={Styles.ClientPayTitle}>Compre junto</Text>
+        </View>
+        {/* Clientes Tambem Compraram Area */}
+        <View style={Styles.ContainerClientPay}>
+          <Text style={Styles.ClientPayTitle}>Clientes também compraram</Text>
+          <ListCard navigation={navigation} />
+        </View>
+        {/* Produtos semelhantes */}
+        <View style={Styles.ContainerClientPay}>
+          <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
+          <Text style={Styles.budget}>Cabelos › Finalizadores</Text>
+          <ListCard navigation={navigation} />
+        </View>
       </ScrollView>
+      {/* Float button */}
+      <View style={Styles.ContainerFloatButon}>
+        <View style={Styles.priceDescription}>
+          <View style={Styles.priceTitles}>
+            <Text style={Styles.newPrice}>R$ 305,23</Text>
+            <Text style={Styles.lastPrice}>R$ 398,90</Text>
+          </View>
+          <View style={Styles.HowPayment}>
+            <Text>10x de R$ 30,52</Text>
+          </View>
+        </View>
+        <TouchableOpacity onPress={() => {}}>
+          <View style={Styles.buttonPayment}>
+            <Text style={Styles.payTitleButton}>Comprar</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
 
 ProductDetails.propTypes = {
   route: PropTypes.objectOf(PropTypes.any).isRequired,
+  navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default ProductDetails;
