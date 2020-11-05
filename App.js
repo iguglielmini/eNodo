@@ -27,7 +27,7 @@ function App() {
             name="ProductDetails"
             component={ProductDetailsPage}
             options={{
-              header: Header,
+              headerShown: false,
             }}
           />
         </Stack.Navigator>

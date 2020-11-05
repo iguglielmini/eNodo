@@ -11,8 +11,8 @@ import PropTypes from 'prop-types';
 /* Components */
 import Title from '../../components/Title';
 import Section from '../../components/Section';
+import LinkHelp from '../../components/LinkHelp';
 import ListCard from '../../components/ListCard';
-import Accordion from '../../components/Accordion';
 import IntroCard from '../../components/IntroCard';
 import FilterButton from '../../components/FilterButton';
 import ImageIntroCard from '../../components/ImageIntroCard';
@@ -110,7 +110,7 @@ function Home({ navigation }) {
         <Section style={{ paddingTop: 80 }}>
           <Title title="O que você procura?" />
           <FilterButton />
-          <Accordion />
+          <LinkHelp />
         </Section>
         {/* End search about doubt */}
       </ScrollView>

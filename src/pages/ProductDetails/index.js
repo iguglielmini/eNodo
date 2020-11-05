@@ -13,9 +13,15 @@ import ListCard from '../../components/ListCard';
 import DetailIcon from '../../assets/svg/detail';
 import CarouselProduct from '../../components/CarouselProduct';
 
+/** icons */
+import ArrowVIcon from '../../assets/svg/arrowv';
+import FavoriteIcon from '../../assets/svg/favorite';
+
 const Styles = StyleSheet.create({
   containerTitle: {
     padding: 20,
+    marginRight: 12,
+    marginLeft: 12,
   },
   titleProduct: {
     fontSize: 12,
@@ -29,6 +35,8 @@ const Styles = StyleSheet.create({
   },
   detailsProduct: {
     padding: 20,
+    marginRight: 12,
+    marginLeft: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -58,17 +66,18 @@ const Styles = StyleSheet.create({
     fontSize: 18,
     color: '#070814',
     marginTop: 40,
+    marginLeft: 24,
     marginBottom: 40,
     width: '50%',
   },
   budget: {
     marginBottom: 40,
+    marginLeft: 24,
     fontSize: 12,
   },
   ContainerFloatButon: {
-    backgroundColor: '#F3F3F3',
-    borderTopColor: 'rgba(0,0,0,0.1)',
-    borderWidth: 1,
+    backgroundColor:
+      'linear-gradient(360deg, #F3F3F3 79.13%, rgba(243, 243, 243, 0) 117.39%)',
     padding: 30,
     flexDirection: 'row',
     alignItems: 'center',
@@ -105,13 +114,58 @@ const Styles = StyleSheet.create({
   payTitleButton: {
     color: '#f1f1f1',
   },
+  ContainerHeader: {
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 30,
+    zIndex: 9999,
+    marginTop: 42,
+    marginLeft: 16,
+    marginRight: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'space-between',
+  },
+  btnImageIcon: {
+    backgroundColor: '#ffffff',
+    borderRadius: 50,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
 });
 
 function ProductDetails({ route, navigation }) {
   const { id } = route.params;
 
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   return (
     <>
+      {/* Header */}
+      <View style={Styles.ContainerHeader}>
+        <TouchableOpacity onPress={handleGoBack}>
+          <View style={Styles.btnImageIcon}>
+            <ArrowVIcon />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {}}>
+          <View style={Styles.btnImageIcon}>
+            <FavoriteIcon />
+          </View>
+        </TouchableOpacity>
+      </View>
       <ScrollView>
         {/* Carousel Product */}
         <CarouselProduct />
