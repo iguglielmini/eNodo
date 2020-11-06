@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import ArrowV from '../assets/svg/arrowv';
+import ArrowV from '../assets/svg/arrowRight';
 
 const Styles = StyleSheet.create({
   containerHelp: {

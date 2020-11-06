@@ -34,8 +34,8 @@ const Styles = StyleSheet.create({
   containerImage: {
     height: 200,
     width: '100%',
-    borderRadius: 5,
-    backgroundColor: '#e5e5e5',
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
   },
   priceContainer: {
     width: '100%',
@@ -84,7 +84,11 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
   return (
     <>
       <TouchableOpacity style={[Styles.card, style]} onPress={() => onClick()}>
-        <ImageBackground style={Styles.containerImage} resizeMode="cover">
+        <ImageBackground
+          style={Styles.containerImage}
+          resizeMode="cover"
+          source={item.imgStart}
+        >
           {item.discount && (
             <View style={Styles.discount}>
               <StarIcon size={48} />

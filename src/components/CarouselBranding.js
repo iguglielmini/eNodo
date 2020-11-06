@@ -1,8 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 
 /* Components */
 import Slick from 'react-native-slick';
+
+// Image Branding
+import LogoLuv from '../assets/images/branding/LogoLuv.png';
+import LogoMac from '../assets/images/branding/LogoMac.png';
+import LogoWella from '../assets/images/branding/LogoWella.png';
+import LogoLowell from '../assets/images/branding/LogoLowell.png';
+import LogoInBeauty from '../assets/images/branding/LogoInbeauty.png';
+import LogoLorealPro from '../assets/images/branding/LogoLorealPro.png';
 
 const Styles = StyleSheet.create({
   container: {
@@ -19,7 +27,7 @@ const Styles = StyleSheet.create({
     width: 110,
     height: 104,
     margin: 8,
-    backgroundColor: '#e5e5e5',
+    backgroundColor: '#ffffff',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,50 +52,64 @@ const CarouselBranding = () => {
       >
         <View style={Styles.cardContainer}>
           <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
+            <Image source={LogoWella} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
+            <Image source={LogoLuv} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
+            <Image source={LogoLorealPro} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
+            <Image source={LogoInBeauty} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
+            <Image source={LogoMac} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
-          </View>
-        </View>
-        <View style={Styles.cardContainer}>
-          <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
-          </View>
-          <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
-          </View>
-          <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
-          </View>
-          <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
+            <Image source={LogoLowell} />
           </View>
         </View>
+        {/* 2 slider */}
         <View style={Styles.cardContainer}>
           <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
+            <Image source={LogoWella} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
+            <Image source={LogoLuv} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>SEDA</Text>
+            <Image source={LogoLorealPro} />
           </View>
           <View style={Styles.CardMarcas}>
-            <Text>DOVE</Text>
+            <Image source={LogoInBeauty} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoMac} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoLowell} />
+          </View>
+        </View>
+        {/* 3 Slider */}
+        <View style={Styles.cardContainer}>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoWella} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoLuv} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoLorealPro} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoInBeauty} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoMac} />
+          </View>
+          <View style={Styles.CardMarcas}>
+            <Image source={LogoLowell} />
           </View>
         </View>
       </Slick>
