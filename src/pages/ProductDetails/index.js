@@ -62,6 +62,7 @@ const Styles = StyleSheet.create({
     color: '#000000',
     opacity: 0.5,
   },
+  containerCarouselPay: {},
   ContainerClientPay: {
     padding: 15,
   },
@@ -204,7 +205,7 @@ function ProductDetails({ route, navigation }) {
         {/* Accordion */}
         <Accordion />
         {/* Compre Junto Area */}
-        <View style={Styles.ContainerClientPay}>
+        <View style={Styles.containerCarouselPay}>
           <Text style={Styles.ClientPayTitle}>Compre junto</Text>
           <CarouselBuyTogether />
         </View>

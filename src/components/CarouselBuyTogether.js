@@ -2,57 +2,64 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
 // Libs
 import Swiper from 'react-native-swiper';
+/* Image mock */
+import Porduct1 from '../assets/images/product/product1.png';
+import Porduct2 from '../assets/images/product/6.png';
 
 const { width } = Dimensions.get('window');
-
-/* Components */
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width,
   },
 
   wrapper: {},
 
-  slide: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-  },
-
   Card: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB',
+  },
+  cardProduct: {
+    margin: 16,
+    height: 230,
     borderRadius: 10,
+    backgroundColor: '#ffffff',
+    flexDirection: 'column',
   },
-
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
+  ImageCard: {
+    width: '100%',
+    paddingTop: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
     alignItems: 'center',
-    backgroundColor: '#97CAE5',
+    flexDirection: 'row',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#A1A6AF',
+    justifyContent: 'space-around',
   },
-
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
+  ImageProduct: {
+    width: 75,
+    height: 120,
   },
-
   text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 15,
+  },
+  priceText: {
+    color: '#DB207F',
+    fontSize: 15,
+    paddingLeft: 8,
+  },
+  ImageTextPrice: {
+    flexDirection: 'row',
+    paddingTop: 20,
+    paddingLeft: 16,
+    paddingBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
 });
-
-const Card = () => {
-  return <></>;
-};
 
 const CarouselBuyTogether = () => {
   return (
@@ -96,13 +103,49 @@ const CarouselBuyTogether = () => {
           loop
         >
           <View style={styles.Card}>
-            <Text style={styles.text}>tester</Text>
+            <View style={styles.cardProduct}>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={Porduct1} />
+                <View>
+                  <Text style={styles.text}>+</Text>
+                </View>
+                <Image style={styles.ImageProduct} source={Porduct2} />
+              </View>
+              <View style={styles.ImageTextPrice}>
+                <Text style={styles.text}>Compre os dois:</Text>
+                <Text style={styles.priceText}>R$ 18,90</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.slide2}>
-            <Text style={styles.text}>Beautiful</Text>
+          <View style={styles.Card}>
+            <View style={styles.cardProduct}>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={Porduct1} />
+                <View>
+                  <Text style={styles.text}>+</Text>
+                </View>
+                <Image style={styles.ImageProduct} source={Porduct2} />
+              </View>
+              <View style={styles.ImageTextPrice}>
+                <Text style={styles.text}>Compre os dois:</Text>
+                <Text style={styles.priceText}>R$ 18,90</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.slide3}>
-            <Text style={styles.text}>And simple</Text>
+          <View style={styles.Card}>
+            <View style={styles.cardProduct}>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={Porduct1} />
+                <View>
+                  <Text style={styles.text}>+</Text>
+                </View>
+                <Image style={styles.ImageProduct} source={Porduct2} />
+              </View>
+              <View style={styles.ImageTextPrice}>
+                <Text style={styles.text}>Compre os dois:</Text>
+                <Text style={styles.priceText}>R$ 18,90</Text>
+              </View>
+            </View>
           </View>
         </Swiper>
       </View>
