@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -25,6 +26,9 @@ import FavoriteIcon from '../../assets/svg/favorite';
 /* Images */
 import BelImage from '../../assets/images/bel.png';
 import KissImage from '../../assets/images/kiss.png';
+
+// window
+const { width } = Dimensions.get('window');
 
 const Styles = StyleSheet.create({
   bagIcon: {
@@ -51,9 +55,10 @@ const Styles = StyleSheet.create({
     marginLeft: 16,
   },
   kissImage: {
-    width: 115,
+    width: '100%',
+    maxWidth: 115,
     marginTop: -35,
-    marginLeft: 30,
+    marginLeft: 20,
   },
 });
 

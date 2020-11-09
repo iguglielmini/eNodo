@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 
 // image Mock
-import imageProduct from '../assets/images/product/Image02.png';
 import imageProduct1 from '../assets/images/product/7.png';
 import imageProduct2 from '../assets/images/product/6.png';
 import imageProduct3 from '../assets/images/product/3.png';
@@ -16,7 +15,7 @@ const CardList = [
     titleProduct: 'Salon Line shampoo Meu Liso Extremo Taciele Alcolea 300 ml',
     titlePrice: '22,90',
     titlePriceLater: '25,90',
-    imgStart: imageProduct,
+    imgStart: imageProduct3,
     discount: '15',
   },
   {

@@ -6,15 +6,18 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 /* Icons */
 import StarIcon from '../assets/svg/star';
 import FavoriteIcon from '../assets/svg/favorite';
 
+const { width } = Dimensions.get('window');
+
 const Styles = StyleSheet.create({
   card: {
-    width: 175,
+    width: width / 2 - 30,
     maxHeight: 400,
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -86,8 +89,8 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
       <TouchableOpacity style={[Styles.card, style]} onPress={() => onClick()}>
         <ImageBackground
           style={Styles.containerImage}
-          resizeMode="cover"
           source={item.imgStart}
+          rizeMode="cover"
         >
           {item.discount && (
             <View style={Styles.discount}>

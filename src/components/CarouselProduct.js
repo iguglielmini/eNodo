@@ -24,6 +24,7 @@ const CarouselProduct = () => {
   return (
     <>
       <Slick
+        autoplay
         showsButtons={false}
         style={Styles.container}
         activeDotColor="#0d0d0d"

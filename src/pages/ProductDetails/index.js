@@ -10,12 +10,15 @@ import {
 
 /* component */
 import ListCard from '../../components/ListCard';
-import DetailIcon from '../../assets/svg/detail';
+import Accordion from '../../components/Accordion';
 import CarouselProduct from '../../components/CarouselProduct';
 
 /** icons */
 import ArrowVIcon from '../../assets/svg/arrowv';
+import LogoIcon from '../../assets/svg/logoIcon';
+import DetailIcon from '../../assets/svg/detail';
 import FavoriteIcon from '../../assets/svg/favorite';
+import CarouselBuyTogether from '../../components/CarouselBuyTogether';
 
 const Styles = StyleSheet.create({
   containerTitle: {
@@ -60,7 +63,7 @@ const Styles = StyleSheet.create({
     opacity: 0.5,
   },
   ContainerClientPay: {
-    padding: 18,
+    padding: 15,
   },
   ClientPayTitle: {
     fontSize: 18,
@@ -189,7 +192,7 @@ function ProductDetails({ route, navigation }) {
           </View>
 
           <View style={Styles.detailsProduct}>
-            <DetailIcon />
+            <LogoIcon />
             <View style={Styles.description}>
               <Text style={Styles.descriptionTitle}>Loja com estoque</Text>
               <Text style={Styles.descriptionSubTitle}>
@@ -198,9 +201,12 @@ function ProductDetails({ route, navigation }) {
             </View>
           </View>
         </View>
+        {/* Accordion */}
+        <Accordion />
         {/* Compre Junto Area */}
         <View style={Styles.ContainerClientPay}>
           <Text style={Styles.ClientPayTitle}>Compre junto</Text>
+          <CarouselBuyTogether />
         </View>
         {/* Clientes Tambem Compraram Area */}
         <View style={Styles.ContainerClientPay}>

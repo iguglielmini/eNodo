@@ -9,34 +9,30 @@ const Styles = StyleSheet.create({
   },
   title: {
     color: '#000000',
+    marginTop: 30,
+    marginBottom: 30,
+    fontSize: 14,
   },
 });
 const Accordion = () => {
   return (
     <List.Section>
       <List.Accordion
-        title="Ajuda"
+        title="Sobre o produto"
         style={Styles.accordionBorder}
         titleStyle={Styles.title}
       >
         <List.Item description="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
       </List.Accordion>
       <List.Accordion
-        title="Nossa Loja"
+        title="Como usar"
         style={Styles.accordionBorder}
         titleStyle={Styles.title}
       >
         <List.Item description="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
       </List.Accordion>
       <List.Accordion
-        title="Formas de Pagamentos"
-        style={Styles.accordionBorder}
-        titleStyle={Styles.title}
-      >
-        <List.Item description="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
-      </List.Accordion>
-      <List.Accordion
-        title="Mais Belshop"
+        title="Avaliações"
         style={Styles.accordionBorder}
         titleStyle={Styles.title}
       >

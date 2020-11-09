@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 // Image
 import CabeloImg from '../assets/images/cabelo.png';
@@ -9,9 +16,12 @@ import MaquiagemImg from '../assets/images/maquiagem.png';
 import EquipamentosImg from '../assets/images/equipamentos.png';
 import profissionalImg from '../assets/images/profissional.png';
 
+const { width } = Dimensions.get('window');
+
 const Styles = StyleSheet.create({
   card: {
-    width: 105,
+    width: '100%',
+    maxWidth: 105,
     marginTop: 48,
     marginHorizontal: 15,
     alignItems: 'center',
