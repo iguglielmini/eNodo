@@ -44,9 +44,12 @@ const styles = StyleSheet.create({
   },
   circleText: {
     padding: 3,
+    width: 30,
     borderWidth: 1,
     borderRadius: 50,
-    borderBottomColor: '#A1A6AF',
+    borderColor: '#A1A6AF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     color: '#000000',

@@ -23,6 +23,7 @@ const Routes = () => {
       tabBarOptions={{
         tabStyle: {
           height: 50,
+          padding: 10,
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'flex-start',

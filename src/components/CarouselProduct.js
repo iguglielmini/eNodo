@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Dimensions } from 'react-native';
 
 /* Components */
 import Slick from 'react-native-slick';
-
+// Mock Image
 import ProductImage from '../assets/images/product1.png';
+
+// Dimension Responsive layout
+const { width } = Dimensions.get('window');
 
 const Styles = StyleSheet.create({
   container: {
@@ -12,8 +15,13 @@ const Styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   cardContainer: {
+    height: 520,
+    width,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  cardImage: {
+    resizeMode: 'cover',
   },
   dot: {
     position: 'absolute',
@@ -31,13 +39,13 @@ const CarouselProduct = () => {
         paginationStyle={Styles.dot}
       >
         <View style={Styles.cardContainer}>
-          <Image source={ProductImage} />
+          <Image style={Styles.cardImage} source={ProductImage} />
         </View>
         <View style={Styles.cardContainer}>
-          <Image source={ProductImage} />
+          <Image style={Styles.cardImage} source={ProductImage} />
         </View>
         <View style={Styles.cardContainer}>
-          <Image source={ProductImage} />
+          <Image style={Styles.cardImage} source={ProductImage} />
         </View>
       </Slick>
     </>

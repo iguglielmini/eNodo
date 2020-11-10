@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import LinearGradient from 'react-native-linear-gradient';
+
 /* component */
 import ListCard from '../../components/ListCard';
 import Accordion from '../../components/Accordion';
@@ -80,16 +82,20 @@ const Styles = StyleSheet.create({
     fontSize: 12,
   },
   ContainerFloatButon: {
-    backgroundColor:
-      'linear-gradient(360deg, #F3F3F3 79.13%, rgba(243, 243, 243, 0) 117.39%)',
+    left: 0,
+    right: 0,
+    bottom: 0,
     padding: 30,
-    flexDirection: 'row',
+    position: 'absolute',
     alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
     justifyContent: 'space-between',
   },
   priceDescription: {
     fontSize: 16,
     lineHeight: 24,
+    backgroundColor: 'transparent',
   },
   priceTitles: {
     flexDirection: 'row',
@@ -108,12 +114,14 @@ const Styles = StyleSheet.create({
     color: '#0d0d0d',
   },
   buttonPayment: {
-    backgroundColor: '#0d0d0d',
+    paddingTop: 18,
+    paddingLeft: 30,
     borderRadius: 5,
-    padding: 20,
-    width: 120,
+    paddingRight: 30,
+    paddingBottom: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#0d0d0d',
   },
   payTitleButton: {
     color: '#f1f1f1',
@@ -222,7 +230,14 @@ function ProductDetails({ route, navigation }) {
         </View>
       </ScrollView>
       {/* Float button */}
-      <View style={Styles.ContainerFloatButon}>
+      {/* linear-gradient(360deg, #F3F3F3 79.13%, rgba(243, 243, 243, 0) 117.39%); */}
+      <LinearGradient
+        start={{ x: 0, y: 0.9 }}
+        end={{ x: 0.0, y: 0.0 }}
+        locations={[0.8, 1]}
+        colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
+        style={Styles.ContainerFloatButon}
+      >
         <View style={Styles.priceDescription}>
           <View style={Styles.priceTitles}>
             <Text style={Styles.newPrice}>R$ 305,23</Text>
@@ -237,7 +252,7 @@ function ProductDetails({ route, navigation }) {
             <Text style={Styles.payTitleButton}>Comprar</Text>
           </View>
         </TouchableOpacity>
-      </View>
+      </LinearGradient>
     </>
   );
 }

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -26,9 +25,6 @@ import FavoriteIcon from '../../assets/svg/favorite';
 /* Images */
 import BelImage from '../../assets/images/bel.png';
 import KissImage from '../../assets/images/kiss.png';
-
-// window
-const { width } = Dimensions.get('window');
 
 const Styles = StyleSheet.create({
   bagIcon: {
@@ -81,8 +77,11 @@ function Home({ navigation }) {
         {/* End Promo */}
 
         {/* Marcas */}
-        <Section style={{ paddingTop: 16, ...Styles.section }}>
-          <Title title="Marcas" />
+        <Section style={{ paddingTop: 16 }}>
+          <Title
+            title="Marcas"
+            style={{ paddingHorizontal: 16, marginLeft: 16 }}
+          />
           <CarouselBranding />
         </Section>
         {/* End Marcas */}
