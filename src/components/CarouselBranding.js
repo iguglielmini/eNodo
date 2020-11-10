@@ -58,7 +58,7 @@ const CarouselBranding = () => {
       <View style={styles.container}>
         <Swiper
           style={styles.wrapper}
-          height={250}
+          height={275}
           dot={
             <View
               style={{
@@ -109,6 +109,12 @@ const CarouselBranding = () => {
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={LogoLowell} />
+              </View>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={LogoLowell} />
+              </View>
             </View>
           </View>
           {/* 2 slider */}
@@ -122,6 +128,12 @@ const CarouselBranding = () => {
               </View>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoWella} />
+              </View>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={LogoLowell} />
+              </View>
+              <View style={styles.ImageCard}>
+                <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
