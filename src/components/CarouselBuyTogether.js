@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     width: 75,
     height: 120,
   },
+  circleText: {
+    padding: 3,
+    borderWidth: 1,
+    borderRadius: 50,
+    borderBottomColor: '#A1A6AF',
+  },
   text: {
     color: '#000000',
     fontSize: 15,
@@ -106,7 +112,7 @@ const CarouselBuyTogether = () => {
             <View style={styles.cardProduct}>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={Porduct1} />
-                <View>
+                <View style={styles.circleText}>
                   <Text style={styles.text}>+</Text>
                 </View>
                 <Image style={styles.ImageProduct} source={Porduct2} />
@@ -121,7 +127,7 @@ const CarouselBuyTogether = () => {
             <View style={styles.cardProduct}>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={Porduct1} />
-                <View>
+                <View style={styles.circleText}>
                   <Text style={styles.text}>+</Text>
                 </View>
                 <Image style={styles.ImageProduct} source={Porduct2} />
@@ -136,7 +142,7 @@ const CarouselBuyTogether = () => {
             <View style={styles.cardProduct}>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={Porduct1} />
-                <View>
+                <View style={styles.circleText}>
                   <Text style={styles.text}>+</Text>
                 </View>
                 <Image style={styles.ImageProduct} source={Porduct2} />
