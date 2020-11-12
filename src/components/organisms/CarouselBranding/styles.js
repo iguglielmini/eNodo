@@ -5,39 +5,51 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    width,
     marginTop: 16,
   },
-
-  wrapper: {},
-
-  Card: {
-    width,
-    flex: 1,
-    paddingLeft: 16,
-    paddingBottom: 16,
-    backgroundColor: 'red',
-  },
-  cardBranding: {
-    width,
-    margin: 16,
-    height: 100,
-    flexDirection: 'row',
+  card: {
     flexWrap: 'wrap',
+    width: width - 110,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  ImageCard: {
-    borderRadius: 10,
+  dotContainer: {
+    marginHorizontal: 0,
+  },
+  inactiveDot: {
+    width: 5,
+    height: 5,
+    marginTop: 3,
+    marginLeft: 3,
+    marginRight: 3,
+    borderRadius: 4,
+    marginBottom: 3,
+  },
+  activeDot: {
+    width: 8,
+    height: 8,
+    marginTop: 3,
+    marginLeft: 3,
+    marginRight: 3,
+    borderRadius: 4,
+    marginBottom: 3,
+    backgroundColor: '#000',
+  },
+  imageCard: {
+    width: 120,
+    height: 104,
     padding: 16,
-    marginRight: 15,
+    marginRight: 16,
+    borderRadius: 10,
     marginBottom: 15,
     alignItems: 'center',
-    flexDirection: 'row',
     backgroundColor: '#ffffff',
   },
-  ImageProduct: {
-    width: width / 4,
-    height: width / 5,
+  slide: {
+    width: width - 140,
+  },
+  pagination: {
+    justifyContent: 'flex-end',
   },
 });

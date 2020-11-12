@@ -1,109 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, Dimensions } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-// Libs
-import Swiper from 'react-native-swiper';
-
-// Image Branding
-import LogoLuv from '../../../assets/images/branding/LogoLuv.png';
-import LogoMac from '../../../assets/images/branding/LogoMac.png';
-import LogoWella from '../../../assets/images/branding/LogoWella.png';
-import LogoLowell from '../../../assets/images/branding/LogoLowell.png';
-import LogoLorealPro from '../../../assets/images/branding/LogoLorealPro.png';
 // Styles
-import styles from './styles';
+import Styles from './styles';
+import mock from '../../../mock/CarouselBrandingMock';
 
 const { width } = Dimensions.get('window');
 
+const Card = ({ item }) => {
+  const { images } = item;
+  return (
+    <View style={Styles.card}>
+      {images.map((image, index) => {
+        const key = index;
+        return (
+          <View key={key} style={Styles.imageCard}>
+            <Image source={image} resizeMode="cover" />
+          </View>
+        );
+      })}
+    </View>
+  );
+};
+
 const CarouselBranding = () => {
+  const [indexDot, setDotIndex] = useState(0);
+
   return (
     <>
-      <View style={styles.container}>
-        <Swiper
-          style={styles.wrapper}
-          height={300}
-          dot={
-            <View
-              style={{
-                backgroundColor: 'rgba(0,0,0,.2)',
-                width: 5,
-                height: 5,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: 3,
-              }}
-            />
-          }
-          activeDot={
-            <View
-              style={{
-                backgroundColor: '#000',
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: 3,
-              }}
-            />
-          }
-          paginationStyle={{
-            width,
-            position: 'absolute',
-            bottom: -23,
-            left: width / 2 - 50,
-          }}
-          loop
-        >
-          <View style={styles.Card}>
-            <View style={styles.cardBranding}>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLuv} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoMac} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoWella} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLowell} />
-              </View>
-              {/* <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLowell} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLowell} />
-              </View> */}
-            </View>
-          </View>
-          {/* 2 slider */}
-          <View style={styles.Card}>
-            <View style={styles.cardBranding}>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLuv} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLorealPro} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoWella} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLowell} />
-              </View>
-              {/* <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLowell} />
-              </View>
-              <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoInBeauty} />
-              </View> */}
-            </View>
-          </View>
-        </Swiper>
+      <View style={Styles.container}>
+        <Carousel
+          data={mock}
+          hasParallaxImages
+          renderItem={Card}
+          sliderWidth={width}
+          sliderHeight={width}
+          inactiveSlideScale={1}
+          itemWidth={width - 68}
+          inactiveSlideOpacity={1}
+          slideStyle={Styles.slide}
+          onSnapToItem={setDotIndex}
+        />
+        <Pagination
+          inactiveDotScale={0.6}
+          inactiveDotOpacity={0.4}
+          activeDotIndex={indexDot}
+          dotStyle={Styles.activeDot}
+          dotsLength={mock.length - 1}
+          containerStyle={Styles.pagination}
+          inactiveDotStyle={Styles.inactiveDot}
+          dotContainerStyle={Styles.dotContainer}
+        />
       </View>
     </>
   );
