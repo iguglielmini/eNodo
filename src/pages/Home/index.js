@@ -8,6 +8,7 @@ import Section from '../../components/atoms/Section';
 import LinkHelp from '../../components/atoms/LinkHelp';
 import ListCard from '../../components/molecules/ListCard';
 import IntroCard from '../../components/molecules/IntroCard';
+import ButtonSeeAll from '../../components/atoms/ButtonSeeAll';
 import FilterButton from '../../components/molecules/FilterButton';
 import ImageIntroCard from '../../components/molecules/ImageIntroCard';
 import CarouselBranding from '../../components/organisms/CarouselBranding';
@@ -38,6 +39,7 @@ function Home({ navigation }) {
             </TouchableOpacity>
           </Title>
           <ListCard navigation={navigation} />
+          <ButtonSeeAll theme="light" />
         </Section>
         {/* End Promo */}
 
@@ -64,6 +66,7 @@ function Home({ navigation }) {
           </View>
           <IntroCard />
           <ListCard navigation={navigation} />
+          <ButtonSeeAll theme="light" />
         </Section>
         {/* End Realease */}
 
@@ -72,6 +75,7 @@ function Home({ navigation }) {
           <Title title="Novidades" theme="dark" />
           <ImageIntroCard />
           <ListCard theme="dark" navigation={navigation} />
+          <ButtonSeeAll theme="dark" />
         </Section>
         {/* End Novidades */}
 

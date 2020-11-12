@@ -9,7 +9,6 @@ import LogoLuv from '../../../assets/images/branding/LogoLuv.png';
 import LogoMac from '../../../assets/images/branding/LogoMac.png';
 import LogoWella from '../../../assets/images/branding/LogoWella.png';
 import LogoLowell from '../../../assets/images/branding/LogoLowell.png';
-import LogoInBeauty from '../../../assets/images/branding/LogoInbeauty.png';
 import LogoLorealPro from '../../../assets/images/branding/LogoLorealPro.png';
 // Styles
 import styles from './styles';
@@ -22,7 +21,7 @@ const CarouselBranding = () => {
       <View style={styles.container}>
         <Swiper
           style={styles.wrapper}
-          height={275}
+          height={300}
           dot={
             <View
               style={{
@@ -73,12 +72,12 @@ const CarouselBranding = () => {
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
-              <View style={styles.ImageCard}>
+              {/* <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
-              </View>
+              </View> */}
             </View>
           </View>
           {/* 2 slider */}
@@ -96,12 +95,12 @@ const CarouselBranding = () => {
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
-              <View style={styles.ImageCard}>
+              {/* <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoInBeauty} />
-              </View>
+              </View> */}
             </View>
           </View>
         </Swiper>

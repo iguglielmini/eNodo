@@ -15,6 +15,8 @@ export default StyleSheet.create({
     width,
     flex: 1,
     paddingLeft: 16,
+    paddingBottom: 16,
+    backgroundColor: 'red',
   },
   cardBranding: {
     width,
@@ -35,7 +37,7 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   ImageProduct: {
-    width: width / 5,
+    width: width / 4,
     height: width / 5,
   },
 });
