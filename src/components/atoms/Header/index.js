@@ -1,18 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
-import ArrowVIcon from '../assets/svg/arrowv';
-import FavoriteIcon from '../assets/svg/favorite';
+import ArrowVIcon from '../../../assets/svg/arrowv';
+import FavoriteIcon from '../../../assets/svg/favorite';
 
-const Styles = StyleSheet.create({
-  container: {
-    padding: 32,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});
+import Styles from './styles';
 
 function Header({ navigation }) {
   function handleGoBack() {

@@ -1,19 +1,9 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 
-const Styles = StyleSheet.create({
-  accordionBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#A1A6AF',
-  },
-  title: {
-    color: '#000000',
-    marginTop: 30,
-    marginBottom: 30,
-    fontSize: 14,
-  },
-});
+// Styles
+import Styles from './styles';
+
 const Accordion = () => {
   return (
     <List.Section>

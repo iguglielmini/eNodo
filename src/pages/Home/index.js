@@ -1,22 +1,16 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 /* Components */
-import Title from '../../components/Title';
-import Section from '../../components/Section';
-import LinkHelp from '../../components/LinkHelp';
-import ListCard from '../../components/ListCard';
-import IntroCard from '../../components/IntroCard';
-import FilterButton from '../../components/FilterButton';
-import ImageIntroCard from '../../components/ImageIntroCard';
-import CarouselBranding from '../../components/CarouselBranding';
+import Title from '../../components/atoms/Title';
+import Section from '../../components/atoms/Section';
+import LinkHelp from '../../components/atoms/LinkHelp';
+import ListCard from '../../components/molecules/ListCard';
+import IntroCard from '../../components/molecules/IntroCard';
+import FilterButton from '../../components/molecules/FilterButton';
+import ImageIntroCard from '../../components/molecules/ImageIntroCard';
+import CarouselBranding from '../../components/organisms/CarouselBranding';
 
 /* Icons */
 import BagIcon from '../../assets/svg/bag';
@@ -26,37 +20,8 @@ import FavoriteIcon from '../../assets/svg/favorite';
 import BelImage from '../../assets/images/bel.png';
 import KissImage from '../../assets/images/kiss.png';
 
-const Styles = StyleSheet.create({
-  bagIcon: {
-    marginTop: -3,
-    marginLeft: 36,
-  },
-  section: {
-    paddingHorizontal: 16,
-  },
-  belSection: {
-    paddingTop: 48,
-    paddingHorizontal: 16,
-  },
-  belTitle: {
-    paddingHorizontal: 16,
-  },
-  belContainer: {
-    marginBottom: 55,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-  belImage: {
-    marginLeft: 16,
-  },
-  kissImage: {
-    width: '100%',
-    maxWidth: 115,
-    marginTop: -35,
-    marginLeft: 20,
-  },
-});
+/* Styles */
+import Styles from './styles';
 
 function Home({ navigation }) {
   return (

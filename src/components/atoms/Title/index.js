@@ -1,34 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 
-const Styles = StyleSheet.create({
-  flex: {
-    display: 'flex',
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: '700',
-    fontFamily: 'Inter',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  actionButtons: {
-    width: 82,
-  },
-  light: {
-    color: '#000000',
-  },
-  dark: {
-    color: '#ffffff',
-  },
-  container: {
-    paddingHorizontal: 16,
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-});
+// Styles
+import Styles from './styles';
 
 const Title = ({ title, children, theme, style, styleFont }) => (
   <View style={[Styles.container, Styles.flex, Styles.row, style]}>

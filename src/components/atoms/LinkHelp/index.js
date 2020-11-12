@@ -1,35 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
-import ArrowV from '../assets/svg/arrowRight';
+// Icons
+import ArrowV from '../../../assets/svg/arrowRight';
+// Styles
+import Styles from './styles';
 
-const Styles = StyleSheet.create({
-  containerHelp: {
-    marginTop: 67,
-    flexDirection: 'column',
-  },
-  btn: {
-    paddingLeft: 32,
-    paddingRight: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  btnHelp: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    paddingRight: 32,
-    paddingLeft: 32,
-    borderBottomColor: '#A1A6AF',
-    justifyContent: 'space-between',
-  },
-  titleHelp: {
-    fontSize: 18,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-});
 const LinkHelp = () => {
   return (
     <View style={Styles.containerHelp}>

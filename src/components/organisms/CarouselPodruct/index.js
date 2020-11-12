@@ -1,32 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Image } from 'react-native';
 
 /* Components */
 import Slick from 'react-native-slick';
 // Mock Image
-import ProductImage from '../assets/images/product1.png';
-
-// Dimension Responsive layout
-const { width } = Dimensions.get('window');
-
-const Styles = StyleSheet.create({
-  container: {
-    height: 520,
-    backgroundColor: '#ffffff',
-  },
-  cardContainer: {
-    height: 520,
-    width,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardImage: {
-    resizeMode: 'cover',
-  },
-  dot: {
-    position: 'absolute',
-  },
-});
+import ProductImage from '../../../assets/images/product1.png';
+// Styles
+import Styles from './styles';
 
 const CarouselProduct = () => {
   return (

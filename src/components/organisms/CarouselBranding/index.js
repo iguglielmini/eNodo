@@ -1,56 +1,20 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 
 // Libs
 import Swiper from 'react-native-swiper';
 
 // Image Branding
-import LogoLuv from '../assets/images/branding/LogoLuv.png';
-import LogoMac from '../assets/images/branding/LogoMac.png';
-import LogoWella from '../assets/images/branding/LogoWella.png';
-import LogoLowell from '../assets/images/branding/LogoLowell.png';
-import LogoInBeauty from '../assets/images/branding/LogoInbeauty.png';
-import LogoLorealPro from '../assets/images/branding/LogoLorealPro.png';
+import LogoLuv from '../../../assets/images/branding/LogoLuv.png';
+import LogoMac from '../../../assets/images/branding/LogoMac.png';
+import LogoWella from '../../../assets/images/branding/LogoWella.png';
+import LogoLowell from '../../../assets/images/branding/LogoLowell.png';
+import LogoInBeauty from '../../../assets/images/branding/LogoInbeauty.png';
+import LogoLorealPro from '../../../assets/images/branding/LogoLorealPro.png';
+// Styles
+import styles from './styles';
 
 const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width,
-    marginTop: 16,
-  },
-
-  wrapper: {},
-
-  Card: {
-    width,
-    flex: 1,
-    paddingLeft: 16,
-  },
-  cardBranding: {
-    width,
-    margin: 16,
-    height: 100,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  ImageCard: {
-    borderRadius: 10,
-    padding: 16,
-    marginRight: 15,
-    marginBottom: 15,
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#ffffff',
-  },
-  ImageProduct: {
-    width: width / 5,
-    height: width / 5,
-  },
-});
 
 const CarouselBranding = () => {
   return (
@@ -124,7 +88,7 @@ const CarouselBranding = () => {
                 <Image style={styles.ImageProduct} source={LogoLuv} />
               </View>
               <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoMac} />
+                <Image style={styles.ImageProduct} source={LogoLorealPro} />
               </View>
               <View style={styles.ImageCard}>
                 <Image style={styles.ImageProduct} source={LogoWella} />
@@ -136,7 +100,7 @@ const CarouselBranding = () => {
                 <Image style={styles.ImageProduct} source={LogoLowell} />
               </View>
               <View style={styles.ImageCard}>
-                <Image style={styles.ImageProduct} source={LogoLowell} />
+                <Image style={styles.ImageProduct} source={LogoInBeauty} />
               </View>
             </View>
           </View>

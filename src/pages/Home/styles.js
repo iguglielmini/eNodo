@@ -1,39 +1,33 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-    width: 24,
-    height: 24,
-    transform: [{ rotate: '45deg' }],
-    bottom: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+export default StyleSheet.create({
+  bagIcon: {
+    marginTop: -1,
+    marginLeft: 36,
   },
-  arrowSmall: {
-    transform: [{ rotate: '-45deg' }],
+  section: {
+    paddingHorizontal: 16,
   },
-  arrow: {
-    borderRadius: 8,
-    position: 'absolute',
-    height: 18,
-    width: 4,
+  belSection: {
+    paddingTop: 48,
+    paddingHorizontal: 16,
   },
-  right: {
-    top: 6,
-    left: 16,
+  belTitle: {
+    paddingHorizontal: 16,
   },
-  top: {
-    top: 6,
-    left: 8,
-    height: 4,
-    width: 18,
+  belContainer: {
+    marginBottom: 55,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
-  isLabelTop: {
-    width: 12,
-    right: 3,
+  belImage: {
+    marginLeft: 16,
   },
-  isLabelRight: {
-    height: 12,
+  kissImage: {
+    width: '100%',
+    maxWidth: 115,
+    marginTop: -35,
+    marginLeft: 20,
   },
 });
-export default styles;

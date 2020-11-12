@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import InitialPage from './src/pages';
 import ProductDetailsPage from './src/pages/ProductDetails';
 
-import Header from './src/components/Header';
+import Header from './src/components/atoms/Header';
 
 const Stack = createStackNavigator();
 
