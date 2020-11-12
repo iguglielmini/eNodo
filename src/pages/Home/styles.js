@@ -30,4 +30,9 @@ export default StyleSheet.create({
     marginTop: -35,
     marginLeft: 20,
   },
+  ButtonSeeAll: {
+    position: 'absolute',
+    bottom: 50,
+    marginLeft: 16,
+  },
 });

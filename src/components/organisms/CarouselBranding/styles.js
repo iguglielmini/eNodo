@@ -44,6 +44,7 @@ export default StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#ffffff',
   },
   slide: {

@@ -50,6 +50,9 @@ function Home({ navigation }) {
             style={{ paddingHorizontal: 16, marginLeft: 16 }}
           />
           <CarouselBranding />
+          <View style={Styles.ButtonSeeAll}>
+            <ButtonSeeAll theme="light" />
+          </View>
         </Section>
         {/* End Marcas */}
 
