@@ -15,7 +15,7 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
         <ImageBackground
           style={Styles.containerImage}
           source={item.imgStart}
-          rizeMode="cover"
+          resizeMode="cover"
         >
           {item.discount && (
             <View style={Styles.discount}>

@@ -25,6 +25,7 @@ export default StyleSheet.create({
     height: 200,
     width: '100%',
     borderRadius: 10,
+    resizeMode: 'cover',
     backgroundColor: '#ffffff',
   },
   priceContainer: {

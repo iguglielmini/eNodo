@@ -35,6 +35,6 @@ export default [
     titleProduct: 'Moroccanoil Volume Extra - Condicionador 250ml',
     titlePrice: '22,90',
     titlePriceLater: '25,90',
-    imgStart: imageProduct4,
+    imgStart: imageProduct3,
   },
 ];
