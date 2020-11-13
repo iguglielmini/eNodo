@@ -41,6 +41,9 @@ export default StyleSheet.create({
   descriptionSubTitle: {
     color: '#000000',
     opacity: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   containerCarouselPay: {},
   ContainerClientPay: {

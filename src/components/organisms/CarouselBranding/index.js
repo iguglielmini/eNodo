@@ -16,7 +16,11 @@ const Card = ({ item }) => {
         const key = index;
         return (
           <View key={key} style={Styles.imageCard}>
-            <Image source={image} resizeMode="cover" />
+            <Image
+              style={{ width: 90, height: 55, flex: 1 }}
+              source={image}
+              resizeMode="cover"
+            />
           </View>
         );
       })}

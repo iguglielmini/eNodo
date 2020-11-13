@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 /* component */
 import ListCard from '../../components/molecules/ListCard';
 import Accordion from '../../components/organisms/Accordion';
+import { ModalCep } from '../../components/organisms/ModalCep';
 import CarouselProduct from '../../components/organisms/CarouselPodruct';
 import CarouselBuyTogether from '../../components/organisms/CarouselBuyTogether';
 
@@ -58,6 +59,7 @@ function ProductDetails({ route, navigation }) {
               <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
               <Text style={Styles.descriptionSubTitle}>
                 Entrega em até 7 dias úteis após a postagem do produto.
+                <ModalCep />
               </Text>
             </View>
           </View>

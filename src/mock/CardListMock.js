@@ -2,6 +2,7 @@
 import imageProduct1 from '../assets/images/product/7.png';
 import imageProduct2 from '../assets/images/product/6.png';
 import imageProduct3 from '../assets/images/product/3.png';
+import imageProduct4 from '../assets/images/product/2.png';
 
 export default [
   {
@@ -34,6 +35,6 @@ export default [
     titleProduct: 'Moroccanoil Volume Extra - Condicionador 250ml',
     titlePrice: '22,90',
     titlePriceLater: '25,90',
-    imgStart: imageProduct3,
+    imgStart: imageProduct4,
   },
 ];
