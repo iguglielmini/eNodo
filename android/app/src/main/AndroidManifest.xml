@@ -1,0 +1,146 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.belshop">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- < Only if you're using GCM or localNotificationSchedule() > -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- <permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" /> -->
+    <!-- < Only if you're using GCM or localNotificationSchedule() > -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    
+    <application
+      android:name=".MainApplication"
+      android:required="false"
+      android:allowBackup="false"
+      android:usesCleartextTraffic="true"
+      android:label="@string/app_name"
+      android:launchMode="singleTop"
+      android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:theme="@style/AppTheme"
+      tools:targetApi="28"
+      >
+      <activity
+          android:name=".SplashActivity"
+          android:theme="@style/SplashTheme"
+          android:label="@string/app_name"
+          android:screenOrientation="portrait"
+          >
+      
+          <intent-filter>
+              <action android:name="android.intent.action.MAIN" />
+              <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter>
+      </activity>
+      <activity
+        android:name=".MainActivity"
+        android:label="@string/app_name"
+        android:launchMode="singleTask"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+        android:screenOrientation="portrait"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="true">
+
+        <!-- React Native URI Scheme -->
+        <intent-filter android:label="filter_react_native">
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="${URLScheme}" android:host="app" />
+        </intent-filter>
+
+        <!-- Branch URI Scheme -->
+        <intent-filter>
+            <data android:scheme="branchandroid" />
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+        </intent-filter>
+
+        <!-- Branch App Links (optional) -->
+        <intent-filter android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" android:host="${URLHost}" />
+        </intent-filter>
+      </activity>
+
+      <!-- Branch init -->
+      <meta-data android:name="io.branch.sdk.BranchKey" android:value="${BranchKey}" />
+      <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="${BranchKeyTest}" />
+      <meta-data android:name="io.branch.sdk.TestMode" android:value="${TestMode}" />
+
+      <!-- Branch install referrer tracking (optional) -->
+      <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
+          <intent-filter>
+              <action android:name="com.android.vending.INSTALL_REFERRER" />
+          </intent-filter>
+      </receiver>
+
+      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name"
+        android:value="Belshop"/>
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description"
+        android:value="BelshopDescription"/>
+      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+          android:value="false"/>
+      <!-- Change the resource name to your App's accent color - or any other color you want -->
+      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
+        android:resource="@android:color/white"/>
+      <!-- Only when Google Wallet is implemented -->
+      <!-- <meta-data
+        android:name="com.google.android.gms.wallet.api.enabled"
+        android:value="true" /> -->
+      <!-- < Only if you're using GCM or localNotificationSchedule() > -->
+      <!-- <receiver
+        android:name="com.google.android.gms.gcm.GcmReceiver"
+        android:exported="true"
+        android:permission="com.google.android.c2dm.permission.SEND" >
+        <intent-filter>
+          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+          <category android:name="com.belshop" />
+        </intent-filter>
+      </receiver> -->
+      <!-- < Only if you're using GCM or localNotificationSchedule() > -->
+
+      <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
+      <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
+        <intent-filter>
+          <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+      </receiver>
+      <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
+
+      <!-- < Only if you're using GCM or localNotificationSchedule() > -->
+      <!-- <service
+        android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerServiceGcm"
+        android:exported="false" >
+        <intent-filter>
+          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        </intent-filter>
+      </service> -->
+      <!-- </ Only if you're using GCM or localNotificationSchedule() > -->
+
+      <!-- < Else > -->
+      <service
+        android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
+        android:exported="false" >
+        <intent-filter>
+          <action android:name="com.google.firebase.MESSAGING_EVENT" />
+        </intent-filter>
+      </service>
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+    </application>
+
+</manifest>

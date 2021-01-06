@@ -1,0 +1,3 @@
+[1118/200550.291:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1130/163846.181:ERROR:crash_report_database_win.cc(455)] unexpected header
+[1221/121834.647:ERROR:persistent_memory_allocator.cc(843)] Corruption detected in shared-memory segment.
