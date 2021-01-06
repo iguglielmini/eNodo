@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "32842230479",
+    "firebase_url": "https://belshop-nodo-dev.firebaseio.com",
+    "project_id": "belshop-nodo-dev",
+    "storage_bucket": "belshop-nodo-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32842230479:android:f5db0bfb88eb6a93ca65ba",
+        "android_client_info": {
+          "package_name": "com.belshop.qa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32842230479-11ei5jri4gfkepdaj3fr3cm2vuej6tb4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX3TU2HqyPfPBH3ax5Z2Q9baaQR1mohJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32842230479-11ei5jri4gfkepdaj3fr3cm2vuej6tb4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "32842230479-o9p66v0mbtu98qf021t4f3q2ibb49u77.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "nodo.cc.belshopDEV"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32842230479:android:827b4231a4e06b78ca65ba",
+        "android_client_info": {
+          "package_name": "nodo.cc.belshopDEV"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32842230479-11ei5jri4gfkepdaj3fr3cm2vuej6tb4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX3TU2HqyPfPBH3ax5Z2Q9baaQR1mohJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32842230479-11ei5jri4gfkepdaj3fr3cm2vuej6tb4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "32842230479-o9p66v0mbtu98qf021t4f3q2ibb49u77.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "nodo.cc.belshopDEV"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>aps-environment</key>
+	<string>development</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:belshop.test-app.link</string>
+		<string>applinks:belshop-alternate.test-app.link</string>
+		<string>applinks:belshop.app.link</string>
+		<string>applinks:belshop-alternate.app.link</string>
+		<string>applinks:belshop-env-dev.app.link</string>
+		<string>applinks:belshop-env-dev-alternate.app.link</string>
+		<string>applinks:belshop-env-qa-alternate.app.link</string>
+		<string>applinks:belshop-env-staging-alternate.app.link</string>
+		<string>applinks:belshop-env-qa.app.link</string>
+		<string>applinks:belshop-env-staging.app.link</string>
+	</array>
+</dict>
+</plist>
