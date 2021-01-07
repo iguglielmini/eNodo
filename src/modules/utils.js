@@ -142,3 +142,5 @@ export const normalizeHeight = (size) => {
   }
   return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
 };
+
+export const convertToPriceText = (string) => string.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});

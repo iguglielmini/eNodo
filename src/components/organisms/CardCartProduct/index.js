@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
-import { View, Image, Text } from 'react-native';
+import React, { useState, Fragment } from "react";
+import { View, Image, Text } from "react-native";
 
 // Compoents
-import Title from '@components/atoms/Title';
-import ModalCep from '@components/organisms/ModalCep';
-import QuantityProduct from '@components/atoms/QuantityProduct';
+import Title from "@components/atoms/Title";
+import ModalCep from "@components/organisms/ModalCep";
+import QuantityProduct from "@components/atoms/QuantityProduct";
 
 // icons
-import DetailIcon from '@assets/svg/detail';
-
-// Mock Image
-import ProductImage from '@assets/images/product1.png';
+import DetailIcon from "@assets/svg/detail";
 
 // Styles
-import Styles from './styles';
+import Styles from "./styles";
 
-function CardCartProduct({ selectQuantity, cart }) {
+function CardCartProduct({ cart, removeProduct, selectQuantity }) {
+  const { items } = cart;
+  const [textCep, setTextCep] = useState("");
   const [modalCepVisible, setModalCepVisible] = useState(false);
-  const [textCep, setTextCep] = useState('');
 
   return (
     <>
       <View style={Styles.container}>
-        {/* Image Product */}
-        <View style={Styles.containerImageProduct}>
-          <Image style={Styles.imageProduct} source={ProductImage} />
-        </View>
-        {/* Title Image */}
-        <View style={Styles.containerTitleProduct}>
-          <Title
-            title="Kérastase Genesis Anti-Chute Fortifiant - Sérum Finalizador - 90ml"
-            styleFont={Styles.subTitle}
-            style={Styles.AlignItems}
-          />
-        </View>
-        {/* Add Product */}
-        <QuantityProduct
-          cart={cart}
-          onSelect={selectQuantity}
-        />
+        {items.map((item, index) => {
+          const key = index;
+          const { product } = item;
+          return (
+            <Fragment key={key}>
+              <View style={Styles.containerImageProduct}>
+                <Image
+                  style={Styles.imageProduct}
+                  source={{
+                    width: 640,
+                    height: 640,
+                    uri: product.image,
+                  }}
+                />
+              </View>
+              <View style={Styles.containerTitleProduct}>
+                <Title
+                  title={product.title}
+                  style={Styles.AlignItems}
+                  styleFont={Styles.subTitle}
+                />
+              </View>
+              <QuantityProduct
+                price={product.price}
+                quantity={item.quantity}
+                removeProduct={() => removeProduct(key)}
+                onSelect={(value) => selectQuantity(index, value)}
+              />
+            </Fragment>
+          );
+        })}
         {/* Add Location */}
         <View style={Styles.containerLocation}>
           <DetailIcon />
@@ -54,7 +66,7 @@ function CardCartProduct({ selectQuantity, cart }) {
               style={Styles.textCep}
               onPress={() => setModalCepVisible(true)}
             >
-              {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+              {!textCep ? "Trocar CEP" : `CEP ${textCep}`}
             </Text>
             <ModalCep
               visible={modalCepVisible}

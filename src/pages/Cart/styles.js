@@ -10,7 +10,6 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: WHITE,
   },
-  // Header
   header: {
     width,
     top: 0,
@@ -49,7 +48,6 @@ export default StyleSheet.create({
   TitleHeader: {
     ...TitleSmall,
   },
-  // Scroll
   containerScroll: {
     paddingTop: 85,
     paddingBottom: 150,
@@ -57,7 +55,6 @@ export default StyleSheet.create({
   container: {
     paddingHorizontal: SPACE_32,
   },
-  // Title Intro
   subTitleHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -69,4 +66,11 @@ export default StyleSheet.create({
   titlePrice: {
     ...TitleSmall,
   },
+  containerNotFound: {
+    height: 320,
+    marginTop: SPACE_32,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  }
 });

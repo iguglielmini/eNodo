@@ -1,29 +1,36 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Text,
+  Animated,
   ScrollView,
   TouchableOpacity,
-  Animated,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+} from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
 /* Components */
-import Section from '@components/atoms/Section';
-import LinkHelp from '@components/atoms/LinkHelp';
-import PriceTotal from '@components/molecules/PriceTotal';
-import PaymentBanner from '@components/atoms/PaymentBanner';
-import FloatCartButton from '@components/atoms/FloatCartButton';
-import CardCartProduct from '@components/organisms/CardCartProduct';
+import Section from "@components/atoms/Section";
+import LinkHelp from "@components/atoms/LinkHelp";
+import PriceTotal from "@components/molecules/PriceTotal";
+import PaymentBanner from "@components/atoms/PaymentBanner";
+import FloatCartButton from "@components/atoms/FloatCartButton";
+import CardCartProduct from "@components/organisms/CardCartProduct";
+
 // Mock
-import LinkHelpMock from '@mock/LinkHelpMock';
+import LinkHelpMock from "@mock/LinkHelpMock";
+
 // Icons
-import ArrowVIcon from '@assets/svg/arrowv';
+import ArrowVIcon from "@assets/svg/arrowv";
+
 // API
-import ApiCart from '../../modules/api/api-shopping';
+import ApiCart from "../../modules/api/api-shopping";
+
+// Utils
+import { convertToPriceText } from "../../modules/utils";
+
 /** Styles */
-import Styles from './styles';
+import Styles from "./styles";
 
 const HEADER_MAX_HEIGHT = 120;
 const HEADER_MIN_HEIGHT = 70;
@@ -33,28 +40,39 @@ class Cart extends Component {
     super(props);
 
     this.state = {
-      cart: { quantity: '1' },
-      scrollY: new Animated.Value(0),
       currentScrollY: 0,
+      scrollY: new Animated.Value(0),
+      cart: {
+        items: [],
+        totalPrice: 0.0,
+      },
     };
   }
 
   componentDidMount() {
-    console.log('DidMount');
+    console.log("DidMount");
     ApiCart.getBasket().then((response) => {
-      console.log('Teste ', response);
+      console.log("Teste ", response);
     });
   }
 
-  selectQuantity = (value) => {
+  selectQuantity = (index, value) => {
     const { cart } = this.state;
-    cart.quantity = value;
+
+    cart.items[index].quantity = value;
+
     this.setState({ cart });
   };
 
   handleOnScroll = ({ nativeEvent }) => {
     const { contentOffset } = nativeEvent;
     this.setState({ currentScrollY: Math.floor(contentOffset.y) });
+  };
+
+  handleRemoveProduct = (index) => {
+    const { cart } = this.state;
+    cart.items.splice(index, 1);
+    this.setState({ cart });
   };
 
   render() {
@@ -69,7 +87,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-60, 10, 10, 10],
-      extrapolate: 'clamp',
+      extrapolate: "clamp",
     });
 
     const HeaderTitleLeft = scrollY.interpolate({
@@ -80,33 +98,30 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-0, 60, 60, 60],
-      extrapolate: 'clamp',
+      extrapolate: "clamp",
     });
 
     return (
       <>
         <View style={Styles.page}>
-          {/* Header */}
           <LinearGradient
             locations={[0.8, 1]}
             style={Styles.header}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0.9 }}
-            colors={['#FFFFFF', 'rgba(255, 255, 255, 0)']}
+            colors={["#FFFFFF", "rgba(255, 255, 255, 0)"]}
           >
             <View style={Styles.contentHeader}>
-              {/* Btn Go back */}
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <View style={Styles.btnImageIcon}>
                   <ArrowVIcon />
                 </View>
               </TouchableOpacity>
-              {/* Title header */}
               <Animated.View
                 style={[
                   Styles.ContainerTitle,
                   {
-                    position: 'absolute',
+                    position: "absolute",
                     left: HeaderTitleLeft,
                     bottom: HeaderTitleBottom,
                   },
@@ -121,23 +136,23 @@ class Cart extends Component {
                   Carrinho
                 </Text>
               </Animated.View>
-              {/* Title Price */}
               <Animated.View
                 style={[
                   Styles.containerTitlePrice,
-                  { position: 'absolute', bottom: HeaderTitleBottom },
+                  { position: "absolute", bottom: HeaderTitleBottom },
                 ]}
               >
-                <Text style={Styles.TitleHeader}>R$ 305,00</Text>
+                <Text style={Styles.TitleHeader}>
+                  {convertToPriceText(cart.totalPrice)}
+                </Text>
               </Animated.View>
             </View>
           </LinearGradient>
-          {/* Header final */}
-          {/* Cart product */}
           <ScrollView
             alwaysBounceVertical
             scrollEventThrottle={16}
             keyboardShouldPersistTaps="always"
+            scrollEnabled={!!cart.items.length}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={Styles.containerScroll}
             onScroll={Animated.event(
@@ -155,24 +170,28 @@ class Cart extends Component {
               }
             )}
           >
-            <Section style={Styles.container}>
-              {/* Card Product Cart */}
-              <CardCartProduct
-                cart={cart}
-                selectQuantity={this.selectQuantity}
-              />
-              {/* Price Total */}
-              <PriceTotal />
-              {/* Payment */}
-              <PaymentBanner />
-            </Section>
-            {/* Link Help */}
-            <View style={Styles.LinkHelp}>
-              <LinkHelp data={LinkHelpMock.LinkCart} />
-            </View>
+            {cart.items.length > 0 ? (
+              <>
+                <Section style={Styles.container}>
+                  <CardCartProduct
+                    cart={cart}
+                    selectQuantity={this.selectQuantity}
+                    removeProduct={this.handleRemoveProduct}
+                  />
+                  <PriceTotal totalPrice={cart.totalPrice} />
+                  <PaymentBanner />
+                </Section>
+                <View style={Styles.LinkHelp}>
+                  <LinkHelp data={LinkHelpMock.LinkCart} />
+                </View>
+              </>
+            ) : (
+              <Section style={[Styles.container, Styles.containerNotFound]}>
+                <Text style={Styles.titlePage}>"Seu carrinho está vazio"</Text>
+              </Section>
+            )}
           </ScrollView>
-          {/* Footer */}
-          <FloatCartButton navigation={navigation} />
+          {cart.items.length > 0 && <FloatCartButton navigation={navigation} />}
         </View>
       </>
     );

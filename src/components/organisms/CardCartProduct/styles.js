@@ -1,40 +1,40 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { BLACK, BORDERGREY } from "@assets/style/colors";
+import { SPACE_16, SPACE_24, SPACE_32, SPACE_44 } from "@assets/style/wrapper";
 import {
-  BLACK, BORDERGREY
-} from '@assets/style/colors';
-import {
-  SPACE_16, SPACE_24, SPACE_32, SPACE_44
-} from '@assets/style/wrapper';
-import { TitleSmall, TitleXSmall, TitleXXXSmall } from '@assets/style/typography';
+  TitleSmall,
+  TitleXSmall,
+  TitleXXXSmall,
+} from "@assets/style/typography";
 
 export default StyleSheet.create({
   container: {
     paddingTop: SPACE_44,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   // Image
   containerImageProduct: {
-    width: '100%',
+    width: "100%",
     height: 300,
     borderWidth: 1,
-    alignItems: 'center',
+    alignItems: "center",
     borderColor: BORDERGREY,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   imageProduct: {
     maxWidth: 160,
     maxHeight: 250,
     marginVertical: 50,
+    overflow: "hidden",
+    resizeMode: "contain",
     paddingVertical: SPACE_24,
-    overflow: 'hidden',
-    resizeMode: 'contain',
   },
   // Title Image
   containerTitleProduct: {
     paddingTop: SPACE_32,
-    paddingBottom: SPACE_16
+    paddingBottom: SPACE_16,
   },
   subTitle: {
     ...TitleSmall,
@@ -45,21 +45,21 @@ export default StyleSheet.create({
   },
   // Location
   containerLocation: {
-    width: '100%',
-    flexDirection: 'row',
+    width: "100%",
+    flexDirection: "row",
     paddingTop: SPACE_24,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   containerTextLocation: {
     paddingLeft: SPACE_32,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   titleLocation: {
     ...TitleXSmall,
-    color: BLACK
+    color: BLACK,
   },
   subTitleLocation: {
     ...TitleXSmall,
@@ -69,7 +69,7 @@ export default StyleSheet.create({
     ...TitleXXXSmall,
     paddingTop: SPACE_16,
     textDecorationColor: BLACK,
-    textDecorationStyle: 'solid',
-    textDecorationLine: 'underline',
-  }
+    textDecorationStyle: "solid",
+    textDecorationLine: "underline",
+  },
 });
