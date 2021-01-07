@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { SPACE_24 } from "@assets/style/wrapper";
 import { TitleXSmall } from "@assets/style/typography";
 import { TEXTPINK, BGGREY, BLACK } from "@assets/style/colors";
@@ -41,7 +41,8 @@ export default StyleSheet.create({
     textDecorationColor: BLACK,
   },
   iconContainer: {
-    top: 3,
+    left: 20,
+    top: Platform.OS === 'ios' ? 3 : 20,
   },
   pickerSelectStyles: {
     color: BLACK,
