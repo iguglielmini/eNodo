@@ -2,8 +2,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import config from '@/config';
 
-import NavigatorService from '../navigator';
-
 export default class Api {
   constructor() {
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -24,7 +22,10 @@ export default class Api {
   }
 
   setHost() {
-    this.baseURL = config.baseURL;
+    axios.defaults.headers.common['x-api-key'] = config.accessToken;
+    axios.create({
+      baseURL: config.baseURL
+    });
   }
 
   async getToken() {
@@ -39,18 +40,10 @@ export default class Api {
   }
 
   async logout() {
-    // TODO
-    // const token = await AsyncStorage.getItem('@BelshopApp:token');
-    // this.post('/auth/logout', { ACCESS_TOKEN: token });
     await AsyncStorage.multiRemove([
-      '@BelshopApp:gift',
-      '@BelshopApp:token',
-      '@BelshopApp:campaign-lead',
-      '@BelshopApp:invite-url',
-      '@BelshopApp:campaign-code'
+      '@BelshopApp:token'
     ]);
     await this.setToken(undefined);
-    NavigatorService.navigate('WelcomeFlow');
     return true;
   }
 
@@ -64,22 +57,22 @@ export default class Api {
   }
 
   async get(path, options) {
-    return axios.get(this.baseURL + path, options);
+    return axios.get(path, options);
   }
 
   async put(path, data, options) {
-    return axios.put(this.baseURL + path, data, options);
+    return axios.put(path, data, options);
   }
 
   async post(path, data, options) {
-    return axios.post(this.baseURL + path, data, options);
+    return axios.post(path, data, options);
   }
 
   async delete(path, options) {
-    return axios.delete(this.baseURL + path, options);
+    return axios.delete(path, options);
   }
 
   async patch(path, data, options) {
-    return axios.patch(this.baseURL + path, data, options);
+    return axios.patch(path, data, options);
   }
 }

@@ -17,9 +17,6 @@ import SplashScreen from 'react-native-splash-screen';
 // import config from '@/config';
 import Router from './router';
 
-import '@/modules/api/api-features-flag';
-import '@/modules/api/api-campaign';
-
 export const Notification = React.createRef();
 
 // eslint-disable-next-line no-console

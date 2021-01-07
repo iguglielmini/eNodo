@@ -35,6 +35,12 @@ export const TitleSmall = {
   fontSize: 18,
   lineHeight: 22
 };
+export const TitleSmallBOLD = {
+  fontFamily: FONT_FAMILY,
+  fontWeight: FONT_WEIGHT_BOLD,
+  fontSize: 18,
+  lineHeight: 22
+};
 
 export const TitleMedium = {
   fontFamily: FONT_FAMILY,

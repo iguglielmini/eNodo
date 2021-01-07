@@ -1,27 +1,29 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   Animated,
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 /* Components */
-import Section from "@components/atoms/Section";
-import LinkHelp from "@components/atoms/LinkHelp";
-import PriceTotal from "@components/molecules/PriceTotal";
-import PaymentBanner from "@components/atoms/PaymentBanner";
-import FloatCartButton from "@components/atoms/FloatCartButton";
-import CardCartProduct from "@components/organisms/CardCartProduct";
+import Section from '@components/atoms/Section';
+import LinkHelp from '@components/atoms/LinkHelp';
+import PriceTotal from '@components/molecules/PriceTotal';
+import PaymentBanner from '@components/atoms/PaymentBanner';
+import FloatCartButton from '@components/atoms/FloatCartButton';
+import CardCartProduct from '@components/organisms/CardCartProduct';
 // Mock
-import LinkHelpMock from "@mock/LinkHelpMock";
+import LinkHelpMock from '@mock/LinkHelpMock';
 // Icons
-import ArrowVIcon from "@assets/svg/arrowv";
+import ArrowVIcon from '@assets/svg/arrowv';
+// API
+import ApiCart from '../../modules/api/api-shopping';
 /** Styles */
-import Styles from "./styles";
+import Styles from './styles';
 
 const HEADER_MAX_HEIGHT = 120;
 const HEADER_MIN_HEIGHT = 70;
@@ -31,10 +33,17 @@ class Cart extends Component {
     super(props);
 
     this.state = {
-      cart: { quantity: "1" },
+      cart: { quantity: '1' },
       scrollY: new Animated.Value(0),
       currentScrollY: 0,
     };
+  }
+
+  componentDidMount() {
+    console.log('DidMount');
+    ApiCart.getBasket().then((response) => {
+      console.log('Teste ', response);
+    });
   }
 
   selectQuantity = (value) => {
@@ -60,7 +69,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-60, 10, 10, 10],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     const HeaderTitleLeft = scrollY.interpolate({
@@ -71,7 +80,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-0, 60, 60, 60],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     return (
@@ -83,7 +92,7 @@ class Cart extends Component {
             style={Styles.header}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0.9 }}
-            colors={["#FFFFFF", "rgba(255, 255, 255, 0)"]}
+            colors={['#FFFFFF', 'rgba(255, 255, 255, 0)']}
           >
             <View style={Styles.contentHeader}>
               {/* Btn Go back */}
@@ -97,7 +106,7 @@ class Cart extends Component {
                 style={[
                   Styles.ContainerTitle,
                   {
-                    position: "absolute",
+                    position: 'absolute',
                     left: HeaderTitleLeft,
                     bottom: HeaderTitleBottom,
                   },
@@ -116,7 +125,7 @@ class Cart extends Component {
               <Animated.View
                 style={[
                   Styles.containerTitlePrice,
-                  { position: "absolute", bottom: HeaderTitleBottom },
+                  { position: 'absolute', bottom: HeaderTitleBottom },
                 ]}
               >
                 <Text style={Styles.TitleHeader}>R$ 305,00</Text>

@@ -20,6 +20,7 @@ import CategoryMock from '@mock/CategoryMock';
 /** Styles */
 import Styles from './styles';
 
+// eslint-disable-next-line
 function Category({ route, navigation }) {
   // const { id } = route.params;
   const [modalFilter, setModalFilter] = useState(false);

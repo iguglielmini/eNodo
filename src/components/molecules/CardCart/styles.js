@@ -1,13 +1,20 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { TEXTPINK, BLACK, BORDERGREY } from '@assets/style/colors';
-import { SPACE_16, SPACE_24 } from '@assets/style/wrapper';
+import { SPACE_16, SPACE_24, SPACE_32 } from '@assets/style/wrapper';
 import { TitleXSmall, TitleXXSmall } from '@assets/style/typography';
 
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
-  contaniner: {
+  containerList: {
+    paddingTop: SPACE_32,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  contaninerCard: {
     width,
+    paddingBottom: SPACE_24,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',

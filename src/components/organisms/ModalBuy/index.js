@@ -4,6 +4,7 @@ import {
   View, Text, TouchableOpacity, ScrollView
 } from 'react-native';
 import Modal from 'react-native-modal';
+import LinearGradient from 'react-native-linear-gradient';
 
 // Components
 import CardCart from '@components/molecules/CardCart';
@@ -25,6 +26,7 @@ function ModalBuy({ navigation, visible, setVisible }) {
         isVisible={visible}
         style={Styles.modal}
       >
+        {/* Header */}
         <View style={Styles.cardModal}>
           <View style={Styles.containerTitle}>
             <Text style={Styles.Title}>Adicionado ao carrinho</Text>
@@ -32,24 +34,29 @@ function ModalBuy({ navigation, visible, setVisible }) {
               <CloseIcon />
             </TouchableOpacity>
           </View>
+          {/* body */}
           <ScrollView
             alwaysBounceVertical
             showsVerticalScrollIndicator={false}
             contentContainerStyle={Styles.scrollView}
           >
-            <View style={Styles.bodyModal}>
-              <CardCart />
-            </View>
+            <CardCart />
           </ScrollView>
           {/* footer */}
-          <View style={Styles.footerModal}>
+          <LinearGradient
+            start={{ x: 0, y: 0.9 }}
+            end={{ x: 0.0, y: 0.0 }}
+            locations={[0.8, 1]}
+            colors={['#FFFFFF', 'rgba(255, 255, 255, 0)']}
+            style={Styles.footerModal}
+          >
             <TouchableOpacity onPress={() => handleShowCart()}>
               <Text style={Styles.BtnCart}>Ver carrinho</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {}}>
               <Text style={Styles.btnPayment}>Finalizar compra</Text>
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
         </View>
       </Modal>
     </>

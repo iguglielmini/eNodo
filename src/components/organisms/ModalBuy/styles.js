@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { WHITE, BLACK } from '@assets/style/colors';
-import { SPACE_24, SPACE_32 } from '@assets/style/wrapper';
+import { SPACE_16, SPACE_24, SPACE_32 } from '@assets/style/wrapper';
 // Dimension Responsive layout
 const { width } = Dimensions.get('window');
 
@@ -14,19 +14,21 @@ export default StyleSheet.create({
   },
   cardModal: {
     width,
-    maxHeight: '90%',
+    maxHeight: '70%',
     backgroundColor: WHITE,
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
   },
   scrollView: {
-    padding: SPACE_32,
+    paddingHorizontal: SPACE_32,
+    paddingBottom: 120,
   },
   // Header
   containerTitle: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: SPACE_32,
+    paddingBottom: 4,
     paddingHorizontal: SPACE_32,
     justifyContent: 'space-between',
   },
@@ -44,11 +46,14 @@ export default StyleSheet.create({
   },
   // Footer
   footerModal: {
-    width: '100%',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 30,
+    position: 'absolute',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingBottom: SPACE_32,
-    paddingHorizontal: SPACE_24,
+    backgroundColor: 'transparent',
     justifyContent: 'space-between',
   },
   BtnCart: {

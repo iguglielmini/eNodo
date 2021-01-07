@@ -1,9 +1,9 @@
-import { StyleSheet, Dimensions } from "react-native";
-import { SPACE_24, SPACE_32, SPACE_60 } from "@assets/style/wrapper";
-import { TitleSmall, TitleLarge } from "@assets/style/typography";
-import { WHITE, BLACK } from "@assets/style/colors";
+import { StyleSheet, Dimensions } from 'react-native';
+import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
+import { TitleSmall, TitleLarge } from '@assets/style/typography';
+import { WHITE, BLACK } from '@assets/style/colors';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   page: {
@@ -19,14 +19,15 @@ export default StyleSheet.create({
     zIndex: 1,
     overflow: 'visible',
     paddingTop: SPACE_60,
-    position: "absolute",
+    paddingBottom: SPACE_24,
+    position: 'absolute',
     paddingHorizontal: SPACE_32,
   },
   contentHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    justifyContent: 'space-between',
   },
   btnImageIcon: {
     backgroundColor: WHITE,
@@ -58,9 +59,9 @@ export default StyleSheet.create({
   },
   // Title Intro
   subTitleHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   titlePage: {
     ...TitleLarge,

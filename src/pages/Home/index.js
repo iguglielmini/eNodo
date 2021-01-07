@@ -1,4 +1,5 @@
 import React from 'react';
+// import React, { useEffect, useState } from 'react';
 import {
   View, Image, ScrollView, TouchableOpacity
 } from 'react-native';
@@ -24,6 +25,7 @@ import imageBel from '@assets/images/bel.png';
 import imageKiss from '@assets/images/kiss.png';
 
 // Mock
+// import HomeService from '@modules/api/api-home';
 import ProductInfo from '@mock/ProductInfo';
 import LinkHelpMock from '@mock/LinkHelpMock';
 import CardlistMock from '@mock/CardListMock';
@@ -34,15 +36,77 @@ import FilterButtonInfo from '@mock/FilterButtonMock';
 import Styles from './styles';
 
 function Home({ navigation }) {
+  // const [homeData, setHomeData] = useState([]);
+  // useEffect(() => {
+  //   const api = new HomeService();
+  //   api.getHome()
+  //     .then((response) => {
+  //       if (response.success) {
+  //         setHomeData(response.data);
+  //       }
+  //     })
+  //     .catch(() => false);
+  // }, []);
+
   function handleShowCategory() {
     navigation.navigate('Category');
   }
+
   function handleShowCart() {
     navigation.navigate('Cart');
   }
+
+  // function renderWiget(widget) {
+  //   const { template } = widget;
+
+  //   switch (template) {
+  //     case 'swiper':
+  //       return (
+  //         <CarouselBranding
+  //           showFooter
+  //           data={BrandingMock}
+  //           navigation={navigation}
+  //         />
+  //       );
+  //     case 'grid':
+  //       return (
+  //         <View style={{ ...Styles.section }}>
+  //           <ListCard data={CardlistMock} navigation={navigation} />
+  //         </View>
+  //       );
+
+  //     default:
+  //       return false;
+  //   }
+  // }
+
+  // function renderWidgets(widgets) {
+  //   if (widgets && widgets.length > 0) {
+  //     return widgets.map(item => renderWiget(item));
+  //   }
+  //   return false;
+  // }
+
   return (
     <>
       <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
+        {/* {homeData && homeData.length > 0 && homeData.map((item, index) => (
+          <Section key={`section_${index.toString()}`}>
+            <Title title={item.title}>
+              {index === 0 && (
+                <>
+                  <TouchableOpacity onPress={() => {}}>
+                    <FavoriteIcon name="Favorite" size={24} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleShowCart()} style={Styles.bagIcon}>
+                    <BagIcon name="Bag" size={24} />
+                  </TouchableOpacity>
+                </>
+              )}
+            </Title>
+            {renderWidgets(item.widgets)}
+          </Section>
+        ))} */}
         {/* Promo */}
         <Section style={{ paddingTop: 64, ...Styles.section }}>
           <Title title={'Promos \nda Semana'}>

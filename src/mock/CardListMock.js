@@ -10,6 +10,7 @@ import img06 from '@assets/images/product-640x640/Image05.png';
 export default [
   {
     id: 1,
+    sku: 321,
     title: 'Salon Line shampoo Meu Liso Extremo Taciele Alcolea 300 ml',
     image: {
       url: img01,
@@ -24,6 +25,7 @@ export default [
   },
   {
     id: 2,
+    sku: 322,
     title: 'Moroccanoil Volume Extra - Condicionador 250ml',
     image: {
       url: img02,
@@ -38,6 +40,7 @@ export default [
   },
   {
     id: 3,
+    sku: 323,
     title: 'Salon Line shampoo Meu Liso Extremo Taciele Alcolea 300 ml',
     image: {
       url: img03,
@@ -52,6 +55,7 @@ export default [
   },
   {
     id: 4,
+    sku: 324,
     title: 'Salon Line shampoo Meu Liso Extremo Taciele Alcolea 300 ml',
     image: {
       url: img04,
@@ -66,6 +70,7 @@ export default [
   },
   {
     id: 5,
+    sku: 325,
     title: 'Salon Line shampoo Meu Liso Extremo Taciele Alcolea 300 ml',
     image: {
       url: img05,
@@ -80,6 +85,7 @@ export default [
   },
   {
     id: 6,
+    sku: 326,
     title: 'Salon Line shampoo Meu Liso Extremo Taciele Alcolea 300 ml',
     image: {
       url: img06,
