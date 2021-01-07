@@ -1,35 +1,32 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
-import { TitleSmall, TitleLarge } from '@assets/style/typography';
-import { WHITE, BLACK } from '@assets/style/colors';
+import { StyleSheet, Dimensions } from "react-native";
+import { SPACE_24, SPACE_32, SPACE_60 } from "@assets/style/wrapper";
+import { TitleSmall, TitleLarge } from "@assets/style/typography";
+import { WHITE, BLACK } from "@assets/style/colors";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
+  page: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
   // Header
-  ContainerHeader: {
+  header: {
     width,
     top: 0,
     left: 0,
     right: 0,
     zIndex: 1,
-    height: 120,
-    position: 'absolute',
+    overflow: 'visible',
     paddingTop: SPACE_60,
-    paddingBottom: SPACE_24,
+    position: "absolute",
     paddingHorizontal: SPACE_32,
-    backgroundColor: 'transparent',
   },
-  containerPrice: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerButtons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
+  contentHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+    justifyContent: "space-between",
   },
   btnImageIcon: {
     backgroundColor: WHITE,
@@ -45,35 +42,30 @@ export default StyleSheet.create({
 
     elevation: 8,
   },
-  // title header
-  ContainerTitle: {
-    // marginLeft: SPACE_24,
-  },
   containerTitlePrice: {
-    right: 0
+    right: 0,
   },
   TitleHeader: {
-    ...TitleSmall
+    ...TitleSmall,
   },
   // Scroll
-  ContainerScroll: {
+  containerScroll: {
     paddingTop: 85,
-    backgroundColor: WHITE,
     paddingBottom: 150,
   },
-  Container: {
-    paddingHorizontal: SPACE_32
+  container: {
+    paddingHorizontal: SPACE_32,
   },
   // Title Intro
   subTitleHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   titlePage: {
-    ...TitleLarge
+    ...TitleLarge,
   },
   titlePrice: {
-    ...TitleSmall
-  }
+    ...TitleSmall,
+  },
 });

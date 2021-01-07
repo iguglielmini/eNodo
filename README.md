@@ -57,7 +57,7 @@ Run `npm start-react` and open your Xcode, click in `Open another project`. Open
 for **android** run:
 
 `npm run android` or
-Run `npm start-react` and open you Android Studio, click in `Open an existing Android Studio project`. Open the path `./android/app` and run.
+Run `npm run start-react` and open you Android Studio, click in `Open an existing Android Studio project`. Open the path `./android/app` and run.
 
 Note: to run Android you must have the debug keystore. Follow the `Generate Keystores (android)` section below.
 
@@ -102,7 +102,7 @@ If you want to generate a release to Google Console deploying the Android App, y
 
 ### For Both Platforms
 
-The simplest way is by just running `npm start`. So, you can select the platform to build and the respective parameters.
+The simplest way is by just running `npm run start`. So, you can select the platform to build and the respective parameters.
 
 If you want to go for a more detailed process, you can also:
 

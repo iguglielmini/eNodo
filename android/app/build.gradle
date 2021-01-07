@@ -262,7 +262,6 @@ dependencies {
     } else {
         implementation 'org.webkit:android-jsc:+'
     }
-    implementation project(':react-native-vector-icons')
     implementation 'com.google.code.gson:gson:2.3'
     implementation 'com.android.support:support-v4:22.0.0'
     testCompile 'junit:junit:4.12'
