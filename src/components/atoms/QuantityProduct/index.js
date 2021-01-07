@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import RNPickerSelect from "react-native-picker-select";
 
 /** Styles */
-import Styles from './styles';
+import Styles from "./styles";
 // Icon
-import IconArrowDonw from '../../../assets/svg/arrowDown';
+import IconArrowDonw from "../../../assets/svg/arrowDown";
 
 function QuantityProduct({ cart, onSelect }) {
   const [selectItens, setData] = useState([]);
@@ -19,21 +19,24 @@ function QuantityProduct({ cart, onSelect }) {
     }
     setData(selectItensData);
   }, []);
+
   if (!selectItens.length) return null;
+
   return (
     <>
       <View style={Styles.containerAddProduct}>
         <View style={Styles.container}>
           <RNPickerSelect
             placeholder={{}}
+            items={selectItens}
             value={cart.quantity}
             useNativeAndroidPickerStyle={false}
-            onValueChange={value => onSelect(value)}
-            items={selectItens}
+            onValueChange={(value) => onSelect(value)}
             Icon={() => <IconArrowDonw />}
             style={{
-              pickerSelectStyles: Styles.pickerSelectStyles,
               iconContainer: Styles.iconContainer,
+              viewContainer: Styles.viewContainer,
+              pickerSelectStyles: Styles.pickerSelectStyles,
             }}
           />
           <Text style={Styles.quantyPrice}> R$ 305,23</Text>

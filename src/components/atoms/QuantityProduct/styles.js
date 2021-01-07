@@ -1,35 +1,32 @@
-import { StyleSheet } from 'react-native';
-import { TEXTPINK, BGGREY, BLACK } from '@assets/style/colors';
-import { SPACE_24 } from '@assets/style/wrapper';
-import { TitleXSmall } from '@assets/style/typography';
-
+import { StyleSheet } from "react-native";
+import { SPACE_24 } from "@assets/style/wrapper";
+import { TitleXSmall } from "@assets/style/typography";
+import { TEXTPINK, BGGREY, BLACK } from "@assets/style/colors";
 
 export default StyleSheet.create({
   containerAddProduct: {
-    width: '100%',
-    alignItems: 'center',
-    flexDirection: 'row',
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "row",
     borderBottomWidth: 1,
     paddingBottom: SPACE_24,
     borderBottomColor: BGGREY,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  viewContainer: {
+    width: 30,
   },
   label: {
-    textAlign: 'left',
-  },
-  dropdown: {
-    padding: 0,
-    width: 50,
-    zIndex: 9999,
+    textAlign: "left",
   },
   item: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   quantyPrice: {
     color: TEXTPINK,
@@ -39,14 +36,14 @@ export default StyleSheet.create({
   btnText: {
     color: BLACK,
     ...TitleXSmall,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
+    textDecorationLine: "underline",
+    textDecorationStyle: "solid",
     textDecorationColor: BLACK,
   },
   iconContainer: {
-    top: 20,
+    top: 3,
   },
   pickerSelectStyles: {
-    color: BLACK
-  }
+    color: BLACK,
+  },
 });
