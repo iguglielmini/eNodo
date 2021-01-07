@@ -1,42 +1,42 @@
-import Api from '.';
-import APIErrorHandler from './api-error-handler';
+import Api from ".";
+import APIErrorHandler from "./api-error-handler";
 
 class ShoppingService extends Api {
-  getBasket() {
-    return this.get('/shopping/basket')
+  async getBasket() {
+    return this.get("/shopping/basket")
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  deleteBasket() {
-    return this.delete('/shopping/basket')
+  async deleteBasket() {
+    return this.delete("/shopping/basket")
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketAddItem(data) {
+  async basketAddItem(data) {
     /*
       DATA STRUCTURE
       {
@@ -49,23 +49,23 @@ class ShoppingService extends Api {
         ]
       }
     */
-    return this.post('/shopping/basket/item', data)
+    return this.post("/shopping/basket/item", data)
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketUpdateItem(id, data) {
+  async basketUpdateItem(id, data) {
     /*
       DATA STRUCTURE
       {
@@ -77,14 +77,14 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
@@ -94,140 +94,140 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketCheckout() {
-    return this.get('/shopping/basket/checkout')
+  async basketCheckout() {
+    return this.get("/shopping/basket/checkout")
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketSetDelivery(data) {
+  async basketSetDelivery(data) {
     /*
       DATA STRUCTURE
       {
         "id": "3_551"
       }
     */
-    return this.post('/shopping/basket/delivery', data)
+    return this.post("/shopping/basket/delivery", data)
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketApplyCoupon(data) {
+  async basketApplyCoupon(data) {
     /*
       DATA STRUCTURE
       {
         "coupon": "NATAL2020"
       }
     */
-    return this.post('/shopping/basket/coupon', data)
+    return this.post("/shopping/basket/coupon", data)
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketDeleteCoupon(data) {
+  async basketDeleteCoupon(data) {
     /*
       DATA STRUCTURE
       {
         "coupon": "NATAL2020"
       }
     */
-    return this.delete('/shopping/basket/coupon', data)
+    return this.delete("/shopping/basket/coupon", data)
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
-  basketSetPostalCode(data) {
+  async basketSetPostalCode(data) {
     /*
       DATA STRUCTURE
       {
         "postalCode": "96085000"
       }
     */
-    return this.post('/shopping/basket/postal-code', data)
+    return this.post("/shopping/basket/postal-code", data)
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
       .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
+        if (err.response.status === 500) return "Please try again later.";
         return APIErrorHandler.getErrorMessages(err.response);
       });
   }
 
-  getPostCode(postalCode) {
+  async getPostCode(postalCode) {
     return this.get(`/shopping/postal-code/${postalCode}`)
       .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            data: response.data,
           };
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 }

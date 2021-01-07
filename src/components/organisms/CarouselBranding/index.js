@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-  View, Image, Text, Dimensions, TouchableOpacity
-} from 'react-native';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { View, Image, Text, Dimensions, TouchableOpacity } from "react-native";
+import Carousel, { Pagination } from "react-native-snap-carousel";
 
-import Title from '@components/atoms/Title';
-import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
+import Title from "@components/atoms/Title";
+import ButtonSeeAll from "@components/atoms/ButtonSeeAll";
 
 // Styles
-import Styles from './styles';
+import Styles from "./styles";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 const Card = ({ item, navigation, pageName }) => {
   const { images } = item;
@@ -20,29 +18,29 @@ const Card = ({ item, navigation, pageName }) => {
       {images.map((itemImage, index) => {
         const key = index;
         return (
-          <>
-            <TouchableOpacity
-              onPress={() => pageName
-                && navigation.navigate(pageName, { filter: itemImage.linkSub })
-              }
-              activeOpacity={1}
-            >
-              <View style={Styles.containerCardImageTitle}>
-                <View key={key} style={Styles.imageCard}>
-                  <Image
-                    style={{ width: 120, height: 104, flex: 1 }}
-                    source={itemImage.image}
-                    resizeMode="cover"
-                  />
-                </View>
-                {itemImage.sectionTitle.length > 0 && (
-                  <View style={Styles.titleCard}>
-                    <Text>{itemImage.sectionTitle}</Text>
-                  </View>
-                )}
+          <TouchableOpacity
+            key={key}
+            onPress={() =>
+              pageName &&
+              navigation.navigate(pageName, { filter: itemImage.linkSub })
+            }
+            activeOpacity={1}
+          >
+            <View style={Styles.containerCardImageTitle}>
+              <View style={Styles.imageCard}>
+                <Image
+                  style={{ width: 120, height: 104, flex: 1 }}
+                  source={itemImage.image}
+                  resizeMode="cover"
+                />
               </View>
-            </TouchableOpacity>
-          </>
+              {itemImage.sectionTitle.length > 0 && (
+                <View style={Styles.titleCard}>
+                  <Text>{itemImage.sectionTitle}</Text>
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
         );
       })}
     </View>

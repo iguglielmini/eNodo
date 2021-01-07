@@ -19,7 +19,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
   },
   viewContainer: {
-    width: 30,
+    width: 40,
   },
   label: {
     textAlign: 'left',
