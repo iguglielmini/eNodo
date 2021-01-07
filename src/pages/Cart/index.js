@@ -28,6 +28,7 @@ import ApiCart from "../../modules/api/api-shopping";
 
 // Utils
 import { convertToPriceText } from "../../modules/utils";
+import DeviceStorage from "../../modules/services/device-storage";
 
 /** Styles */
 import Styles from "./styles";
@@ -50,10 +51,17 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    console.log("DidMount");
+    this.getCart();
     ApiCart.getBasket().then((response) => {
-      console.log("Teste ", response);
+      if (!response) return;
+      DeviceStorage.setItem("@CART", response);
+      this.setState({ cart: response }, () => this.getCart());
     });
+  }
+
+  async getCart() {
+    const cart = await DeviceStorage.getItem("@CART");
+    this.setState({ cart });
   }
 
   selectQuantity = (index, value) => {

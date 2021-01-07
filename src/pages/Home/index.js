@@ -1,41 +1,43 @@
-import React from 'react';
-// import React, { useEffect, useState } from 'react';
-import {
-  View, Image, ScrollView, TouchableOpacity
-} from 'react-native';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 
 /* Components */
-import Title from '@components/atoms/Title';
-import Section from '@components/atoms/Section';
-import LinkHelp from '@components/atoms/LinkHelp';
-import ListCard from '@components/molecules/ListCard';
-import IntroCard from '@components/molecules/IntroCard';
-import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
-import FilterButton from '@components/molecules/FilterButton';
-import ImageIntroCard from '@components/molecules/ImageIntroCard';
-import CarouselBranding from '@components/organisms/CarouselBranding';
+import Title from "@components/atoms/Title";
+import Section from "@components/atoms/Section";
+import LinkHelp from "@components/atoms/LinkHelp";
+import ListCard from "@components/molecules/ListCard";
+import IntroCard from "@components/molecules/IntroCard";
+import ButtonSeeAll from "@components/atoms/ButtonSeeAll";
+import FilterButton from "@components/molecules/FilterButton";
+import ImageIntroCard from "@components/molecules/ImageIntroCard";
+import CarouselBranding from "@components/organisms/CarouselBranding";
 
 /* Icons */
-import BagIcon from '@assets/svg/bag';
-import FavoriteIcon from '@assets/svg/favorite';
+import BagFillIcon from "@assets/svg/bagFill";
+import FavoriteIcon from "@assets/svg/favorite";
+import BagOutlineIcon from "@assets/svg/bagOutline";
 
 /* Images */
-import imageBel from '@assets/images/bel.png';
-import imageKiss from '@assets/images/kiss.png';
+import imageBel from "@assets/images/bel.png";
+import imageKiss from "@assets/images/kiss.png";
 
 // Mock
 // import HomeService from '@modules/api/api-home';
-import ProductInfo from '@mock/ProductInfo';
-import LinkHelpMock from '@mock/LinkHelpMock';
-import CardlistMock from '@mock/CardListMock';
-import BrandingMock from '@mock/CarouselBrandingMock';
-import FilterButtonInfo from '@mock/FilterButtonMock';
+import ProductInfo from "@mock/ProductInfo";
+import LinkHelpMock from "@mock/LinkHelpMock";
+import CardlistMock from "@mock/CardListMock";
+import BrandingMock from "@mock/CarouselBrandingMock";
+import FilterButtonInfo from "@mock/FilterButtonMock";
+
+// Sevices
+import DeviceStorage from "../../modules/services/device-storage";
 
 /* Styles */
-import Styles from './styles';
+import Styles from "./styles";
 
 function Home({ navigation }) {
+  const [totalCart, setTotalCart] = useState(0);
   // const [homeData, setHomeData] = useState([]);
   // useEffect(() => {
   //   const api = new HomeService();
@@ -49,11 +51,11 @@ function Home({ navigation }) {
   // }, []);
 
   function handleShowCategory() {
-    navigation.navigate('Category');
+    navigation.navigate("Category");
   }
 
   function handleShowCart() {
-    navigation.navigate('Cart');
+    navigation.navigate("Cart");
   }
 
   // function renderWiget(widget) {
@@ -87,6 +89,10 @@ function Home({ navigation }) {
   //   return false;
   // }
 
+  useEffect(() => {
+    DeviceStorage.getTotalCart().then((total) => setTotalCart(total));
+  }, []);
+
   return (
     <>
       <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
@@ -109,12 +115,22 @@ function Home({ navigation }) {
         ))} */}
         {/* Promo */}
         <Section style={{ paddingTop: 64, ...Styles.section }}>
-          <Title title={'Promos \nda Semana'}>
+          <Title title={"Promos \nda Semana"}>
             <TouchableOpacity onPress={() => {}}>
               <FavoriteIcon name="Favorite" size={24} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleShowCart()} style={Styles.bagIcon}>
-              <BagIcon name="Bag" size={24} />
+            <TouchableOpacity
+              style={Styles.bagIcon}
+              onPress={() => handleShowCart()}
+            >
+              {totalCart > 0 ? (
+                <>
+                  <BagFillIcon name="Bag" size={24} />
+                  <Text style={Styles.badgeText}>{totalCart}</Text>
+                </>
+              ) : (
+                <BagOutlineIcon name="Bag" size={24} />
+              )}
             </TouchableOpacity>
           </Title>
           <ListCard data={CardlistMock} navigation={navigation} />
@@ -138,7 +154,7 @@ function Home({ navigation }) {
             <View style={Styles.containerTitleBel}>
               <Title
                 size="xlarge"
-                title={'Queri\ndinhos'}
+                title={"Queri\ndinhos"}
                 style={{
                   marginBottom: 0,
                   paddingBottom: 0,
@@ -184,9 +200,7 @@ function Home({ navigation }) {
             data={FilterButtonInfo}
             onClick={() => handleShowCategory()}
           />
-          <LinkHelp
-            data={LinkHelpMock.LinkHome}
-          />
+          <LinkHelp data={LinkHelpMock.LinkHome} />
         </Section>
         {/* End search about doubt */}
       </ScrollView>

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   actionButtons: {
-    width: 82,
+    width: 100,
   },
   light: {
     color: BLACK,

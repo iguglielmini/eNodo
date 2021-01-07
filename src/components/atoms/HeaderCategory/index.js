@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { View, TouchableOpacity } from 'react-native';
 
 // Icons
-import BagIcon from '@assets/svg/bag';
 import ArrowVIcon from '@assets/svg/arrowv';
 import FavoriteIcon from '@assets/svg/favorite';
+import BagOutlineIcon from '@assets/svg/bagOutline';
 
 import Styles from './styles';
 
@@ -28,7 +28,7 @@ function HeaderCategory({ navigation }) {
             <FavoriteIcon color="#ffffff" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShowCart} style={Styles.buttonBag}>
-            <BagIcon color="#ffffff" />
+            <BagOutlineIcon color="#ffffff" />
           </TouchableOpacity>
         </View>
       </View>
