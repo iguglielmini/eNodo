@@ -56,9 +56,9 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
           <DetailIcon />
           <View style={Styles.containerTextLocation}>
             <Title
-              title="Pedidos feito hoje são entregues"
-              styleFont={Styles.titleLocation}
               style={Styles.AlignItems}
+              styleFont={Styles.titleLocation}
+              title="Pedidos feito hoje são entregues"
             />
             <Text style={Styles.subTitleLocation}>Qui 24 Dez - Grátis</Text>
             {/* Cep */}

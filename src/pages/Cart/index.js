@@ -44,7 +44,36 @@ class Cart extends Component {
       currentScrollY: 0,
       scrollY: new Animated.Value(0),
       cart: {
-        items: [],
+        items: [
+          {
+            product: {
+              id: 7482,
+              sku: 1235,
+              url:
+                "l-oreal-professionnel-shampoo-absolut-repair-lipidium-300ml",
+              slug:
+                "l-oreal-professionnel-shampoo-absolut-repair-lipidium-300ml-p7482",
+              title:
+                "L'Oréal Professionnel Shampoo Absolut Repair Lipidium 300ml",
+              image:
+                "https://app-assets.belshop.com.br/l-oreal-professionnel-shampoo-absolut-repair-lipidium-300ml-p7482.png",
+              link: "http://api-gateway.belshop.com.br/product/7482",
+              price: {
+                current: 79.9,
+                previous: 99.9,
+                discount: 20,
+                installments: 4,
+                installmentPrice: 19.98,
+              },
+            },
+            id: 123,
+            sku: 456,
+            quantity: 2,
+            basketItemId: 789,
+            itemPrice: 19.9,
+            totalPrice: 39.8,
+          },
+        ],
         totalPrice: 0.0,
       },
     };
@@ -53,15 +82,16 @@ class Cart extends Component {
   componentDidMount() {
     this.getCart();
     ApiCart.getBasket().then((response) => {
-      if (!response) return;
-      DeviceStorage.setItem("@CART", response);
-      this.setState({ cart: response }, () => this.getCart());
+      if (response && response.basket) {
+        DeviceStorage.setItem("@CART", response);
+        this.setState({ cart: response }, () => this.getCart());
+      }
     });
   }
 
   async getCart() {
     const cart = await DeviceStorage.getItem("@CART");
-    this.setState({ cart });
+    if (cart) this.setState({ cart });
   }
 
   selectQuantity = (index, value) => {
@@ -108,6 +138,8 @@ class Cart extends Component {
       outputRange: [-0, 60, 60, 60],
       extrapolate: "clamp",
     });
+
+    console.log("PICA ", cart);
 
     return (
       <>

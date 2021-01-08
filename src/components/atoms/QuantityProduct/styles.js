@@ -31,14 +31,14 @@ export default StyleSheet.create({
   quantyPrice: {
     color: TEXTPINK,
     ...TitleXSmall,
-    paddingLeft: SPACE_24,
+    paddingLeft: 15,
   },
   btnText: {
     color: BLACK,
     ...TitleXSmall,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
     textDecorationColor: BLACK,
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
   },
   iconContainer: {
     left: 25,
