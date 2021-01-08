@@ -53,15 +53,16 @@ class Cart extends Component {
   componentDidMount() {
     this.getCart();
     ApiCart.getBasket().then((response) => {
-      if (response && response.basket) {
-        DeviceStorage.setItem("@CART", response);
-        this.setState({ cart: response }, () => this.getCart());
+      const { basket } = response;
+      if (response && basket) {
+        DeviceStorage.setItem("@BelshopApp:cart", basket);
+        this.setState({ cart: basket }, () => this.getCart());
       }
     });
   }
 
   async getCart() {
-    const cart = await DeviceStorage.getItem("@CART");
+    const cart = await DeviceStorage.getItem("@BelshopApp:cart");
     if (cart) this.setState({ cart });
   }
 

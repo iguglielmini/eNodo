@@ -166,3 +166,6 @@ export const convertToPriceText = (price) =>
     .toFixed(2)
     .replace(".", ",")
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+
+export const truncateString = (string, maxLength) =>
+  `${string.slice(0, maxLength)}...`;

@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
-import Accordion from 'react-native-collapsible/Accordion';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { View, Text } from "react-native";
+import Accordion from "react-native-collapsible/Accordion";
+
 // icons
-import ArrowDown from '@assets/svg/arrowDown';
-import ArrowUp from '@assets/svg/arrowUp';
-import StarIcon from '@assets/svg/star';
+import ArrowDown from "@assets/svg/arrowDown";
+import ArrowUp from "@assets/svg/arrowUp";
+import StarIcon from "@assets/svg/star";
+
 // Mock
-import AccordionMock from '@mock/AccordionMock';
+import AccordionMock from "@mock/AccordionMock";
+
+// Utils
+import { truncateString } from "../../../modules/utils";
+
 // Styles
-import Styles from './styles';
+import Styles from "./styles";
 
 class AccordionView extends Component {
   constructor(props) {
@@ -24,9 +30,9 @@ class AccordionView extends Component {
     if (!numberStar) return null;
     for (let qtd = 1; qtd <= 5; qtd += 1) {
       if (qtd <= numberStar) {
-        itemStar.push(<StarIcon />);
+        itemStar.push(<StarIcon key={qtd} />);
       } else {
-        itemStar.push(<StarIcon fill="none" stroke="#A1A6AF" />);
+        itemStar.push(<StarIcon key={qtd} fill="none" stroke="#A1A6AF" />);
       }
     }
     return itemStar;
@@ -44,15 +50,15 @@ class AccordionView extends Component {
     </View>
   );
 
-  renderContent = section => (
+  renderContent = (section) => (
     <View style={Styles.content}>
       <Text style={Styles.contentText}>
-        {this.truncateString(section.content)}
+        {truncateString(section.content, 190)}
         &nbsp;
-        {(section.type === 'text') && (
+        {section.type === "text" && (
           <Text
-            style={Styles.contentModal}
             suppressHighlighting
+            style={Styles.contentModal}
             onPress={() => this.props.actionMore(section)}
           >
             Ler&nbsp;mais
@@ -61,8 +67,6 @@ class AccordionView extends Component {
       </Text>
     </View>
   );
-
-  truncateString = string => `${string.slice(0, 190)}...`;
 
   updateSections = (activeSections) => {
     this.setState({ activeSections });

@@ -1,9 +1,8 @@
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from "@react-native-community/async-storage";
 
 class DeviceStorage {
   async getTotalCart() {
-    const { items } = JSON.parse(await AsyncStorage.getItem("@CART"));
+    const { items } = JSON.parse(await AsyncStorage.getItem("@BelshopApp:cart"));
     return items.length;
   }
 

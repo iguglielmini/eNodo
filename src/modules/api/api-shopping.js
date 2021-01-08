@@ -8,7 +8,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -25,7 +25,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -51,10 +51,10 @@ class ShoppingService extends Api {
     */
     return this.post("/shopping/basket/item", data)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -77,7 +77,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -111,7 +111,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -134,7 +134,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -157,7 +157,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -180,7 +180,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -203,7 +203,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -220,7 +220,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;

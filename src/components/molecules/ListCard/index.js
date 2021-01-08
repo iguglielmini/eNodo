@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
@@ -9,15 +9,11 @@ import Card from '@components/molecules/Card';
 import Styles from './styles';
 
 function ListCard({ data, theme, navigation }) {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(data);
 
-  function handleShowDetailProduct(id) {
-    navigation.navigate('ProductDetails', { id });
+  function handleShowDetailProduct(id, sku) {
+    navigation.navigate('ProductDetails', { id, sku });
   }
-
-  useEffect(() => {
-    setList(data);
-  });
 
   return (
     <>
@@ -31,7 +27,7 @@ function ListCard({ data, theme, navigation }) {
               key={key}
               item={item}
               theme={theme}
-              onClick={() => handleShowDetailProduct(item.id)}
+              onClick={() => handleShowDetailProduct(item.id, item.sku)}
               style={{
                 marginTop: isOdd ? 64 : 0,
                 marginLeft: isOdd ? 15 : 0,

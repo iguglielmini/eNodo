@@ -1,10 +1,11 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import axios from 'axios';
-import config from '@/config';
+import AsyncStorage from "@react-native-community/async-storage";
+import axios from "axios";
+import config from "@/config";
 
 export default class Api {
   constructor() {
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    axios.defaults.headers.post["Content-Type"] =
+      "application/x-www-form-urlencoded";
     this.setHost();
     this.constructor.setAuthIntercept();
   }
@@ -12,24 +13,23 @@ export default class Api {
   static async setAuthIntercept() {
     axios.interceptors.response.use(undefined, async (error) => {
       if (
-        error.response.status === 401
-        && error.response.data.message !== 'PASSWORD_MISMATCH' // exclude login request
-        && error.response.data.message !== 'USER_NOT_FOUND' // exclude login request
-      ) return this.logout();
+        error.response.status === 401 &&
+        error.response.data.message !== "PASSWORD_MISMATCH" && // exclude login request
+        error.response.data.message !== "USER_NOT_FOUND" // exclude login request
+      )
+        return this.logout();
 
       return Promise.reject(error);
     });
   }
 
   setHost() {
-    axios.defaults.headers.common['x-api-key'] = config.accessToken;
-    axios.create({
-      baseURL: config.baseURL
-    });
+    axios.defaults.baseURL = config.baseURL;
+    axios.defaults.headers.common["x-api-key"] = config.apiKey;
   }
 
   async getToken() {
-    const token = await AsyncStorage.getItem('@BelshopApp:token');
+    const token = await AsyncStorage.getItem("@BelshopApp:token");
 
     if (token) {
       await this.setToken(token);
@@ -40,20 +40,15 @@ export default class Api {
   }
 
   async logout() {
-    await AsyncStorage.multiRemove([
-      '@BelshopApp:token'
-    ]);
+    await AsyncStorage.multiRemove(["@BelshopApp:token"]);
     await this.setToken(undefined);
     return true;
   }
 
-  setToken(token) {
-    this.token = token;
-    if (this.token) {
-      axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
-    } else {
-      axios.defaults.headers.common.Authorization = undefined;
-    }
+  async setToken(token) {
+    axios.defaults.headers.common.Authorization = token
+      ? `Bearer ${token}`
+      : undefined;
   }
 
   async get(path, options) {
