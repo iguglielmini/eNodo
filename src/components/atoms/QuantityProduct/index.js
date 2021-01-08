@@ -46,6 +46,11 @@ function QuantityProduct({ quantity, onSelect, price, removeProduct }) {
           <Text style={Styles.quantyPrice}>
             {convertToPriceText(price.current * quantity)}
           </Text>
+          {price.previous && (
+            <Text style={Styles.quantyLastPrice}>
+              {convertToPriceText(price.previous)}
+            </Text>
+          )}
         </View>
 
         <TouchableOpacity onPress={removeProduct}>
