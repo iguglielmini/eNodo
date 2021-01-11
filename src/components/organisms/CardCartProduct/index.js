@@ -6,6 +6,9 @@ import Title from "@components/atoms/Title";
 import ModalCep from "@components/organisms/ModalCep";
 import QuantityProduct from "@components/atoms/QuantityProduct";
 
+// Images
+import ProductImage from '@assets/images/product1.png';
+
 // icons
 import DetailIcon from "@assets/svg/detail";
 
@@ -28,11 +31,12 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
               <View style={Styles.containerImageProduct}>
                 <Image
                   style={Styles.imageProduct}
-                  source={{
-                    width: 640,
-                    height: 640,
-                    uri: product.image,
-                  }}
+                  // source={{
+                  //   width: 640,
+                  //   height: 640,
+                  //   uri: product.image,
+                  // }}
+                  source={ProductImage}
                 />
               </View>
               <View style={Styles.containerTitleProduct}>
