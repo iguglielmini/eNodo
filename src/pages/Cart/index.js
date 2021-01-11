@@ -7,6 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import LinearGradient from "react-native-linear-gradient";
 
 /* Components */
@@ -31,6 +33,9 @@ import ApiCart from "../../modules/api/api-shopping";
 import { convertToPriceText } from "../../modules/utils";
 import DeviceStorage from "../../modules/services/device-storage";
 
+// Redux
+import { saveLengthCart } from '../../redux-store/actions/cart';
+
 /** Styles */
 import Styles from "./styles";
 
@@ -53,6 +58,7 @@ class Cart extends Component {
 
   componentDidMount() {
     this.getCart();
+    
     ApiCart.getBasket().then((response) => {
       const { basket } = response;
       if (response && basket) {
@@ -62,8 +68,10 @@ class Cart extends Component {
     });
   }
 
-  async getCart() {
+  getCart = async () => {
+    const { saveLengthCart } = this.props;
     const cart = await DeviceStorage.getItem("@BelshopApp:cart");
+    saveLengthCart(cart.items.length);
     if (cart) this.setState({ cart });
   }
 
@@ -83,14 +91,13 @@ class Cart extends Component {
   handleRemoveProduct = (itemId) => {
     const { cart } = this.state;
 
-    ApiCart.basketDeleteItem(itemId)
-    .then((response) => {
+    ApiCart.basketDeleteItem(itemId).then((response) => {
       const { basket } = response;
       if (response && basket) {
         DeviceStorage.setItem("@BelshopApp:cart", basket);
         this.setState({ cart: basket }, () => this.getCart());
       }
-    })
+    });
   };
 
   render() {
@@ -231,4 +238,8 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default Cart;
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart,
+}, dispatch);
+
+export default connect(null, mapDispatchToProps)(Cart);

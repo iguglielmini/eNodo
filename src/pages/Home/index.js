@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 
 /* Components */
@@ -31,10 +32,14 @@ import CardlistMock from "@mock/CardListMock";
 import BrandingMock from "@mock/CarouselBrandingMock";
 import FilterButtonInfo from "@mock/FilterButtonMock";
 
+// Redux e Storade
+import { saveLengthCart } from '../../redux-store/actions/cart';
+import DeviceStorage from '../../modules/services/device-storage';
+
 /* Styles */
 import Styles from "./styles";
 
-function Home({ navigation, lengthCart }) {
+function Home({ navigation, lengthCart, saveLengthCart }) {
   // const [homeData, setHomeData] = useState([]);
   // useEffect(() => {
   //   const api = new HomeService();
@@ -85,6 +90,15 @@ function Home({ navigation, lengthCart }) {
   //   }
   //   return false;
   // }
+
+  async function getLengthCart() {
+    const cart = await DeviceStorage.getItem("@BelshopApp:cart");
+    saveLengthCart(cart.items.length);
+  }
+
+  useEffect(() => {
+    getLengthCart();
+  }, []);
 
   return (
     <>
@@ -209,4 +223,8 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-export default connect(mapStateToProps, null)(Home);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

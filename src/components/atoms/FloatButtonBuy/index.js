@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import LinearGradient from 'react-native-linear-gradient';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 // Compoment
 import ModalBuy from '@components/organisms/ModalBuy';
@@ -8,10 +10,13 @@ import ModalBuy from '@components/organisms/ModalBuy';
 // API
 import ApiCart from '../../../modules/api/api-shopping';
 
+// Redux
+import { saveLengthCart } from '../../../redux-store/actions/cart';
+
 /** Styles */
 import Styles from './styles';
 
-function FloatButtonBuy({ navigation, product }) {
+function FloatButtonBuy({ navigation, product, saveLengthCart }) {
   const [loading, setLoading] = useState(false);
   const [modalBuyVisible, setModalBuyVisible] = useState(false);
 
@@ -23,8 +28,10 @@ function FloatButtonBuy({ navigation, product }) {
     };
     ApiCart.basketAddItem(data)
       .then((response) => {
-        setModalBuyVisible(true);
+        const { basket } = response;
         setLoading(false);
+        setModalBuyVisible(true);
+        saveLengthCart(basket.items.length);
       })
       .catch(() => setLoading(false));
   }
@@ -65,4 +72,8 @@ function FloatButtonBuy({ navigation, product }) {
   );
 }
 
-export default FloatButtonBuy;
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart,
+}, dispatch);
+
+export default connect(null, mapDispatchToProps)(FloatButtonBuy);
