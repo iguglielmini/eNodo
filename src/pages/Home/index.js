@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import React from "react";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
+import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 
 /* Components */
 import Title from "@components/atoms/Title";
@@ -30,14 +31,10 @@ import CardlistMock from "@mock/CardListMock";
 import BrandingMock from "@mock/CarouselBrandingMock";
 import FilterButtonInfo from "@mock/FilterButtonMock";
 
-// Sevices
-import DeviceStorage from "../../modules/services/device-storage";
-
 /* Styles */
 import Styles from "./styles";
 
-function Home({ navigation }) {
-  const [totalCart, setTotalCart] = useState(0);
+function Home({ navigation, lengthCart }) {
   // const [homeData, setHomeData] = useState([]);
   // useEffect(() => {
   //   const api = new HomeService();
@@ -89,10 +86,6 @@ function Home({ navigation }) {
   //   return false;
   // }
 
-  useEffect(() => {
-    DeviceStorage.getTotalCart().then((total) => setTotalCart(total));
-  }, []);
-
   return (
     <>
       <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
@@ -123,10 +116,10 @@ function Home({ navigation }) {
               style={Styles.bagIcon}
               onPress={() => handleShowCart()}
             >
-              {totalCart > 0 ? (
+              {lengthCart > 0 ? (
                 <>
                   <BagFillIcon name="Bag" size={24} />
-                  <Text style={Styles.badgeText}>{totalCart}</Text>
+                  <Text style={Styles.badgeText}>{lengthCart}</Text>
                 </>
               ) : (
                 <BagOutlineIcon name="Bag" size={24} />
@@ -212,4 +205,8 @@ Home.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default Home;
+const mapStateToProps = store => ({
+  lengthCart: store.cart.lengthCart,
+});
+
+export default connect(mapStateToProps, null)(Home);

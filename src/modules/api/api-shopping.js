@@ -94,7 +94,7 @@ class ShoppingService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data,
+            ...response.data,
           };
         }
         return false;
@@ -208,9 +208,9 @@ class ShoppingService extends Api {
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return "Please try again later.";
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return "Please try again later.";
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 
@@ -231,6 +231,5 @@ class ShoppingService extends Api {
       });
   }
 }
-const ApiShopping = new ShoppingService();
 
-export default ApiShopping;
+export default new ShoppingService();

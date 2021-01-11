@@ -1,7 +1,7 @@
 import Api from '.';
 import APIErrorHandler from './api-error-handler';
 
-export default class AuthService extends Api {
+class AuthService extends Api {
   login(data) {
     /**
       DATA STRUCTURE
@@ -15,7 +15,7 @@ export default class AuthService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            ...response.data
           };
         }
         return false;
@@ -32,7 +32,7 @@ export default class AuthService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            ...response.data
           };
         }
         return false;
@@ -56,7 +56,7 @@ export default class AuthService extends Api {
         if (response.status === 200) {
           return {
             success: true,
-            data: response.data
+            ...response.data
           };
         }
         return false;
@@ -68,19 +68,19 @@ export default class AuthService extends Api {
   }
 
   session() {
-    return this.post('/auth/session')
+    return this.get('/auth/session')
       .then((response) => {
         if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
+          const { token } = response.data;
+          this.setToken(token);
         }
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500) return 'Please try again later.';
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 }
+
+export default new AuthService();

@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import config from "@/config";
+import DeviceStorage from '../services/device-storage';
 
 export default class Api {
   constructor() {
@@ -23,13 +23,15 @@ export default class Api {
     });
   }
 
-  setHost() {
+  async setHost() {
     axios.defaults.baseURL = config.baseURL;
     axios.defaults.headers.common["x-api-key"] = config.apiKey;
+
+    await this.getToken();
   }
 
   async getToken() {
-    const token = await AsyncStorage.getItem("@BelshopApp:token");
+    const token = await DeviceStorage.getItem("@BelshopApp:token");
 
     if (token) {
       await this.setToken(token);
@@ -40,12 +42,13 @@ export default class Api {
   }
 
   async logout() {
-    await AsyncStorage.multiRemove(["@BelshopApp:token"]);
+    await DeviceStorage.multiRemove(["@BelshopApp:token"]);
     await this.setToken(undefined);
     return true;
   }
 
   async setToken(token) {
+    await DeviceStorage.setItem("@BelshopApp:token", token);
     axios.defaults.headers.common.Authorization = token
       ? `Bearer ${token}`
       : undefined;
