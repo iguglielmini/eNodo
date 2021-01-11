@@ -3,7 +3,7 @@ import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
 import { TitleSmall, TitleLarge, TitleXSmall } from '@assets/style/typography';
 import { WHITE, BLACK, TEXTGREYLIGHT } from '@assets/style/colors';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   page: {
@@ -84,5 +84,17 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  loadingRemove: {
+    width,
+    height,
+    top: 0,
+    left: 0,
+    zIndex: 9999,
+    alignItems: 'center',
+    position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
   }
 });

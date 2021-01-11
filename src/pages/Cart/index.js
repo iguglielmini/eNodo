@@ -6,6 +6,7 @@ import {
   Animated,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -34,7 +35,7 @@ import { convertToPriceText } from "../../modules/utils";
 import DeviceStorage from "../../modules/services/device-storage";
 
 // Redux
-import { saveLengthCart } from '../../redux-store/actions/cart';
+import { saveLengthCart } from "../../redux-store/actions/cart";
 
 /** Styles */
 import Styles from "./styles";
@@ -48,6 +49,7 @@ class Cart extends Component {
 
     this.state = {
       currentScrollY: 0,
+      loadingRemove: false,
       scrollY: new Animated.Value(0),
       cart: {
         items: [],
@@ -58,7 +60,7 @@ class Cart extends Component {
 
   componentDidMount() {
     this.getCart();
-    
+
     ApiCart.getBasket().then((response) => {
       const { basket } = response;
       if (response && basket) {
@@ -73,7 +75,7 @@ class Cart extends Component {
     const cart = await DeviceStorage.getItem("@BelshopApp:cart");
     saveLengthCart(cart.items.length);
     if (cart) this.setState({ cart });
-  }
+  };
 
   selectQuantity = (index, value) => {
     const { cart } = this.state;
@@ -90,10 +92,13 @@ class Cart extends Component {
 
   handleRemoveProduct = (itemId) => {
     const { cart } = this.state;
+    
+    this.setState({ loadingRemove: true });
 
     ApiCart.basketDeleteItem(itemId).then((response) => {
       const { basket } = response;
       if (response && basket) {
+        this.setState({ loadingRemove: false });
         DeviceStorage.setItem("@BelshopApp:cart", basket);
         this.setState({ cart: basket }, () => this.getCart());
       }
@@ -102,7 +107,7 @@ class Cart extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { cart, scrollY, currentScrollY } = this.state;
+    const { cart, scrollY, currentScrollY, loadingRemove } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -175,6 +180,11 @@ class Cart extends Component {
               )}
             </View>
           </LinearGradient>
+          {loadingRemove && (
+            <View style={Styles.loadingRemove}>
+              <ActivityIndicator size="large" color="#ffffff" />
+            </View>
+          )}
           <ScrollView
             alwaysBounceVertical
             scrollEventThrottle={16}
@@ -238,8 +248,15 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  saveLengthCart,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      saveLengthCart,
+    },
+    dispatch
+  );
 
-export default connect(null, mapDispatchToProps)(Cart);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Cart);
