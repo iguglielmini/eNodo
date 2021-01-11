@@ -1,33 +1,35 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import {
+  View, Text, ScrollView, TouchableOpacity
+} from 'react-native';
 
 /* component */
-import ListCard from "@components/molecules/ListCard";
-import ModalCep from "@components/organisms/ModalCep";
-import Accordion from "@components/organisms/Accordion";
-import FloatButtonBuy from "@components/atoms/FloatButtonBuy";
-import ModalDetails from "@components/organisms/ModalDetails";
-import CarouselProduct from "@components/organisms/CarouselPodruct";
-import CarouselBuyTogether from "@components/organisms/CarouselBuyTogether";
+import ListCard from '@components/molecules/ListCard';
+import ModalCep from '@components/organisms/ModalCep';
+import Accordion from '@components/organisms/Accordion';
+import FloatButtonBuy from '@components/atoms/FloatButtonBuy';
+import ModalDetails from '@components/organisms/ModalDetails';
+import CarouselProduct from '@components/organisms/CarouselPodruct';
+import CarouselBuyTogether from '@components/organisms/CarouselBuyTogether';
 
 /** icons */
-import ArrowVIcon from "@assets/svg/arrowv";
-import LogoIcon from "@assets/svg/logoIcon";
-import DetailIcon from "@assets/svg/detail";
-import FavoriteIcon from "@assets/svg/favorite";
+import ArrowVIcon from '@assets/svg/arrowv';
+import LogoIcon from '@assets/svg/logoIcon';
+import DetailIcon from '@assets/svg/detail';
+import FavoriteIcon from '@assets/svg/favorite';
 
 // Mock
-import CardlistMock from "@mock/CardListMock";
-import CardBuyTogetherMock from "@mock/CardBuyTogetherMock";
+import CardlistMock from '@mock/CardListMock';
+import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 
 /** Styles */
-import Styles from "./styles";
+import Styles from './styles';
 
 function ProductDetails({ route, navigation }) {
   const { id, sku } = route.params;
   const [details, setDetails] = useState({});
-  const [textCep, setTextCep] = useState("");
+  const [textCep, setTextCep] = useState('');
   const [modalCepVisible, setModalCepVisible] = useState(false);
   const [modalDetailsVisible, setModalDetailsVisible] = useState(false);
 
@@ -78,7 +80,7 @@ function ProductDetails({ route, navigation }) {
                     style={Styles.btnModal}
                     onPress={() => setModalCepVisible(true)}
                   >
-                    {!textCep ? "Trocar CEP" : `CEP ${textCep}`}
+                    {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
                   </Text>
                 </Text>
                 <ModalCep

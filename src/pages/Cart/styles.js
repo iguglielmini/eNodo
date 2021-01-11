@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
-import { TitleSmall, TitleLarge } from '@assets/style/typography';
-import { WHITE, BLACK } from '@assets/style/colors';
+import { TitleSmall, TitleLarge, TitleXSmall } from '@assets/style/typography';
+import { WHITE, BLACK, TEXTGREYLIGHT } from '@assets/style/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -67,10 +67,22 @@ export default StyleSheet.create({
     ...TitleSmall,
   },
   containerNotFound: {
-    height: 320,
+    paddingTop: 100,
     marginTop: SPACE_32,
-    alignItems: 'center',
     flexDirection: 'column',
+    alignItems: 'flex-start',
     justifyContent: 'flex-end',
+  },
+  titlePageNotFound: {
+    ...TitleSmall,
+    color: TEXTGREYLIGHT,
+  },
+  btnNotFound: {
+    marginTop: 80,
+    color: BLACK,
+    ...TitleXSmall,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   }
 });

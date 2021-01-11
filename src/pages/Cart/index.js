@@ -1,37 +1,38 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Text,
   Animated,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 /* Components */
-import Section from "@components/atoms/Section";
-import LinkHelp from "@components/atoms/LinkHelp";
-import PriceTotal from "@components/molecules/PriceTotal";
-import PaymentBanner from "@components/atoms/PaymentBanner";
-import FloatCartButton from "@components/atoms/FloatCartButton";
-import CardCartProduct from "@components/organisms/CardCartProduct";
+import Section from '@components/atoms/Section';
+import LinkHelp from '@components/atoms/LinkHelp';
+import PriceTotal from '@components/molecules/PriceTotal';
+import PaymentBanner from '@components/atoms/PaymentBanner';
+import FloatCartButton from '@components/atoms/FloatCartButton';
+import CardCartProduct from '@components/organisms/CardCartProduct';
 
 // Mock
-import LinkHelpMock from "@mock/LinkHelpMock";
+import LinkHelpMock from '@mock/LinkHelpMock';
 
 // Icons
-import ArrowVIcon from "@assets/svg/arrowv";
+import ArrowVIcon from '@assets/svg/arrowv';
+import ArrowIcon from '@assets/svg/arrow';
 
 // API
-import ApiCart from "../../modules/api/api-shopping";
+import ApiCart from '../../modules/api/api-shopping';
 
 // Utils
-import { convertToPriceText } from "../../modules/utils";
-import DeviceStorage from "../../modules/services/device-storage";
+import { convertToPriceText } from '../../modules/utils';
+import DeviceStorage from '../../modules/services/device-storage';
 
 /** Styles */
-import Styles from "./styles";
+import Styles from './styles';
 
 const HEADER_MAX_HEIGHT = 120;
 const HEADER_MIN_HEIGHT = 70;
@@ -55,14 +56,14 @@ class Cart extends Component {
     ApiCart.getBasket().then((response) => {
       const { basket } = response;
       if (response && basket) {
-        DeviceStorage.setItem("@BelshopApp:cart", basket);
+        DeviceStorage.setItem('@BelshopApp:cart', basket);
         this.setState({ cart: basket }, () => this.getCart());
       }
     });
   }
 
   async getCart() {
-    const cart = await DeviceStorage.getItem("@BelshopApp:cart");
+    const cart = await DeviceStorage.getItem('@BelshopApp:cart');
     if (cart) this.setState({ cart });
   }
 
@@ -97,7 +98,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-60, 10, 10, 10],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     const HeaderTitleLeft = scrollY.interpolate({
@@ -108,7 +109,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-0, 60, 60, 60],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     return (
@@ -119,7 +120,7 @@ class Cart extends Component {
             style={Styles.header}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0.9 }}
-            colors={["#FFFFFF", "rgba(255, 255, 255, 0)"]}
+            colors={['#FFFFFF', 'rgba(255, 255, 255, 0)']}
           >
             <View style={Styles.contentHeader}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -131,7 +132,7 @@ class Cart extends Component {
                 style={[
                   Styles.ContainerTitle,
                   {
-                    position: "absolute",
+                    position: 'absolute',
                     left: HeaderTitleLeft,
                     bottom: HeaderTitleBottom,
                   },
@@ -149,7 +150,7 @@ class Cart extends Component {
               <Animated.View
                 style={[
                   Styles.containerTitlePrice,
-                  { position: "absolute", bottom: HeaderTitleBottom },
+                  { position: 'absolute', bottom: HeaderTitleBottom },
                 ]}
               >
                 <Text style={Styles.TitleHeader}>
@@ -197,7 +198,15 @@ class Cart extends Component {
               </>
             ) : (
               <Section style={[Styles.container, Styles.containerNotFound]}>
-                <Text style={Styles.titlePage}>"Seu carrinho está vazio"</Text>
+                <Text style={Styles.titlePageNotFound}>
+                  Você ainda não adicionou produtos em seu carrinho
+                </Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <View style={Styles.btnNotFound}>
+                    <Text style={{ marginRight: 8 }}>Continue comprando</Text>
+                    <ArrowIcon />
+                  </View>
+                </TouchableOpacity>
               </Section>
             )}
           </ScrollView>
