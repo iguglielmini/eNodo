@@ -85,7 +85,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  loadingRemove: {
+  loading: {
     width,
     height,
     top: 0,

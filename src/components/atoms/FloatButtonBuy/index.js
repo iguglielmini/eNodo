@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import LinearGradient from 'react-native-linear-gradient';
-import { View, Text, TouchableOpacity } from 'react-native';
+import LinearGradient from "react-native-linear-gradient";
+import { View, Text, TouchableOpacity } from "react-native";
 
 // Compoment
-import ModalBuy from '@components/organisms/ModalBuy';
+import ModalBuy from "@components/organisms/ModalBuy";
 
 // API
-import ApiCart from '../../../modules/api/api-shopping';
+import ApiCart from "../../../modules/api/api-shopping";
 
 // Redux
-import { saveLengthCart } from '../../../redux-store/actions/cart';
+import { saveLengthCart } from "../../../redux-store/actions/cart";
 
 /** Styles */
-import Styles from './styles';
+import Styles from "./styles";
 
 function FloatButtonBuy({ navigation, product, saveLengthCart }) {
   const [loading, setLoading] = useState(false);
@@ -28,10 +28,14 @@ function FloatButtonBuy({ navigation, product, saveLengthCart }) {
     };
     ApiCart.basketAddItem(data)
       .then((response) => {
-        const { basket } = response;
         setLoading(false);
         setModalBuyVisible(true);
-        saveLengthCart(basket.items.length);
+        
+        if (response && response.basket) {
+          const { items } = response.basket;
+          const itemsQuantity = items.map(item => item.quantity);
+          saveLengthCart(itemsQuantity.reduce((acumulator, currentValue) => acumulator + currentValue));
+        }
       })
       .catch(() => setLoading(false));
   }
@@ -42,7 +46,7 @@ function FloatButtonBuy({ navigation, product, saveLengthCart }) {
         start={{ x: 0, y: 0.9 }}
         end={{ x: 0.0, y: 0.0 }}
         locations={[0.8, 1]}
-        colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
+        colors={["#F3F3F3", "rgba(243, 243, 243, 0)"]}
         style={Styles.ContainerFloatButon}
       >
         <View style={Styles.priceDescription}>
@@ -57,7 +61,7 @@ function FloatButtonBuy({ navigation, product, saveLengthCart }) {
         <TouchableOpacity onPress={addProductToCart}>
           <View style={Styles.buttonPayment}>
             <Text style={Styles.payTitleButton}>
-              {loading ? 'Carregando...' : 'Comprar'}
+              {loading ? "Carregando..." : "Comprar"}
             </Text>
           </View>
         </TouchableOpacity>
@@ -72,8 +76,15 @@ function FloatButtonBuy({ navigation, product, saveLengthCart }) {
   );
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  saveLengthCart,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      saveLengthCart,
+    },
+    dispatch
+  );
 
-export default connect(null, mapDispatchToProps)(FloatButtonBuy);
+export default connect(
+  null,
+  mapDispatchToProps
+)(FloatButtonBuy);

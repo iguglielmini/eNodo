@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage";
 
 class DeviceStorage {
-  setItem(key, value) {
-    AsyncStorage.setItem(key, JSON.stringify(value)).catch((_error) => {
+  async setItem(key, value) {
+    await AsyncStorage.removeItem(key);
+    await AsyncStorage.setItem(key, JSON.stringify(value)).catch((_error) => {
       console.error("[ERROR] unable to save to local storage.");
     });
   }

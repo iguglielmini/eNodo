@@ -74,6 +74,7 @@ class ShoppingService extends Api {
     */
     return this.put(`/shopping/basket/item/${id}`, data)
       .then((response) => {
+        console.log('MAH OI', response);
         if (response.status === 200) {
           return {
             success: true,
@@ -83,6 +84,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
+        console.log('MAH OI 2', response);
         if (response && response.status === 500) return "Please try again later.";
         return APIErrorHandler.getErrorMessages(response);
       });

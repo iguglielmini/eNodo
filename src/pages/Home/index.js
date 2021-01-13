@@ -93,7 +93,11 @@ function Home({ navigation, lengthCart, saveLengthCart }) {
 
   async function getLengthCart() {
     const cart = await DeviceStorage.getItem("@BelshopApp:cart");
-    saveLengthCart(cart.items.length);
+    if (cart) {
+      const { items } = cart;
+      const itemsQuantity = items.map(item => item.quantity);
+      saveLengthCart(itemsQuantity.reduce((acumulator, currentValue) => acumulator + currentValue));
+    }
   }
 
   useEffect(() => {

@@ -48,8 +48,8 @@ class Cart extends Component {
     super(props);
 
     this.state = {
+      loading: false,
       currentScrollY: 0,
-      loadingRemove: false,
       scrollY: new Animated.Value(0),
       cart: {
         items: [],
@@ -59,13 +59,13 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    this.getCart();
+    this.setState({ loading: true });
 
-    ApiCart.getBasket().then((response) => {
-      const { basket } = response;
-      if (response && basket) {
-        DeviceStorage.setItem("@BelshopApp:cart", basket);
-        this.setState({ cart: basket }, () => this.getCart());
+    ApiCart.getBasket().then(async (response) => {
+      if (response && response.basket) {
+        this.setState({ loading: false });
+        await DeviceStorage.setItem("@BelshopApp:cart", response.basket);
+        await this.getCart();
       }
     });
   }
@@ -73,16 +73,31 @@ class Cart extends Component {
   getCart = async () => {
     const { saveLengthCart } = this.props;
     const cart = await DeviceStorage.getItem("@BelshopApp:cart");
-    saveLengthCart(cart.items.length);
-    if (cart) this.setState({ cart });
+
+    if (cart) {
+      const { items } = cart;
+      const itemsQuantity = items.map((item) => item.quantity);
+      saveLengthCart(
+        itemsQuantity.reduce(
+          (acumulator, currentValue) => acumulator + currentValue
+        )
+      );
+      this.setState({ cart });
+    }
   };
 
-  selectQuantity = (index, value) => {
+  selectQuantity = async (index, value, itemId) => {
     const { cart } = this.state;
-
     cart.items[index].quantity = value;
 
-    this.setState({ cart });
+    ApiCart.basketUpdateItem(itemId, { quantity: Number(value) }).then(
+      async (response) => {
+        if (response && response.basket) {
+          await DeviceStorage.setItem("@BelshopApp:cart", response.basket);
+          await this.getCart();
+        }
+      }
+    );
   };
 
   handleOnScroll = ({ nativeEvent }) => {
@@ -91,23 +106,21 @@ class Cart extends Component {
   };
 
   handleRemoveProduct = (itemId) => {
-    const { cart } = this.state;
-    
-    this.setState({ loadingRemove: true });
+    this.setState({ loading: true });
 
-    ApiCart.basketDeleteItem(itemId).then((response) => {
+    ApiCart.basketDeleteItem(itemId).then(async (response) => {
       const { basket } = response;
       if (response && basket) {
-        this.setState({ loadingRemove: false });
-        DeviceStorage.setItem("@BelshopApp:cart", basket);
-        this.setState({ cart: basket }, () => this.getCart());
+        this.setState({ loading: false });
+        await DeviceStorage.setItem("@BelshopApp:cart", basket);
+        await this.getCart();
       }
     });
   };
 
   render() {
     const { navigation } = this.props;
-    const { cart, scrollY, currentScrollY, loadingRemove } = this.state;
+    const { cart, scrollY, currentScrollY, loading } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -180,8 +193,8 @@ class Cart extends Component {
               )}
             </View>
           </LinearGradient>
-          {loadingRemove && (
-            <View style={Styles.loadingRemove}>
+          {loading && (
+            <View style={Styles.loading}>
               <ActivityIndicator size="large" color="#ffffff" />
             </View>
           )}

@@ -49,8 +49,8 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
               <QuantityProduct
                 price={product.price}
                 quantity={item.quantity}
-                onSelect={(value) => selectQuantity(index, value)}
                 removeProduct={() => removeProduct(item.basketItemId)}
+                onSelect={(value) => selectQuantity(index, value, item.basketItemId)}
               />
             </Fragment>
           );
