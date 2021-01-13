@@ -1,4 +1,4 @@
-import { CART_TOKEN, TOTAL_LENGTH_CART } from "../actions/actionTypes";
+import { CART_TOKEN, TOTAL_LENGTH_CART } from '../actions/actionTypes';
 
 const initialState = {
   token: null,

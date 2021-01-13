@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { View, Text, Image } from "react-native";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { View, Text, Image } from 'react-native';
 // Libs
-import Swiper from "react-native-swiper";
+import Swiper from 'react-native-swiper';
 
 // Styles
-import styles from "./styles";
+import styles from './styles';
 
 function CarouselBuyTogether({ data }) {
   if (!data.length) return null;

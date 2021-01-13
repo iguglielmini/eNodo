@@ -1,14 +1,14 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React from 'react';
+import { View, Text } from 'react-native';
 
 // Components
-import Title from "@components/atoms/Title";
+import Title from '@components/atoms/Title';
 
 // Utils
 import { convertToPriceText } from '../../../modules/utils';
 
 // Styles
-import Styles from "./styles";
+import Styles from './styles';
 
 const PriceTotal = ({ totalPrice }) => (
   <>

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { View, Image, Text, Dimensions, TouchableOpacity } from "react-native";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import Title from "@components/atoms/Title";
-import ButtonSeeAll from "@components/atoms/ButtonSeeAll";
+import Title from '@components/atoms/Title';
+import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 
 // Styles
-import Styles from "./styles";
+import Styles from './styles';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 const Card = ({ item, navigation, pageName }) => {
   const { images } = item;

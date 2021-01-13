@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Svg, { Path } from "react-native-svg";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Svg, { Path } from 'react-native-svg';
 
 const BagFill = ({ size, color }) => (
   <Svg
@@ -31,7 +31,7 @@ BagFill.propTypes = {
 
 BagFill.defaultProps = {
   size: 24,
-  color: "#0D0D0D",
+  color: '#0D0D0D',
 };
 
 export default BagFill;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
@@ -9,8 +9,6 @@ import Card from '@components/molecules/Card';
 import Styles from './styles';
 
 function ListCard({ data, theme, navigation }) {
-  const [list, setList] = useState(data);
-
   function handleShowDetailProduct(id, sku) {
     navigation.navigate('ProductDetails', { id, sku });
   }
@@ -18,7 +16,7 @@ function ListCard({ data, theme, navigation }) {
   return (
     <>
       <View style={Styles.container}>
-        {list && list.length > 0 && list.map((item, index) => {
+        {data && data.length > 0 && data.map((item, index) => {
           const key = index;
           const isOdd = key % 2 === 1;
 

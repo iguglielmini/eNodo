@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Text,
@@ -7,38 +7,38 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-} from "react-native";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import LinearGradient from "react-native-linear-gradient";
+} from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 /* Components */
-import Section from "@components/atoms/Section";
-import LinkHelp from "@components/atoms/LinkHelp";
-import PriceTotal from "@components/molecules/PriceTotal";
-import PaymentBanner from "@components/atoms/PaymentBanner";
-import FloatCartButton from "@components/atoms/FloatCartButton";
-import CardCartProduct from "@components/organisms/CardCartProduct";
+import Section from '@components/atoms/Section';
+import LinkHelp from '@components/atoms/LinkHelp';
+import PriceTotal from '@components/molecules/PriceTotal';
+import PaymentBanner from '@components/atoms/PaymentBanner';
+import FloatCartButton from '@components/atoms/FloatCartButton';
+import CardCartProduct from '@components/organisms/CardCartProduct';
 
 // Mock
-import LinkHelpMock from "@mock/LinkHelpMock";
+import LinkHelpMock from '@mock/LinkHelpMock';
 
 // Icons
-import ArrowVIcon from "@assets/svg/arrowv";
-import ArrowIcon from "@assets/svg/arrow";
+import ArrowVIcon from '@assets/svg/arrowv';
+import ArrowIcon from '@assets/svg/arrow';
 
 // API
-import ApiCart from "../../modules/api/api-shopping";
+import ApiCart from '@modules/api/api-shopping';
 
 // Utils
-import { convertToPriceText } from "../../modules/utils";
-import DeviceStorage from "../../modules/services/device-storage";
+import { convertToPriceText } from '@modules/utils';
+import DeviceStorage from '@modules/services/device-storage';
 
 // Redux
-import { saveLengthCart } from "../../redux-store/actions/cart";
+import { saveLengthCart } from '@redux/actions/cart';
 
 /** Styles */
-import Styles from "./styles";
+import Styles from './styles';
 
 const HEADER_MAX_HEIGHT = 120;
 const HEADER_MIN_HEIGHT = 70;
@@ -61,10 +61,10 @@ class Cart extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    ApiCart.getBasket().then(async (response) => {
+    ApiCart.getBasket().then(async response => {
       if (response && response.basket) {
         this.setState({ loading: false });
-        await DeviceStorage.setItem("@BelshopApp:cart", response.basket);
+        await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
         await this.getCart();
       }
     });
@@ -72,11 +72,11 @@ class Cart extends Component {
 
   getCart = async () => {
     const { saveLengthCart } = this.props;
-    const cart = await DeviceStorage.getItem("@BelshopApp:cart");
+    const cart = await DeviceStorage.getItem('@BelshopApp:cart');
 
     if (cart) {
       const { items } = cart;
-      const itemsQuantity = items.map((item) => item.quantity);
+      const itemsQuantity = items.map(item => item.quantity);
       saveLengthCart(
         itemsQuantity.reduce(
           (acumulator, currentValue) => acumulator + currentValue
@@ -91,9 +91,9 @@ class Cart extends Component {
     cart.items[index].quantity = value;
 
     ApiCart.basketUpdateItem(itemId, { quantity: Number(value) }).then(
-      async (response) => {
+      async response => {
         if (response && response.basket) {
-          await DeviceStorage.setItem("@BelshopApp:cart", response.basket);
+          await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
           await this.getCart();
         }
       }
@@ -105,14 +105,14 @@ class Cart extends Component {
     this.setState({ currentScrollY: Math.floor(contentOffset.y) });
   };
 
-  handleRemoveProduct = (itemId) => {
+  handleRemoveProduct = itemId => {
     this.setState({ loading: true });
 
-    ApiCart.basketDeleteItem(itemId).then(async (response) => {
+    ApiCart.basketDeleteItem(itemId).then(async response => {
       const { basket } = response;
       if (response && basket) {
         this.setState({ loading: false });
-        await DeviceStorage.setItem("@BelshopApp:cart", basket);
+        await DeviceStorage.setItem('@BelshopApp:cart', basket);
         await this.getCart();
       }
     });
@@ -130,7 +130,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-60, 10, 10, 10],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     const HeaderTitleLeft = scrollY.interpolate({
@@ -141,7 +141,7 @@ class Cart extends Component {
         HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 95,
       ],
       outputRange: [-0, 60, 60, 60],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     return (
@@ -152,7 +152,7 @@ class Cart extends Component {
             style={Styles.header}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0.9 }}
-            colors={["#FFFFFF", "rgba(255, 255, 255, 0)"]}
+            colors={['#FFFFFF', 'rgba(255, 255, 255, 0)']}
           >
             <View style={Styles.contentHeader}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -164,7 +164,7 @@ class Cart extends Component {
                 style={[
                   Styles.ContainerTitle,
                   {
-                    position: "absolute",
+                    position: 'absolute',
                     left: HeaderTitleLeft,
                     bottom: HeaderTitleBottom,
                   },
@@ -183,7 +183,7 @@ class Cart extends Component {
                 <Animated.View
                   style={[
                     Styles.containerTitlePrice,
-                    { position: "absolute", bottom: HeaderTitleBottom },
+                    { position: 'absolute', bottom: HeaderTitleBottom },
                   ]}
                 >
                   <Text style={Styles.TitleHeader}>
@@ -257,11 +257,10 @@ class Cart extends Component {
 }
 
 Cart.propTypes = {
-  route: PropTypes.objectOf(PropTypes.any).isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       saveLengthCart,

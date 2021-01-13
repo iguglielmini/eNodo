@@ -1,19 +1,19 @@
-import "react-native-gesture-handler";
-import React, { useState } from "react";
-import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaView } from "react-native-safe-area-context";
+import 'react-native-gesture-handler';
+import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Pages
-import InitialPage from "./src/pages";
-import Cart from "./src/pages/Cart";
-import Category from "./src/pages/Category";
-import CategorySub from "./src/pages/CategorySub";
-import ProductDetailsPage from "./src/pages/ProductDetails";
+import InitialPage from './src/pages';
+import Cart from './src/pages/Cart';
+import Category from './src/pages/Category';
+import CategorySub from './src/pages/CategorySub';
+import ProductDetailsPage from './src/pages/ProductDetails';
 
 // color
-import { BGGREY, BLACK, WHITE } from "./src/assets/style/colors";
+import { BGGREY, BLACK, WHITE } from './src/assets/style/colors';
 
 const Stack = createStackNavigator();
 
@@ -22,27 +22,27 @@ function Router() {
   const statusBarColors = {
     Home: {
       color: BGGREY,
-      style: "dark-content",
+      style: 'dark-content',
     },
     Cart: {
       color: WHITE,
-      style: "dark-content",
+      style: 'dark-content',
     },
     Category: {
       color: BLACK,
-      style: "light-content",
+      style: 'light-content',
     },
     CategorySub: {
       color: BLACK,
-      style: "light-content",
+      style: 'light-content',
     },
     ProductDetails: {
       color: WHITE,
-      style: "dark-content",
+      style: 'dark-content',
     },
   };
 
-  const routeChange = (route) => {
+  const routeChange = route => {
     const selectRouter = route.routes[route.index];
     const colors = statusBarColors[selectRouter.name];
     setStatusBarColor(colors.color);

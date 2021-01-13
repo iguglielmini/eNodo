@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { WHITE, BLACK } from '@assets/style/colors';
-import { SPACE_16, SPACE_24, SPACE_32 } from '@assets/style/wrapper';
+import { SPACE_24, SPACE_32 } from '@assets/style/wrapper';
 // Dimension Responsive layout
 const { width } = Dimensions.get('window');
 

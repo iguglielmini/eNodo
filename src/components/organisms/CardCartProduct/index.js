@@ -1,23 +1,23 @@
-import React, { useState, Fragment } from "react";
-import { View, Image, Text } from "react-native";
+import React, { useState, Fragment } from 'react';
+import { View, Image, Text } from 'react-native';
 
 // Compoents
-import Title from "@components/atoms/Title";
-import ModalCep from "@components/organisms/ModalCep";
-import QuantityProduct from "@components/atoms/QuantityProduct";
+import Title from '@components/atoms/Title';
+import ModalCep from '@components/organisms/ModalCep';
+import QuantityProduct from '@components/atoms/QuantityProduct';
 
 // Images
 import ProductImage from '@assets/images/product1.png';
 
 // icons
-import DetailIcon from "@assets/svg/detail";
+import DetailIcon from '@assets/svg/detail';
 
 // Styles
-import Styles from "./styles";
+import Styles from './styles';
 
 function CardCartProduct({ cart, removeProduct, selectQuantity }) {
   const { items } = cart;
-  const [textCep, setTextCep] = useState("");
+  const [textCep, setTextCep] = useState('');
   const [modalCepVisible, setModalCepVisible] = useState(false);
 
   return (
@@ -50,7 +50,9 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
                 price={product.price}
                 quantity={item.quantity}
                 removeProduct={() => removeProduct(item.basketItemId)}
-                onSelect={(value) => selectQuantity(index, value, item.basketItemId)}
+                onSelect={value =>
+                  selectQuantity(index, value, item.basketItemId)
+                }
               />
             </Fragment>
           );
@@ -70,7 +72,7 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
               style={Styles.textCep}
               onPress={() => setModalCepVisible(true)}
             >
-              {!textCep ? "Trocar CEP" : `CEP ${textCep}`}
+              {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
             </Text>
             <ModalCep
               visible={modalCepVisible}

@@ -1,13 +1,13 @@
-import React from "react";
-import { Platform, PixelRatio, Dimensions, Text } from "react-native";
+import React from 'react';
+import { Platform, PixelRatio, Dimensions, Text } from 'react-native';
 
-export const isiOS = Platform.OS === "ios";
-export const isAndroid = Platform.OS === "android";
+export const isiOS = Platform.OS === 'ios';
+export const isAndroid = Platform.OS === 'android';
 
 export const hasBottomNotch = () => {
-  const dimen = Dimensions.get("window");
+  const dimen = Dimensions.get('window');
   return (
-    Platform.OS === "ios" &&
+    Platform.OS === 'ios' &&
     !Platform.isPad &&
     !Platform.isTVOS &&
     (dimen.height === 812 ||
@@ -24,14 +24,14 @@ export const getAddressesByBusinessLocations = ({
 }) => {
   const uniqueLocations = businessLocations.filter(
     (location, i) =>
-      businessLocations.findIndex((item) => item.city === location.city) === i
+      businessLocations.findIndex(item => item.city === location.city) === i
   );
 
   // return all cities and states if there's more than one location
   if (businessLocations && businessLocations.length > 1)
     return uniqueLocations
-      .map((location) => `${location.city}, ${location.state}`)
-      .join("\n");
+      .map(location => `${location.city}, ${location.state}`)
+      .join('\n');
 
   // return the unique location if there's one location
   if (uniqueLocations[0] && !(address && state && city))
@@ -48,7 +48,7 @@ export const getAddressesByBusinessLocations = ({
   return uniqueAddress;
 };
 
-export const capitalize = (string) =>
+export const capitalize = string =>
   `${string[0].toUpperCase()}${string.slice(1)}`;
 
 export const configureFontWeight = () => {
@@ -56,74 +56,74 @@ export const configureFontWeight = () => {
 
   const settings = [
     {
-      fontFamily: "sans-serif-thin",
-      fontWeight: "normal",
+      fontFamily: 'sans-serif-thin',
+      fontWeight: 'normal',
     },
     {
-      fontFamily: "sans-serif-light",
-      fontWeight: "normal",
+      fontFamily: 'sans-serif-light',
+      fontWeight: 'normal',
     },
     {
-      fontFamily: "sans-serif",
-      fontWeight: "normal",
+      fontFamily: 'sans-serif',
+      fontWeight: 'normal',
     },
     {
-      fontFamily: "sans-serif-medium",
-      fontWeight: "normal",
+      fontFamily: 'sans-serif-medium',
+      fontWeight: 'normal',
     },
     {
-      fontFamily: "sans-serif",
-      fontWeight: "bold",
+      fontFamily: 'sans-serif',
+      fontWeight: 'bold',
     },
     {
-      fontFamily: "sans-serif-medium",
-      fontWeight: "bold",
+      fontFamily: 'sans-serif-medium',
+      fontWeight: 'bold',
     },
   ];
 
   const defaultIndex = 2;
 
-  const someStyleHasFontWeight = (styles) => {
+  const someStyleHasFontWeight = styles => {
     if (!styles) return false;
-    if (typeof styles.length !== "undefined") {
+    if (typeof styles.length !== 'undefined') {
       let indexPlus = false;
       styles.forEach((style, i) => {
         if (!style) return;
-        if (typeof style.fontWeight !== "undefined") indexPlus = i + 1;
+        if (typeof style.fontWeight !== 'undefined') indexPlus = i + 1;
       });
       return indexPlus;
     }
 
-    return styles.fontWeight !== "undefined";
+    return styles.fontWeight !== 'undefined';
   };
 
   Text.render = (...args) => {
     const origin = oldRender.call(this, ...args);
 
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       let useIndex = defaultIndex;
       const hasFontWeight = someStyleHasFontWeight(origin.props.style);
 
-      if (typeof origin.props.style !== "undefined" && hasFontWeight) {
+      if (typeof origin.props.style !== 'undefined' && hasFontWeight) {
         const fontWeight =
           hasFontWeight && origin.props.style[hasFontWeight - 1]
             ? origin.props.style[hasFontWeight - 1].fontWeight
             : origin.props.style.fontWeight;
         if (
-          fontWeight === "100" ||
-          fontWeight === "200" ||
-          fontWeight === "300"
+          fontWeight === '100' ||
+          fontWeight === '200' ||
+          fontWeight === '300'
         ) {
           useIndex = 0;
-        } else if (fontWeight === "400") {
+        } else if (fontWeight === '400') {
           useIndex = 1;
-        } else if (fontWeight === "500" || fontWeight === "normal") {
+        } else if (fontWeight === '500' || fontWeight === 'normal') {
           useIndex = 2;
-        } else if (fontWeight === "600") {
+        } else if (fontWeight === '600') {
           useIndex = 3;
-        } else if (fontWeight === "700" || fontWeight === "bold") {
+        } else if (fontWeight === '700' || fontWeight === 'bold') {
           useIndex = 4;
-        } else if (fontWeight === "800" || fontWeight === "900") {
+        } else if (fontWeight === '800' || fontWeight === '900') {
           useIndex = 5;
         }
       }
@@ -137,35 +137,35 @@ export const configureFontWeight = () => {
   };
 };
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const scaleWidth = SCREEN_WIDTH / 375;
 const scaleHeight = SCREEN_HEIGHT / 768;
 
 // TO USE IN WIDTH
-export const normalizeWidth = (size) => {
+export const normalizeWidth = size => {
   const newSize = size * scaleWidth;
-  if (Platform.OS === "ios") {
+  if (Platform.OS === 'ios') {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   }
   return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
 };
 
 // TO USE IN Height AND paddings
-export const normalizeHeight = (size) => {
+export const normalizeHeight = size => {
   const newSize = size * scaleHeight;
-  if (Platform.OS === "ios") {
+  if (Platform.OS === 'ios') {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   }
   return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
 };
 
-export const convertToPriceText = (price) =>
-  "R$ " +
+export const convertToPriceText = price =>
+  'R$ ' +
   Number(price)
     .toFixed(2)
-    .replace(".", ",")
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+    .replace('.', ',')
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 
 export const truncateString = (string, maxLength) =>
   `${string.slice(0, maxLength)}...`;

@@ -95,6 +95,6 @@ export default StyleSheet.create({
     position: 'absolute',
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-  }
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },
 });

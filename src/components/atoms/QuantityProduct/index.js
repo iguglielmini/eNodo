@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import RNPickerSelect from "react-native-picker-select";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from 'react';
+import RNPickerSelect from 'react-native-picker-select';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 // Icon
-import IconArrowDonw from "../../../assets/svg/arrowDown";
+import IconArrowDonw from '@assets/svg/arrowDown';
 
 // Utils
-import { convertToPriceText } from "../../../modules/utils";
+import { convertToPriceText } from '@modules/utils';
 
 /** Styles */
-import Styles from "./styles";
+import Styles from './styles';
 
 function QuantityProduct({ quantity, onSelect, price, removeProduct }) {
   const [selectItens, setData] = useState([]);
@@ -35,7 +35,7 @@ function QuantityProduct({ quantity, onSelect, price, removeProduct }) {
             items={selectItens}
             value={String(quantity)}
             useNativeAndroidPickerStyle={false}
-            onValueChange={(value) => onSelect(value)}
+            onValueChange={value => onSelect(value)}
             Icon={() => <IconArrowDonw />}
             style={{
               iconContainer: Styles.iconContainer,
@@ -44,9 +44,9 @@ function QuantityProduct({ quantity, onSelect, price, removeProduct }) {
             }}
           />
           <Text style={Styles.quantyPrice}>
-            {convertToPriceText(price.current * quantity)}
+            {convertToPriceText(((price && price.current) || 0) * quantity)}
           </Text>
-          {price.previous && (
+          {price && price.previous && (
             <Text style={Styles.quantyLastPrice}>
               {convertToPriceText(price.previous)}
             </Text>

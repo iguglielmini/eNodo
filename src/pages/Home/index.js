@@ -1,43 +1,43 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 /* Components */
-import Title from "@components/atoms/Title";
-import Section from "@components/atoms/Section";
-import LinkHelp from "@components/atoms/LinkHelp";
-import ListCard from "@components/molecules/ListCard";
-import IntroCard from "@components/molecules/IntroCard";
-import ButtonSeeAll from "@components/atoms/ButtonSeeAll";
-import FilterButton from "@components/molecules/FilterButton";
-import ImageIntroCard from "@components/molecules/ImageIntroCard";
-import CarouselBranding from "@components/organisms/CarouselBranding";
+import Title from '@components/atoms/Title';
+import Section from '@components/atoms/Section';
+import LinkHelp from '@components/atoms/LinkHelp';
+import ListCard from '@components/molecules/ListCard';
+import IntroCard from '@components/molecules/IntroCard';
+import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
+import FilterButton from '@components/molecules/FilterButton';
+import ImageIntroCard from '@components/molecules/ImageIntroCard';
+import CarouselBranding from '@components/organisms/CarouselBranding';
 
 /* Icons */
-import BagFillIcon from "@assets/svg/bagFill";
-import FavoriteIcon from "@assets/svg/favorite";
-import BagOutlineIcon from "@assets/svg/bagOutline";
+import BagFillIcon from '@assets/svg/bagFill';
+import FavoriteIcon from '@assets/svg/favorite';
+import BagOutlineIcon from '@assets/svg/bagOutline';
 
 /* Images */
-import imageBel from "@assets/images/bel.png";
-import imageKiss from "@assets/images/kiss.png";
+import imageBel from '@assets/images/bel.png';
+import imageKiss from '@assets/images/kiss.png';
 
 // Mock
 // import HomeService from '@modules/api/api-home';
-import ProductInfo from "@mock/ProductInfo";
-import LinkHelpMock from "@mock/LinkHelpMock";
-import CardlistMock from "@mock/CardListMock";
-import BrandingMock from "@mock/CarouselBrandingMock";
-import FilterButtonInfo from "@mock/FilterButtonMock";
+import ProductInfo from '@mock/ProductInfo';
+import LinkHelpMock from '@mock/LinkHelpMock';
+import CardlistMock from '@mock/CardListMock';
+import BrandingMock from '@mock/CarouselBrandingMock';
+import FilterButtonInfo from '@mock/FilterButtonMock';
 
 // Redux e Storade
-import { saveLengthCart } from '../../redux-store/actions/cart';
-import DeviceStorage from '../../modules/services/device-storage';
+import { saveLengthCart } from '@redux/actions/cart';
+import DeviceStorage from '@modules/services/device-storage';
 
 /* Styles */
-import Styles from "./styles";
+import Styles from './styles';
 
 function Home({ navigation, lengthCart, saveLengthCart }) {
   // const [homeData, setHomeData] = useState([]);
@@ -53,11 +53,11 @@ function Home({ navigation, lengthCart, saveLengthCart }) {
   // }, []);
 
   function handleShowCategory() {
-    navigation.navigate("Category");
+    navigation.navigate('Category');
   }
 
   function handleShowCart() {
-    navigation.navigate("Cart");
+    navigation.navigate('Cart');
   }
 
   // function renderWiget(widget) {
@@ -92,11 +92,15 @@ function Home({ navigation, lengthCart, saveLengthCart }) {
   // }
 
   async function getLengthCart() {
-    const cart = await DeviceStorage.getItem("@BelshopApp:cart");
+    const cart = await DeviceStorage.getItem('@BelshopApp:cart');
     if (cart) {
       const { items } = cart;
       const itemsQuantity = items.map(item => item.quantity);
-      saveLengthCart(itemsQuantity.reduce((acumulator, currentValue) => acumulator + currentValue));
+      saveLengthCart(
+        itemsQuantity.reduce(
+          (acumulator, currentValue) => acumulator + currentValue
+        )
+      );
     }
   }
 
@@ -126,7 +130,7 @@ function Home({ navigation, lengthCart, saveLengthCart }) {
         ))} */}
         {/* Promo */}
         <Section style={{ paddingTop: 64, ...Styles.section }}>
-          <Title title={"Promos \nda Semana"}>
+          <Title title={'Promos \nda Semana'}>
             <TouchableOpacity onPress={() => {}}>
               <FavoriteIcon name="Favorite" size={24} />
             </TouchableOpacity>
@@ -165,7 +169,7 @@ function Home({ navigation, lengthCart, saveLengthCart }) {
             <View style={Styles.containerTitleBel}>
               <Title
                 size="xlarge"
-                title={"Queri\ndinhos"}
+                title={'Queri\ndinhos'}
                 style={{
                   marginBottom: 0,
                   paddingBottom: 0,
@@ -227,8 +231,15 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  saveLengthCart,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveLengthCart,
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
