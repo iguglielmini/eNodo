@@ -13,6 +13,10 @@ class DeviceStorage {
     return JSON.parse(await AsyncStorage.getItem(key));
   }
 
+  async removeItem(key) {
+    return AsyncStorage.removeItem(key);
+  }
+
   async multiRemove(keys) {
     try {
       AsyncStorage.multiRemove(keys);

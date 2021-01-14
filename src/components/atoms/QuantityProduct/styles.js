@@ -22,6 +22,7 @@ export default StyleSheet.create({
   },
   viewContainer: {
     width: 40,
+    // backgroundColor: '#FF0000',
   },
   label: {
     textAlign: 'left',

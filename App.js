@@ -9,8 +9,9 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 // import config from '@/config';
 import Router from './router';
-import reduxStore from './src/redux-store';
-import ApiAuth from './src/modules/api/api-auth';
+import reduxStore from '@redux';
+import ApiAuth from '@modules/api/api-auth';
+import DeviceStorage from '@modules/services/device-storage';
 
 export const Notification = React.createRef();
 
@@ -28,11 +29,11 @@ class App extends Component {
     crashlytics().log('App mounted.');
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Intro page
     setTimeout(() => SplashScreen.hide(), 500);
-
-    ApiAuth.session();
+    await DeviceStorage.removeItem('@BelshopApp:cart');
+    await ApiAuth.session();
   }
 
   render() {

@@ -100,7 +100,7 @@ const CarouselBranding = ({
 };
 CarouselBranding.propTypes = {
   pageName: PropTypes.string,
-  showFooter: PropTypes.bool.isRequired,
+  showFooter: PropTypes.bool,
   styleTitle: PropTypes.objectOf(PropTypes.any),
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -109,6 +109,7 @@ CarouselBranding.propTypes = {
 CarouselBranding.defaultProps = {
   styleTitle: {},
   pageName: null,
+  showFooter: false,
 };
 
 export default CarouselBranding;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Image, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 /* Components */
 import Title from '@components/atoms/Title';
@@ -44,6 +44,10 @@ class Home extends Component {
     super(props);
 
     this.state = {};
+  }
+
+  UNSAFE_componentWillMount() {
+    this.getLengthCart();
   }
 
   componentDidMount() {
@@ -90,14 +94,17 @@ class Home extends Component {
   // } */
 
   getLengthCart = async () => {
+    let lengthItems = 0;
     const cart = await DeviceStorage.getItem('@BelshopApp:cart');
+
     if (cart) {
       const { items } = cart;
-      const lengthItems = items
+      lengthItems = items
         .map(item => item.quantity)
         .reduce((acumulator, currentValue) => acumulator + currentValue);
-      this.props.saveLengthCart(lengthItems);
     }
+
+    this.props.saveLengthCart(lengthItems);
   };
 
   render() {

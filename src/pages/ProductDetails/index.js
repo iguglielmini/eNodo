@@ -54,7 +54,7 @@ class ProductDetails extends Component {
 
   showModalDetails = (details) => {
     const { modalDetailsVisible } = this.state;
-    this.setState({ modalDetailsVisible, details });
+    this.setState({ modalDetailsVisible: !modalDetailsVisible, details });
   };
 
   addProductToCart = (setLoading, setModalBuyVisible) => {
