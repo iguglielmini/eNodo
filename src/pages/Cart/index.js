@@ -73,12 +73,16 @@ class Cart extends Component {
 
     if (cart) {
       const { items } = cart;
-      const lengthItens = items
+      if (!items.length) cart.items = [];
+      if (items.length) {
+        const lengthItens = items
         .map(item => item.quantity)
         .reduce((acumulator, currentValue) => acumulator + currentValue);
       this.props.saveLengthCart(lengthItens);
-      this.setState({ cart });
+      }
     }
+
+    this.setState({ cart });
   };
 
   selectQuantity = async (index, value, itemId) => {

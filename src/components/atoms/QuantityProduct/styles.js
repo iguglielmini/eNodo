@@ -50,6 +50,7 @@ export default StyleSheet.create({
   },
   iconContainer: {
     left: 25,
+    zIndex: -1,
     top: Platform.OS === 'ios' ? 3 : 20,
   },
   pickerSelectStyles: {

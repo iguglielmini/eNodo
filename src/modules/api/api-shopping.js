@@ -88,7 +88,7 @@ class ShoppingService extends Api {
       });
   }
 
-  basketDeleteItem(id) {
+  async basketDeleteItem(id) {
     return this.delete(`/shopping/basket/item/${id}`)
       .then((response) => {
         if (response.status === 200) {

@@ -2,7 +2,7 @@ import Api from '.';
 import APIErrorHandler from './api-error-handler';
 
 class AuthService extends Api {
-  login(data) {
+  async login(data) {
     /**
       DATA STRUCTURE
       {
@@ -26,7 +26,7 @@ class AuthService extends Api {
       });
   }
 
-  logout() {
+  async logout() {
     return this.post('/auth/logout')
       .then((response) => {
         if (response.status === 200) {
@@ -43,7 +43,7 @@ class AuthService extends Api {
       });
   }
 
-  recovery(data) {
+  async recovery(data) {
     /**
       DATA STRUCTURE
       {
@@ -67,7 +67,7 @@ class AuthService extends Api {
       });
   }
 
-  session() {
+  async session() {
     return this.get('/auth/session')
       .then((response) => {
         if (response.status === 200) {

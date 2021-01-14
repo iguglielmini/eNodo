@@ -30,18 +30,9 @@ class App extends Component {
 
   componentDidMount() {
     // Intro page
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 500);
+    setTimeout(() => SplashScreen.hide(), 500);
 
-    this.getSession();
-  }
-
-  getSession() {
     ApiAuth.session();
-    setInterval(() => {
-      ApiAuth.session();
-    }, 3000);
   }
 
   render() {
