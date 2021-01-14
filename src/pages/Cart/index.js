@@ -73,13 +73,14 @@ class Cart extends Component {
 
     if (cart) {
       const { items } = cart;
+
       if (!items.length) cart.items = [];
-      if (items.length) {
-        const lengthItens = items
+
+      const lengthItens = items
         .map(item => item.quantity)
         .reduce((acumulator, currentValue) => acumulator + currentValue);
+
       this.props.saveLengthCart(lengthItens);
-      }
     }
 
     this.setState({ cart });
