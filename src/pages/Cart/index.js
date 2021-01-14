@@ -61,7 +61,7 @@ class Cart extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    ApiCart.getBasket().then(async response => {
+    ApiCart.getBasket().then(async (response) => {
       if (response && response.basket) {
         this.setState({ loading: false });
         await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
@@ -91,7 +91,7 @@ class Cart extends Component {
     cart.items[index].quantity = value;
 
     ApiCart.basketUpdateItem(itemId, { quantity: Number(value) }).then(
-      async response => {
+      async (response) => {
         if (response && response.basket) {
           await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
           await this.getCart();
@@ -105,10 +105,10 @@ class Cart extends Component {
     this.setState({ currentScrollY: Math.floor(contentOffset.y) });
   };
 
-  handleRemoveProduct = itemId => {
+  handleRemoveProduct = (itemId) => {
     this.setState({ loading: true });
 
-    ApiCart.basketDeleteItem(itemId).then(async response => {
+    ApiCart.basketDeleteItem(itemId).then(async (response) => {
       const { basket } = response;
       if (response && basket) {
         this.setState({ loading: false });
@@ -120,7 +120,9 @@ class Cart extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { cart, scrollY, currentScrollY, loading } = this.state;
+    const {
+      cart, scrollY, currentScrollY, loading
+    } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -260,13 +262,12 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+  },
+  dispatch
+);
 
 export default connect(
   null,

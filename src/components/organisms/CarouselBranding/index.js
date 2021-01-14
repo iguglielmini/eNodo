@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  View, Image, Text, Dimensions, TouchableOpacity
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import Title from '@components/atoms/Title';
@@ -20,9 +22,8 @@ const Card = ({ item, navigation, pageName }) => {
         return (
           <TouchableOpacity
             key={key}
-            onPress={() =>
-              pageName &&
-              navigation.navigate(pageName, { filter: itemImage.linkSub })
+            onPress={() => pageName
+              && navigation.navigate(pageName, { filter: itemImage.linkSub })
             }
             activeOpacity={1}
           >

@@ -28,13 +28,6 @@ class App extends Component {
     crashlytics().log('App mounted.');
   }
 
-  getSession() {
-    ApiAuth.session();
-    setInterval(() => {
-      ApiAuth.session();
-    }, 3000);
-  }
-
   componentDidMount() {
     // Intro page
     setTimeout(() => {
@@ -42,6 +35,13 @@ class App extends Component {
     }, 500);
 
     this.getSession();
+  }
+
+  getSession() {
+    ApiAuth.session();
+    setInterval(() => {
+      ApiAuth.session();
+    }, 3000);
   }
 
   render() {

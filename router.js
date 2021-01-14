@@ -42,7 +42,7 @@ function Router() {
     },
   };
 
-  const routeChange = route => {
+  const routeChange = (route) => {
     const selectRouter = route.routes[route.index];
     const colors = statusBarColors[selectRouter.name];
     setStatusBarColor(colors.color);

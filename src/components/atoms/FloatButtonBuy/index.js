@@ -27,7 +27,7 @@ function FloatButtonBuy({ navigation, product }) {
       products: [{ product: product.id, sku: product.sku, quantity: 1 }],
     };
     ApiCart.basketAddItem(data)
-      .then(response => {
+      .then((response) => {
         setLoading(false);
         setModalBuyVisible(true);
 
@@ -80,13 +80,12 @@ function FloatButtonBuy({ navigation, product }) {
   );
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+  },
+  dispatch
+);
 
 export default connect(
   null,

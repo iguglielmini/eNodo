@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { BLACK, BORDERGREY } from '@assets/style/colors';
-import { SPACE_16, SPACE_24, SPACE_32, SPACE_44 } from '@assets/style/wrapper';
+import {
+  SPACE_16, SPACE_24, SPACE_32, SPACE_44
+} from '@assets/style/wrapper';
 import {
   TitleSmall,
   TitleXSmall,

@@ -4,20 +4,18 @@ import DeviceStorage from '../services/device-storage';
 
 export default class Api {
   constructor() {
-    axios.defaults.headers.post['Content-Type'] =
-      'application/x-www-form-urlencoded';
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     this.setHost();
     this.constructor.setAuthIntercept();
   }
 
   static async setAuthIntercept() {
-    axios.interceptors.response.use(undefined, async error => {
+    axios.interceptors.response.use(undefined, async (error) => {
       if (
-        error.response.status === 401 &&
-        error.response.data.message !== 'PASSWORD_MISMATCH' && // exclude login request
-        error.response.data.message !== 'USER_NOT_FOUND' // exclude login request
-      )
-        return this.logout();
+        error.response.status === 401
+        && error.response.data.message !== 'PASSWORD_MISMATCH' // exclude login request
+        && error.response.data.message !== 'USER_NOT_FOUND' // exclude login request
+      ) { return this.logout(); }
 
       return Promise.reject(error);
     });

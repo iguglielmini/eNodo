@@ -4,7 +4,7 @@ import APIErrorHandler from './api-error-handler';
 class ShoppingService extends Api {
   async getBasket() {
     return this.get('/shopping/basket')
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -14,15 +14,14 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
 
   async deleteBasket() {
     return this.delete('/shopping/basket')
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -32,8 +31,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
@@ -52,7 +50,7 @@ class ShoppingService extends Api {
       }
     */
     return this.post('/shopping/basket/item', data)
-      .then(response => {
+      .then((response) => {
         if (response.status === 201) {
           return {
             success: true,
@@ -62,8 +60,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
@@ -76,8 +73,7 @@ class ShoppingService extends Api {
       }
     */
     return this.put(`/shopping/basket/item/${id}`, data)
-      .then(response => {
-        console.log('MAH OI', response);
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -87,16 +83,14 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        console.log('MAH OI 2', response);
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
 
   basketDeleteItem(id) {
     return this.delete(`/shopping/basket/item/${id}`)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -106,15 +100,14 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
 
   async basketCheckout() {
     return this.get('/shopping/basket/checkout')
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -124,8 +117,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
@@ -138,7 +130,7 @@ class ShoppingService extends Api {
       }
     */
     return this.post('/shopping/basket/delivery', data)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -148,8 +140,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
@@ -162,7 +153,7 @@ class ShoppingService extends Api {
       }
     */
     return this.post('/shopping/basket/coupon', data)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -172,8 +163,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
@@ -186,7 +176,7 @@ class ShoppingService extends Api {
       }
     */
     return this.delete('/shopping/basket/coupon', data)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -196,8 +186,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
@@ -210,7 +199,7 @@ class ShoppingService extends Api {
       }
     */
     return this.post('/shopping/basket/postal-code', data)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -220,15 +209,14 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
 
   async getPostCode(postalCode) {
     return this.get(`/shopping/postal-code/${postalCode}`)
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return {
             success: true,
@@ -238,8 +226,7 @@ class ShoppingService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
-          return 'Please try again later.';
+        if (response && response.status === 500) { return 'Please try again later.'; }
         return APIErrorHandler.getErrorMessages(response);
       });
   }
