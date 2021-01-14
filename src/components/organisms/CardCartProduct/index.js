@@ -50,8 +50,7 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
                 price={product.price}
                 quantity={item.quantity}
                 removeProduct={() => removeProduct(item.basketItemId)}
-                onSelect={value =>
-                  selectQuantity(index, value, item.basketItemId)
+                onSelect={value => selectQuantity(index, value, item.basketItemId)
                 }
               />
             </Fragment>

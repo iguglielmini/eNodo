@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View, Image, Text, ScrollView, TouchableOpacity
+} from 'react-native';
 
 /* Components */
 import Title from '@components/atoms/Title';
@@ -231,13 +233,12 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+  },
+  dispatch
+);
 
 export default connect(
   mapStateToProps,

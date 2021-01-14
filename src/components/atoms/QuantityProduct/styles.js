@@ -1,7 +1,9 @@
 import { StyleSheet, Platform } from 'react-native';
 import { TitleXSmall } from '@assets/style/typography';
 import { SPACE_24, SPACE_16 } from '@assets/style/wrapper';
-import { TEXTPINK, BGGREY, BLACK, BORDERGREY } from '@assets/style/colors';
+import {
+  TEXTPINK, BGGREY, BLACK, BORDERGREY
+} from '@assets/style/colors';
 
 export default StyleSheet.create({
   containerAddProduct: {

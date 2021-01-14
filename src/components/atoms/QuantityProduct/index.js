@@ -11,7 +11,9 @@ import { convertToPriceText } from '@modules/utils';
 /** Styles */
 import Styles from './styles';
 
-function QuantityProduct({ quantity, onSelect, price, removeProduct }) {
+function QuantityProduct({
+  quantity, onSelect, price, removeProduct
+}) {
   const [selectItens, setData] = useState([]);
 
   useEffect(() => {

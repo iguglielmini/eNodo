@@ -25,7 +25,7 @@ class AccordionView extends Component {
     };
   }
 
-  renderEvaluation = numberStar => {
+  renderEvaluation = (numberStar) => {
     const itemStar = [];
     if (!numberStar) return null;
     for (let qtd = 1; qtd <= 5; qtd += 1) {
@@ -68,7 +68,7 @@ class AccordionView extends Component {
     </View>
   );
 
-  updateSections = activeSections => {
+  updateSections = (activeSections) => {
     this.setState({ activeSections });
   };
 
