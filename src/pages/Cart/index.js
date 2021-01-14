@@ -35,7 +35,7 @@ import { convertToPriceText } from '@modules/utils';
 import DeviceStorage from '@modules/services/device-storage';
 
 // Redux
-import { saveLengthCart } from '@redux/actions/cart';
+import { saveLengthCart } from '@redux/actions';
 
 /** Styles */
 import Styles from './styles';

@@ -33,13 +33,13 @@ import BrandingMock from '@mock/CarouselBrandingMock';
 import FilterButtonInfo from '@mock/FilterButtonMock';
 
 // Redux e Storade
-import { saveLengthCart } from '@redux/actions/cart';
+import { saveLengthCart } from '@redux/actions';
 import DeviceStorage from '@modules/services/device-storage';
 
 /* Styles */
 import Styles from './styles';
 
-function Home({ navigation, lengthCart, saveLengthCart }) {
+function Home({ navigation, lengthCart }) {
   // const [homeData, setHomeData] = useState([]);
   // useEffect(() => {
   //   const api = new HomeService();

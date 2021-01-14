@@ -11,12 +11,12 @@ import ModalBuy from '@components/organisms/ModalBuy';
 import ApiCart from '@modules/api/api-shopping';
 
 // Redux
-import { saveLengthCart } from '@redux/actions/cart';
+import { saveLengthCart } from '@redux/actions';
 
 /** Styles */
 import Styles from './styles';
 
-function FloatButtonBuy({ navigation, product, saveLengthCart }) {
+function FloatButtonBuy({ navigation, product }) {
   const [loading, setLoading] = useState(false);
   const [modalBuyVisible, setModalBuyVisible] = useState(false);
 
