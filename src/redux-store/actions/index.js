@@ -57,11 +57,11 @@ function decreaseNotification() {
 }
 
 export {
-    saveUser,
-    editUser,
-    saveNewFlags,
-    saveLengthCart,
-    saveMyCampaigns,
-    saveShareCampaigns,
-    decreaseNotification
-}
+  saveUser,
+  editUser,
+  saveNewFlags,
+  saveLengthCart,
+  saveMyCampaigns,
+  saveShareCampaigns,
+  decreaseNotification,
+};

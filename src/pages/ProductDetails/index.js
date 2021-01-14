@@ -48,10 +48,11 @@ class ProductDetails extends Component {
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
-  setModalDetailsVisible = modalDetailsVisible =>
+  setModalDetailsVisible = (modalDetailsVisible) => {
     this.setState({ modalDetailsVisible });
+  }
 
-  showModalDetails = details => {
+  showModalDetails = (details) => {
     const { modalDetailsVisible } = this.state;
     this.setState({ modalDetailsVisible, details });
   };
@@ -66,7 +67,7 @@ class ProductDetails extends Component {
       products: [{ product: id, sku, quantity: 1 }],
     };
     ApiCart.basketAddItem(data)
-      .then(response => {
+      .then((response) => {
         setLoading(false);
         setModalBuyVisible(true);
 
@@ -79,7 +80,7 @@ class ProductDetails extends Component {
         }
       })
       .catch(() => setLoading(false));
-  }
+  };
 
   render() {
     const { navigation } = this.props;

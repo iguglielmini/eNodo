@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  View, Image, Text, ScrollView, TouchableOpacity
-} from 'react-native';
+import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 /* Components */
 import Title from '@components/atoms/Title';
@@ -96,11 +94,11 @@ class Home extends Component {
     if (cart) {
       const { items } = cart;
       const lengthItems = items
-      .map(item => item.quantity)
-      .reduce((acumulator, currentValue) => acumulator + currentValue);
+        .map(item => item.quantity)
+        .reduce((acumulator, currentValue) => acumulator + currentValue);
       this.props.saveLengthCart(lengthItems);
     }
-  }
+  };
 
   render() {
     const { lengthCart, navigation } = this.props;
@@ -148,7 +146,7 @@ class Home extends Component {
             <ListCard data={CardlistMock} navigation={navigation} />
           </Section>
           {/* End Promo */}
-  
+
           {/* Marcas */}
           <Section style={{ paddingTop: 16 }}>
             <CarouselBranding
@@ -159,7 +157,7 @@ class Home extends Component {
             />
           </Section>
           {/* End Marcas */}
-  
+
           {/* Realease */}
           <Section style={[Styles.belSection, Styles.section]}>
             <View style={Styles.containerBel}>
@@ -185,7 +183,7 @@ class Home extends Component {
             <ButtonSeeAll theme="light" />
           </Section>
           {/* End Realease */}
-  
+
           {/* Novidades */}
           <Section style={{ paddingTop: 48 }} theme="dark">
             <Title
@@ -204,13 +202,13 @@ class Home extends Component {
             <ButtonSeeAll theme="dark" />
           </Section>
           {/* End Novidades */}
-  
+
           {/* Search about doubt */}
           <Section style={{ paddingTop: 80 }}>
             <Title title="O que você procura?" />
             <FilterButton
               data={FilterButtonInfo}
-              onClick={() => handleShowCategory()}
+              onClick={() => navigation.navigate('Category')}
             />
             <LinkHelp data={LinkHelpMock.LinkHome} />
           </Section>
@@ -229,12 +227,13 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    saveLengthCart,
-  },
-  dispatch
-);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveLengthCart,
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

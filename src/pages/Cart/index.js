@@ -69,17 +69,14 @@ class Cart extends Component {
   }
 
   getCart = async () => {
-    const { saveLengthCart } = this.props;
     const cart = await DeviceStorage.getItem('@BelshopApp:cart');
 
     if (cart) {
       const { items } = cart;
-      const itemsQuantity = items.map(item => item.quantity);
-      saveLengthCart(
-        itemsQuantity.reduce(
-          (acumulator, currentValue) => acumulator + currentValue
-        )
-      );
+      const lengthItens = items
+        .map(item => item.quantity)
+        .reduce((acumulator, currentValue) => acumulator + currentValue);
+      this.props.saveLengthCart(lengthItens);
       this.setState({ cart });
     }
   };
@@ -119,7 +116,10 @@ class Cart extends Component {
   render() {
     const { navigation } = this.props;
     const {
-      cart, scrollY, currentScrollY, loading
+      cart,
+      scrollY,
+      loading,
+      currentScrollY,
     } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
@@ -260,12 +260,8 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    saveLengthCart,
-  },
-  dispatch
-);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   null,

@@ -41,7 +41,8 @@ function QuantityProduct({
             Icon={() => <IconArrowDonw />}
             style={{
               iconContainer: Styles.iconContainer,
-              viewContainer: Styles.viewContainer,
+              inputIOSContainer: Styles.viewContainer,
+              inputAndroidContainer: Styles.viewContainer,
               pickerSelectStyles: Styles.pickerSelectStyles,
             }}
           />
