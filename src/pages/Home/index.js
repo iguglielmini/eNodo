@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -41,8 +41,18 @@ import DeviceStorage from '@modules/services/device-storage';
 /* Styles */
 import Styles from './styles';
 
-function Home({ navigation, lengthCart }) {
-  // const [homeData, setHomeData] = useState([]);
+class Home extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  componentDidMount() {
+    this.getLengthCart();
+  }
+
+  /* const [homeData, setHomeData] = useState([]);
   // useEffect(() => {
   //   const api = new HomeService();
   //   api.getHome()
@@ -53,18 +63,8 @@ function Home({ navigation, lengthCart }) {
   //     })
   //     .catch(() => false);
   // }, []);
-
-  function handleShowCategory() {
-    navigation.navigate('Category');
-  }
-
-  function handleShowCart() {
-    navigation.navigate('Cart');
-  }
-
   // function renderWiget(widget) {
   //   const { template } = widget;
-
   //   switch (template) {
   //     case 'swiper':
   //       return (
@@ -80,149 +80,145 @@ function Home({ navigation, lengthCart }) {
   //           <ListCard data={CardlistMock} navigation={navigation} />
   //         </View>
   //       );
-
   //     default:
   //       return false;
   //   }
   // }
-
   // function renderWidgets(widgets) {
   //   if (widgets && widgets.length > 0) {
   //     return widgets.map(item => renderWiget(item));
   //   }
   //   return false;
-  // }
+  // } */
 
-  async function getLengthCart() {
+  getLengthCart = async () => {
     const cart = await DeviceStorage.getItem('@BelshopApp:cart');
     if (cart) {
       const { items } = cart;
-      const itemsQuantity = items.map(item => item.quantity);
-      saveLengthCart(
-        itemsQuantity.reduce(
-          (acumulator, currentValue) => acumulator + currentValue
-        )
-      );
+      const lengthItems = items
+      .map(item => item.quantity)
+      .reduce((acumulator, currentValue) => acumulator + currentValue);
+      this.props.saveLengthCart(lengthItems);
     }
   }
 
-  useEffect(() => {
-    getLengthCart();
-  }, []);
+  render() {
+    const { lengthCart, navigation } = this.props;
 
-  return (
-    <>
-      <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
-        {/* {homeData && homeData.length > 0 && homeData.map((item, index) => (
-          <Section key={`section_${index.toString()}`}>
-            <Title title={item.title}>
-              {index === 0 && (
-                <>
-                  <TouchableOpacity onPress={() => {}}>
-                    <FavoriteIcon name="Favorite" size={24} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleShowCart()} style={Styles.bagIcon}>
-                    <BagIcon name="Bag" size={24} />
-                  </TouchableOpacity>
-                </>
-              )}
+    return (
+      <>
+        <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
+          {/* {homeData && homeData.length > 0 && homeData.map((item, index) => (
+            <Section key={`section_${index.toString()}`}>
+              <Title title={item.title}>
+                {index === 0 && (
+                  <>
+                    <TouchableOpacity onPress={() => {}}>
+                      <FavoriteIcon name="Favorite" size={24} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleShowCart()} style={Styles.bagIcon}>
+                      <BagIcon name="Bag" size={24} />
+                    </TouchableOpacity>
+                  </>
+                )}
+              </Title>
+              {renderWidgets(item.widgets)}
+            </Section>
+          ))} */}
+          {/* Promo */}
+          <Section style={{ paddingTop: 64, ...Styles.section }}>
+            <Title title={'Promos \nda Semana'}>
+              <TouchableOpacity onPress={() => {}}>
+                <FavoriteIcon name="Favorite" size={24} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={Styles.bagIcon}
+                onPress={() => navigation.navigate('Cart')}
+              >
+                {lengthCart > 0 ? (
+                  <>
+                    <BagFillIcon name="Bag" size={24} />
+                    <Text style={Styles.badgeText}>{lengthCart}</Text>
+                  </>
+                ) : (
+                  <BagOutlineIcon name="Bag" size={24} />
+                )}
+              </TouchableOpacity>
             </Title>
-            {renderWidgets(item.widgets)}
+            <ListCard data={CardlistMock} navigation={navigation} />
           </Section>
-        ))} */}
-        {/* Promo */}
-        <Section style={{ paddingTop: 64, ...Styles.section }}>
-          <Title title={'Promos \nda Semana'}>
-            <TouchableOpacity onPress={() => {}}>
-              <FavoriteIcon name="Favorite" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={Styles.bagIcon}
-              onPress={() => handleShowCart()}
-            >
-              {lengthCart > 0 ? (
-                <>
-                  <BagFillIcon name="Bag" size={24} />
-                  <Text style={Styles.badgeText}>{lengthCart}</Text>
-                </>
-              ) : (
-                <BagOutlineIcon name="Bag" size={24} />
-              )}
-            </TouchableOpacity>
-          </Title>
-          <ListCard data={CardlistMock} navigation={navigation} />
-        </Section>
-        {/* End Promo */}
-
-        {/* Marcas */}
-        <Section style={{ paddingTop: 16 }}>
-          <CarouselBranding
-            showFooter
-            title="Marcas"
-            data={BrandingMock}
-            navigation={navigation}
-          />
-        </Section>
-        {/* End Marcas */}
-
-        {/* Realease */}
-        <Section style={[Styles.belSection, Styles.section]}>
-          <View style={Styles.containerBel}>
-            <View style={Styles.containerTitleBel}>
-              <Title
-                size="xlarge"
-                title={'Queri\ndinhos'}
-                style={{
-                  marginBottom: 0,
-                  paddingBottom: 0,
-                  marginLeft: 0,
-                  paddingLeft: 0,
-                }}
-              />
-              <Image source={imageBel} style={Styles.belImage} />
-            </View>
-            <Image source={imageKiss} style={Styles.kissImage} />
-          </View>
-          <View style={{ paddingBottom: 44 }}>
-            <IntroCard data={ProductInfo} />
-          </View>
-          <ListCard data={CardlistMock} navigation={navigation} />
-          <ButtonSeeAll theme="light" />
-        </Section>
-        {/* End Realease */}
-
-        {/* Novidades */}
-        <Section style={{ paddingTop: 48 }} theme="dark">
-          <Title
-            title="Novidades"
-            theme="dark"
-            style={Styles.novidadeBellTitle}
-          />
-          <ImageIntroCard />
-          <View style={Styles.section}>
-            <ListCard
-              data={CardlistMock}
-              theme="dark"
+          {/* End Promo */}
+  
+          {/* Marcas */}
+          <Section style={{ paddingTop: 16 }}>
+            <CarouselBranding
+              showFooter
+              title="Marcas"
+              data={BrandingMock}
               navigation={navigation}
             />
-          </View>
-          <ButtonSeeAll theme="dark" />
-        </Section>
-        {/* End Novidades */}
-
-        {/* Search about doubt */}
-        <Section style={{ paddingTop: 80 }}>
-          <Title title="O que você procura?" />
-          <FilterButton
-            data={FilterButtonInfo}
-            onClick={() => handleShowCategory()}
-          />
-          <LinkHelp data={LinkHelpMock.LinkHome} />
-        </Section>
-        {/* End search about doubt */}
-      </ScrollView>
-    </>
-  );
+          </Section>
+          {/* End Marcas */}
+  
+          {/* Realease */}
+          <Section style={[Styles.belSection, Styles.section]}>
+            <View style={Styles.containerBel}>
+              <View style={Styles.containerTitleBel}>
+                <Title
+                  size="xlarge"
+                  title={'Queri\ndinhos'}
+                  style={{
+                    marginBottom: 0,
+                    paddingBottom: 0,
+                    marginLeft: 0,
+                    paddingLeft: 0,
+                  }}
+                />
+                <Image source={imageBel} style={Styles.belImage} />
+              </View>
+              <Image source={imageKiss} style={Styles.kissImage} />
+            </View>
+            <View style={{ paddingBottom: 44 }}>
+              <IntroCard data={ProductInfo} />
+            </View>
+            <ListCard data={CardlistMock} navigation={navigation} />
+            <ButtonSeeAll theme="light" />
+          </Section>
+          {/* End Realease */}
+  
+          {/* Novidades */}
+          <Section style={{ paddingTop: 48 }} theme="dark">
+            <Title
+              title="Novidades"
+              theme="dark"
+              style={Styles.novidadeBellTitle}
+            />
+            <ImageIntroCard />
+            <View style={Styles.section}>
+              <ListCard
+                data={CardlistMock}
+                theme="dark"
+                navigation={navigation}
+              />
+            </View>
+            <ButtonSeeAll theme="dark" />
+          </Section>
+          {/* End Novidades */}
+  
+          {/* Search about doubt */}
+          <Section style={{ paddingTop: 80 }}>
+            <Title title="O que você procura?" />
+            <FilterButton
+              data={FilterButtonInfo}
+              onClick={() => handleShowCategory()}
+            />
+            <LinkHelp data={LinkHelpMock.LinkHome} />
+          </Section>
+          {/* End search about doubt */}
+        </ScrollView>
+      </>
+    );
+  }
 }
 
 Home.propTypes = {

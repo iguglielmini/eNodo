@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Text, ScrollView, TouchableOpacity
-} from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 /* component */
 import ListCard from '@components/molecules/ListCard';
@@ -23,120 +23,176 @@ import FavoriteIcon from '@assets/svg/favorite';
 import CardlistMock from '@mock/CardListMock';
 import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 
+// API
+import ApiCart from '@modules/api/api-shopping';
+
+// Redux
+import { saveLengthCart } from '@redux/actions';
+
 /** Styles */
 import Styles from './styles';
 
-function ProductDetails({ route, navigation }) {
-  const { id, sku } = route.params;
-  const [details, setDetails] = useState({});
-  const [textCep, setTextCep] = useState('');
-  const [modalCepVisible, setModalCepVisible] = useState(false);
-  const [modalDetailsVisible, setModalDetailsVisible] = useState(false);
+class ProductDetails extends Component {
+  constructor(props) {
+    super(props);
 
-  function showModalDetails(item) {
-    setModalDetailsVisible(!modalDetailsVisible);
-    setDetails(item);
+    this.state = {
+      textCep: '',
+      details: {},
+      modalCepVisible: false,
+      modalDetailsVisible: false,
+    };
   }
 
-  return (
-    <>
-      {/* Header */}
-      <View style={Styles.ContainerHeader}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={Styles.btnImageIcon}>
-            <ArrowVIcon />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <View style={Styles.btnImageIcon}>
-            <FavoriteIcon />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <ScrollView
-        contentContainerStyle={Styles.ContainerScroll}
-        keyboardShouldPersistTaps="always"
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Carousel Product */}
-        <CarouselProduct />
-        {/* Title Product */}
-        <View style={Styles.containerTitle}>
-          <Text style={Styles.titleProduct}>KÉRASTASE</Text>
-          <Text style={Styles.subTitle}>
-            Kérastase Genesis Anti-Chute Fortifiant - Sérum Finalizador - 90ml
-          </Text>
+  setTextCep = textCep => this.setState({ textCep });
+
+  setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
+
+  setModalDetailsVisible = modalDetailsVisible =>
+    this.setState({ modalDetailsVisible });
+
+  showModalDetails = details => {
+    const { modalDetailsVisible } = this.state;
+    this.setState({ modalDetailsVisible, details });
+  };
+
+  addProductToCart = (setLoading, setModalBuyVisible) => {
+    const { route } = this.props;
+    const { id, sku } = route.params;
+
+    setLoading(true);
+
+    const data = {
+      products: [{ product: id, sku, quantity: 1 }],
+    };
+    ApiCart.basketAddItem(data)
+      .then(response => {
+        setLoading(false);
+        setModalBuyVisible(true);
+
+        if (response && response.basket) {
+          const { items } = response.basket;
+          const lengthItems = items
+            .map(item => item.quantity)
+            .reduce((acumulator, currentValue) => acumulator + currentValue);
+          this.props.saveLengthCart(lengthItems);
+        }
+      })
+      .catch(() => setLoading(false));
+  }
+
+  render() {
+    const { navigation } = this.props;
+    const {
+      textCep,
+      details,
+      modalCepVisible,
+      modalDetailsVisible,
+    } = this.state;
+    return (
+      <>
+        {/* Header */}
+        <View style={Styles.ContainerHeader}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <View style={Styles.btnImageIcon}>
+              <ArrowVIcon />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <View style={Styles.btnImageIcon}>
+              <FavoriteIcon />
+            </View>
+          </TouchableOpacity>
         </View>
-        {/* Details Payment */}
-        <View style={Styles.containerDescription}>
-          <View style={Styles.detailsProduct}>
-            <DetailIcon />
-            <View style={Styles.description}>
-              <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
-              <View style={Styles.modalContainer}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={Styles.ContainerScroll}
+        >
+          {/* Carousel Product */}
+          <CarouselProduct />
+          {/* Title Product */}
+          <View style={Styles.containerTitle}>
+            <Text style={Styles.titleProduct}>KÉRASTASE</Text>
+            <Text style={Styles.subTitle}>
+              Kérastase Genesis Anti-Chute Fortifiant - Sérum Finalizador - 90ml
+            </Text>
+          </View>
+          {/* Details Payment */}
+          <View style={Styles.containerDescription}>
+            <View style={Styles.detailsProduct}>
+              <DetailIcon />
+              <View style={Styles.description}>
+                <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
+                <View style={Styles.modalContainer}>
+                  <Text style={Styles.descriptionSubTitle}>
+                    Entrega em até 7 dias úteis após a postagem do produto.
+                    &nbsp;
+                    <Text
+                      style={Styles.btnModal}
+                      onPress={() => this.setModalCepVisible(true)}
+                    >
+                      {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+                    </Text>
+                  </Text>
+                  <ModalCep
+                    cepValue={textCep}
+                    visible={modalCepVisible}
+                    onChangeCep={this.setTextCep}
+                    setVisible={this.setModalCepVisible}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View style={Styles.detailsProduct}>
+              <LogoIcon />
+              <View style={Styles.description}>
+                <Text style={Styles.descriptionTitle}>Loja com estoque</Text>
                 <Text style={Styles.descriptionSubTitle}>
-                  Entrega em até 7 dias úteis após a postagem do produto. &nbsp;
-                  <Text
-                    style={Styles.btnModal}
-                    onPress={() => setModalCepVisible(true)}
-                  >
-                    {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+                  Av. Wenceslau Escobar. 2801 Tristeza, Porto Alegre-RS &nbsp;
+                  <Text style={Styles.btnModal} onPress={() => {}}>
+                    Outras lojas
                   </Text>
                 </Text>
-                <ModalCep
-                  visible={modalCepVisible}
-                  setVisible={setModalCepVisible}
-                  onChangeCep={setTextCep}
-                  cepValue={textCep}
-                />
               </View>
             </View>
           </View>
-
-          <View style={Styles.detailsProduct}>
-            <LogoIcon />
-            <View style={Styles.description}>
-              <Text style={Styles.descriptionTitle}>Loja com estoque</Text>
-              <Text style={Styles.descriptionSubTitle}>
-                Av. Wenceslau Escobar. 2801 Tristeza, Porto Alegre-RS &nbsp;
-                <Text style={Styles.btnModal} onPress={() => {}}>
-                  Outras lojas
-                </Text>
-              </Text>
-            </View>
+          {/* Accordion */}
+          <View style={Styles.containerAccordion}>
+            <Accordion actionMore={this.showModalDetails} />
+            <ModalDetails
+              details={details}
+              visible={modalDetailsVisible}
+              setVisible={this.setModalDetailsVisible}
+            />
           </View>
-        </View>
-        {/* Accordion */}
-        <View style={Styles.containerAccordion}>
-          <Accordion actionMore={showModalDetails} />
-          <ModalDetails
-            visible={modalDetailsVisible}
-            setVisible={setModalDetailsVisible}
-            details={details}
-          />
-        </View>
-        {/* Compre Junto Area */}
-        <View style={Styles.containerCarouselPay}>
-          <Text style={Styles.ClientPayTitle}>Compre junto</Text>
-          <CarouselBuyTogether data={CardBuyTogetherMock} />
-        </View>
-        {/* Clientes Tambem Compraram Area */}
-        <View style={Styles.ContainerClientPay}>
-          <Text style={Styles.ClientPayTitle}>Clientes também compraram</Text>
-          <ListCard data={CardlistMock} navigation={navigation} />
-        </View>
-        {/* Produtos semelhantes */}
-        <View style={Styles.ContainerProductSimilar}>
-          <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
-          <Text style={Styles.budget}>Cabelos › Finalizadores</Text>
-          <ListCard data={CardlistMock} navigation={navigation} />
-        </View>
-      </ScrollView>
-      {/* Modal But */}
-      {/* Float button */}
-      <FloatButtonBuy navigation={navigation} product={{ id, sku }} />
-    </>
-  );
+          {/* Compre Junto Area */}
+          <View style={Styles.containerCarouselPay}>
+            <Text style={Styles.ClientPayTitle}>Compre junto</Text>
+            <CarouselBuyTogether data={CardBuyTogetherMock} />
+          </View>
+          {/* Clientes Tambem Compraram Area */}
+          <View style={Styles.ContainerClientPay}>
+            <Text style={Styles.ClientPayTitle}>Clientes também compraram</Text>
+            <ListCard data={CardlistMock} navigation={navigation} />
+          </View>
+          {/* Produtos semelhantes */}
+          <View style={Styles.ContainerProductSimilar}>
+            <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
+            <Text style={Styles.budget}>Cabelos › Finalizadores</Text>
+            <ListCard data={CardlistMock} navigation={navigation} />
+          </View>
+        </ScrollView>
+        {/* Modal But */}
+        {/* Float button */}
+        <FloatButtonBuy
+          navigation={navigation}
+          addProductToCart={this.addProductToCart}
+        />
+      </>
+    );
+  }
 }
 
 ProductDetails.propTypes = {
@@ -144,4 +200,15 @@ ProductDetails.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default ProductDetails;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveLengthCart,
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ProductDetails);

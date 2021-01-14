@@ -1,48 +1,16 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 // Compoment
 import ModalBuy from '@components/organisms/ModalBuy';
 
-// API
-import ApiCart from '@modules/api/api-shopping';
-
-// Redux
-import { saveLengthCart } from '@redux/actions';
-
 /** Styles */
 import Styles from './styles';
 
-function FloatButtonBuy({ navigation, product }) {
+function FloatButtonBuy({ navigation, addProductToCart }) {
   const [loading, setLoading] = useState(false);
   const [modalBuyVisible, setModalBuyVisible] = useState(false);
-
-  function addProductToCart() {
-    setLoading(true);
-
-    const data = {
-      products: [{ product: product.id, sku: product.sku, quantity: 1 }],
-    };
-    ApiCart.basketAddItem(data)
-      .then((response) => {
-        setLoading(false);
-        setModalBuyVisible(true);
-
-        if (response && response.basket) {
-          const { items } = response.basket;
-          const itemsQuantity = items.map(item => item.quantity);
-          saveLengthCart(
-            itemsQuantity.reduce(
-              (acumulator, currentValue) => acumulator + currentValue
-            )
-          );
-        }
-      })
-      .catch(() => setLoading(false));
-  }
 
   return (
     <>
@@ -62,7 +30,7 @@ function FloatButtonBuy({ navigation, product }) {
             <Text>10x de R$ 30,52</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={addProductToCart}>
+        <TouchableOpacity onPress={() => addProductToCart(setLoading, setModalBuyVisible)}>
           <View style={Styles.buttonPayment}>
             <Text style={Styles.payTitleButton}>
               {loading ? 'Carregando...' : 'Comprar'}
@@ -80,14 +48,4 @@ function FloatButtonBuy({ navigation, product }) {
   );
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    saveLengthCart,
-  },
-  dispatch
-);
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(FloatButtonBuy);
+export default FloatButtonBuy;

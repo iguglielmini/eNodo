@@ -48,7 +48,7 @@ class Cart extends Component {
     super(props);
 
     this.state = {
-      loading: false,
+      loading: true,
       currentScrollY: 0,
       scrollY: new Animated.Value(0),
       cart: {
@@ -59,8 +59,6 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
-
     ApiCart.getBasket().then(async (response) => {
       if (response && response.basket) {
         this.setState({ loading: false });
