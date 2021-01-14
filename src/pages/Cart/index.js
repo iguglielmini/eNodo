@@ -69,20 +69,21 @@ class Cart extends Component {
   }
 
   getCart = async () => {
+    let lengthItens = 0;
     const cart = await DeviceStorage.getItem('@BelshopApp:cart');
 
     if (cart) {
       const { items } = cart;
 
       if (!items.length) cart.items = [];
-
-      const lengthItens = items
+      if (items.length) {
+        lengthItens = items
         .map(item => item.quantity)
         .reduce((acumulator, currentValue) => acumulator + currentValue);
-
-      this.props.saveLengthCart(lengthItens);
+      }
     }
-
+    
+    this.props.saveLengthCart(lengthItens);
     this.setState({ cart });
   };
 
