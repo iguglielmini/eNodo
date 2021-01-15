@@ -27,7 +27,7 @@ function FloatCartButton({ navigation }) {
 
         <TouchableOpacity onPress={handleGoBack}>
           <View style={Styles.btnGoBack}>
-            <Text style={Styles.textBack}>Contine comprando</Text>
+            <Text style={Styles.textBack}>Continue comprando</Text>
           </View>
         </TouchableOpacity>
 

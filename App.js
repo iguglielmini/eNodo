@@ -29,11 +29,14 @@ class App extends Component {
     crashlytics().log('App mounted.');
   }
 
-  async componentDidMount() {
+  UNSAFE_componentWillMount() {
+    DeviceStorage.removeItem('@BelshopApp:cart');
+  }
+
+  componentDidMount() {
     // Intro page
     setTimeout(() => SplashScreen.hide(), 500);
-    await DeviceStorage.removeItem('@BelshopApp:cart');
-    await ApiAuth.session();
+    ApiAuth.session();
   }
 
   render() {

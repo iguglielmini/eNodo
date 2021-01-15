@@ -22,7 +22,6 @@ export default StyleSheet.create({
   },
   viewContainer: {
     width: 40,
-    // backgroundColor: '#FF0000',
   },
   label: {
     textAlign: 'left',
@@ -56,5 +55,6 @@ export default StyleSheet.create({
   },
   pickerSelectStyles: {
     color: BLACK,
+    zIndex: 9999,
   },
 });

@@ -46,10 +46,6 @@ class Home extends Component {
     this.state = {};
   }
 
-  UNSAFE_componentWillMount() {
-    this.getLengthCart();
-  }
-
   componentDidMount() {
     this.getLengthCart();
   }
