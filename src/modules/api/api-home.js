@@ -1,21 +1,19 @@
 import Api from '.';
 import APIErrorHandler from './api-error-handler';
 
-export default class HomeService extends Api {
-  getHome() {
+class HomeService extends Api {
+  async getHome() {
     return this.get('/home')
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
+      .then(({ status, data }) => {
+        if (status === 200) return data;
         return false;
       })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
+      .catch(({ response }) => {
+        if (response && response.status === 500)
+          return 'Please try again later.';
+        return APIErrorHandler.getErrorMessages(response);
       });
   }
 }
+
+export default new HomeService();

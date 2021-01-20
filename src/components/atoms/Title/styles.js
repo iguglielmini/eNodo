@@ -20,9 +20,9 @@ export default StyleSheet.create({
     color: WHITE,
   },
   container: {
-    paddingHorizontal: SPACE_16,
+    marginBottom: SPACE_44,
     alignItems: 'flex-start',
+    paddingHorizontal: SPACE_16,
     justifyContent: 'space-between',
-    marginBottom: SPACE_44
   },
 });

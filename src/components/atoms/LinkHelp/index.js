@@ -15,7 +15,7 @@ function LinkHelp({ data, onClick }) {
         {data.map((item, index) => {
           const key = index;
           return (
-            <TouchableOpacity key={key} onPress={() => onClick()}>
+            <TouchableOpacity key={key} onPress={onClick}>
               <View style={[Styles.btnHelp, (key === data.length - 1) && Styles.borderNone]}>
                 <Text style={Styles.titleHelp}>{item.title}</Text>
                 <ArrowV />

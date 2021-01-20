@@ -17,13 +17,13 @@ function FilterButton({ data, onClick }) {
         return (
           <TouchableOpacity
             key={key}
+            onPress={onClick}
             style={Styles.card}
-            onPress={() => onClick()}
           >
             <Image
-              style={Styles.containerImage}
-              source={item.image.url}
               resizeMode="cover"
+              source={{ uri: item.image }}
+              style={Styles.containerImage}
             />
             <Text style={Styles.description}>{item.title}</Text>
           </TouchableOpacity>
