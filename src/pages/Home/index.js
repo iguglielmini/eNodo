@@ -154,7 +154,7 @@ class Home extends Component {
 
       if (template === 'links') {
         tempSections.push(
-          <Section key={key}>
+          <Section key={key} style={{ paddingVertical: 0 }}>
             <LinkHelp data={items} />
           </Section>
         );
