@@ -1,22 +1,25 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { SPACE_16, SPACE_24 } from '@assets/style/wrapper';
 import { WHITE, BLACK, BORDERGREY } from '@assets/style/colors';
-import { SPACE_16 } from '@assets/style/wrapper';
-import { TitleXSmall, FONT_FAMILY, FONT_WEIGHT_MEDIUM } from '@assets/style/typography';
+import {
+  TitleXSmall,
+  FONT_FAMILY,
+  FONT_WEIGHT_MEDIUM,
+} from '@assets/style/typography';
 
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   card: {
-    width: (width - 47) / 2,
-    height: 330,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     paddingTop: 0,
+    width: (width - 47) / 2,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
   description: {
+    width: 139,
     ...TitleXSmall,
     marginTop: SPACE_16,
-    width: 139,
   },
   favoriteBtn: {
     right: 14,
@@ -27,17 +30,16 @@ export default StyleSheet.create({
     height: 200,
     width: '100%',
     borderRadius: 5,
+    overflow: 'hidden',
     resizeMode: 'cover',
     backgroundColor: WHITE,
-    overflow: 'hidden',
   },
   priceContainer: {
     width: '100%',
+    marginTop: SPACE_24,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    position: 'absolute',
-    bottom: 0
   },
   priceText: {
     ...TitleXSmall,
@@ -57,14 +59,14 @@ export default StyleSheet.create({
     color: BLACK,
   },
   discount: {
+    flex: 1,
     top: -24,
     right: 11,
     width: 48,
     height: 48,
     position: 'absolute',
-    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
   },
   discountText: {
     fontSize: 11,

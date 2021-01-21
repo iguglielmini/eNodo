@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { SPACE_16, SPACE_24, SPACE_48 } from '@assets/style/wrapper';
+import { SPACE_16, SPACE_24 } from '@assets/style/wrapper';
 import { FONT_WEIGHT_MEDIUM, FONT_FAMILY } from '@assets/style/typography';
 
 
@@ -7,7 +7,6 @@ export default StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 105,
-    marginTop: SPACE_48,
     marginHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'center',

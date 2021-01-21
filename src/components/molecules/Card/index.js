@@ -1,53 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Text, ImageBackground, TouchableOpacity
-} from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+
+// Utils
+import { convertToPriceText } from '@modules/utils';
 
 /* Icons */
 import BadgeIcon from '@assets/svg/badge';
 import FavoriteIcon from '@assets/svg/favorite';
+
 // Styles
 import Styles from './styles';
 
-function Card({
-  item, style, theme, onClick, onClickFavorite
-}) {
+function Card({ item, style, theme, onClick, onClickFavorite }) {
+  const { id, sku, title, image, url, price } = item;
+  const { discount, current, previous } = price;
   return (
     <>
-      <TouchableOpacity style={[Styles.card, style]} onPress={() => onClick()} activeOpacity={1}>
+      <TouchableOpacity
+        activeOpacity={1}
+        style={[Styles.card, style]}
+        onPress={() => onClick(id, sku)}
+      >
         <ImageBackground
-          style={Styles.containerImage}
-          source={item.image.url}
           resizeMode="cover"
+          source={{ uri: image }}
+          style={Styles.containerImage}
         >
           <TouchableOpacity
-            style={Styles.favoriteBtn}
-            onPress={() => onClickFavorite()}
             activeOpacity={1}
+            onPress={onClickFavorite}
+            style={Styles.favoriteBtn}
           >
             <FavoriteIcon size={24} />
           </TouchableOpacity>
         </ImageBackground>
-        {item.price.discount && (
+        {discount && (
           <View style={Styles.discount}>
             <BadgeIcon size={48} />
-            <Text style={Styles.discountText}>
-              {item.price.discount}
-              %
-            </Text>
+            <Text style={Styles.discountText}>{discount}%</Text>
           </View>
         )}
-        <Text style={[Styles[theme], Styles.description]}>
-          {item.title}
-        </Text>
+        <Text style={[Styles[theme], Styles.description]}>{title}</Text>
         <View style={Styles.priceContainer}>
           <Text style={[Styles.priceText, Styles.priceItem]}>
-            {item.price.current}
+            {convertToPriceText(current)}
           </Text>
-          <Text style={[Styles.priceText, Styles.pricelater]}>
-            {item.price.previous}
-          </Text>
+          {previous && (
+            <Text style={[Styles.priceText, Styles.pricelater]}>
+              {convertToPriceText(previous)}
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
     </>

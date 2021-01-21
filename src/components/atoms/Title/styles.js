@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { BLACK, WHITE } from '@assets/style/colors';
-import { SPACE_16, SPACE_44 } from '@assets/style/wrapper';
+import { SPACE_16, SPACE_32 } from '@assets/style/wrapper';
 
 
 export default StyleSheet.create({
@@ -20,7 +20,7 @@ export default StyleSheet.create({
     color: WHITE,
   },
   container: {
-    marginBottom: SPACE_44,
+    marginBottom: SPACE_32,
     alignItems: 'flex-start',
     paddingHorizontal: SPACE_16,
     justifyContent: 'space-between',

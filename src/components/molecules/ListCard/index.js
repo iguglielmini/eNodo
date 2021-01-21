@@ -13,28 +13,28 @@ function ListCard({ data, theme, navigation }) {
     navigation.navigate('ProductDetails', { id, sku });
   }
 
-  return (
-    <>
-      <View style={Styles.container}>
-        {data && data.length > 0 && data.map((item, index) => {
-          const key = index;
-          const isOdd = key % 2 === 1;
+  if (!data.length) return null;
 
-          return (
-            <Card
-              key={key}
-              item={item}
-              theme={theme}
-              onClick={() => handleShowDetailProduct(item.id, item.sku)}
-              style={{
-                marginTop: isOdd ? 64 : 0,
-                marginLeft: isOdd ? 15 : 0,
-              }}
-            />
-          );
-        })}
-      </View>
-    </>
+  return (
+    <View style={Styles.container}>
+      {data.map((item, index) => {
+        const key = index;
+        const isOdd = key % 2 === 1;
+
+        return (
+          <Card
+            key={key}
+            item={item}
+            theme={theme}
+            onClick={handleShowDetailProduct}
+            style={{
+              marginTop: isOdd ? 64 : 0,
+              marginLeft: isOdd ? 15 : 0,
+            }}
+          />
+        );
+      })}
+    </View>
   );
 }
 

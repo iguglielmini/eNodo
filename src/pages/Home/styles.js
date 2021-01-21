@@ -16,23 +16,26 @@ export default StyleSheet.create({
     paddingTop: SPACE_48,
   },
   belTitle: {
-    paddingHorizontal: SPACE_16,
+    marginLeft: 0,
+    paddingLeft: 0,
+    marginBottom: 0,
+    paddingBottom: 0,
   },
   containerBel: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    justifyContent: 'space-between',
     marginBottom: SPACE_48,
     paddingHorizontal: SPACE_16,
+    justifyContent: 'space-between',
   },
   containerTitleBel: {
-    flexDirection: 'column',
     alignItems: 'flex-end',
+    flexDirection: 'column',
   },
   belContainer: {
     marginTop: -SPACE_40,
-    marginBottom: SPACE_44,
     flexDirection: 'row',
+    marginBottom: SPACE_44,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
@@ -44,10 +47,5 @@ export default StyleSheet.create({
   },
   novidadeBellTitle: {
     paddingHorizontal: SPACE_32,
-  },
-  ButtonSeeAll: {
-    position: 'absolute',
-    bottom: 50,
-    marginLeft: SPACE_16,
   },
 });

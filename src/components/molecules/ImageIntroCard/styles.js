@@ -7,13 +7,13 @@ export default StyleSheet.create({
   container: {
     width: 400,
     height: 375,
-    padding: SPACE_32,
-    marginLeft: SPACE_16,
     borderRadius: 5,
-    marginVertical: SPACE_48,
+    padding: SPACE_32,
     overflow: 'hidden',
+    marginLeft: SPACE_16,
     flexDirection: 'column',
     alignItems: 'flex-start',
+    marginVertical: SPACE_48,
     justifyContent: 'flex-end',
   },
   title: {

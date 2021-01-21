@@ -1,32 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, Image, TouchableOpacity } from 'react-native';
+
+// Utils
+import { convertToPriceText } from '@modules/utils';
 
 // Styles
 import Styles from './styles';
 
-function IntroCard({ data, onClick }) {
-  const [info, setInfo] = useState({});
-
-  useEffect(() => {
-    setInfo(data);
-  });
-
+function IntroCard({ price, title, image, onClick }) {
   return (
-    <TouchableOpacity onPress={() => onClick()} style={Styles.container}>
-      <Text style={Styles.title}>{info && info.title}</Text>
-      <Text style={Styles.price}>
-        R$
-        { info && info.price && info.price.current }
-      </Text>
-      <Image source={info && info.image} resizeMode="cover" style={Styles.image} />
+    <TouchableOpacity onPress={onClick} style={Styles.container}>
+      <Text style={Styles.title}>{title}</Text>
+      <Text style={Styles.price}>{convertToPriceText(price.current)}</Text>
+      <Image source={{ uri: image }} resizeMode="cover" style={Styles.image} />
     </TouchableOpacity>
   );
 }
 
 IntroCard.propTypes = {
   onClick: PropTypes.func,
-  data: PropTypes.objectOf(PropTypes.any).isRequired,
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  price: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 IntroCard.defaultProps = {

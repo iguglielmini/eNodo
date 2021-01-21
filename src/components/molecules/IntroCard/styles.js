@@ -10,9 +10,9 @@ export default StyleSheet.create({
     width: '100%',
     borderRadius: 5,
     overflow: 'hidden',
+    backgroundColor: WHITE,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    backgroundColor: WHITE,
     justifyContent: 'space-between',
   },
   title: {
@@ -30,6 +30,8 @@ export default StyleSheet.create({
   image: {
     top: 26,
     right: -1,
+    width: 200,
+    height: 200,
     position: 'absolute',
   },
 });

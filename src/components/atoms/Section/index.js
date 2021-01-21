@@ -11,10 +11,7 @@ const Section = ({ children, theme, style }) => (
 
 Section.propTypes = {
   theme: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
+  children: PropTypes.any,
   style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 

@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Image, Text, Dimensions, TouchableOpacity
-} from 'react-native';
+import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import Title from '@components/atoms/Title';
@@ -13,31 +11,31 @@ import Styles from './styles';
 
 const { width } = Dimensions.get('window');
 
-const Card = ({ item, navigation, pageName }) => {
-  const { images } = item;
+const Card = ({ data, showTitle, navigation, pageName }) => {
   return (
     <View style={Styles.cardContainer}>
-      {images.map((itemImage, index) => {
+      {data.map((item, index) => {
         const key = index;
+        const { title, image, link } = item;
         return (
           <TouchableOpacity
             key={key}
-            onPress={() => pageName
-              && navigation.navigate(pageName, { filter: itemImage.linkSub })
+            onPress={() =>
+              pageName && navigation.navigate(pageName, { filter: link })
             }
             activeOpacity={1}
           >
             <View style={Styles.containerCardImageTitle}>
               <View style={Styles.imageCard}>
                 <Image
-                  style={{ width: 120, height: 104, flex: 1 }}
-                  source={itemImage.image}
                   resizeMode="cover"
+                  source={{ uri: image }}
+                  style={{ width: 120, height: 104, flex: 1 }}
                 />
               </View>
-              {itemImage.sectionTitle.length > 0 && (
+              {showTitle && (
                 <View style={Styles.titleCard}>
-                  <Text>{itemImage.sectionTitle}</Text>
+                  <Text>{title}</Text>
                 </View>
               )}
             </View>
@@ -49,14 +47,37 @@ const Card = ({ item, navigation, pageName }) => {
 };
 
 const CarouselBranding = ({
-  showFooter,
-  styleTitle,
-  title,
   data,
+  title,
+  theme,
   pageName,
+  showTitle,
+  styleTitle,
+  showFooter,
   navigation,
 }) => {
+  const [itens, setItens] = useState([]);
+  const [sections, setSections] = useState([]);
   const [indexDot, setDotIndex] = useState(0);
+
+  useEffect(() => {
+    if (!data.length) return;
+
+    const tempItens = [];
+    const tempSections = [];
+    const count = Math.ceil(data.length / 4);
+
+    for (let i = 0; i <= count - 1; i++) {
+      tempSections.push(i);
+    }
+
+    for (let i = 0; i < data.length; i += 4) {
+      tempItens.push(data.slice(i, i + 4));
+    }
+
+    setSections(tempSections);
+    setItens(tempItens);
+  }, []);
 
   return (
     <>
@@ -66,14 +87,19 @@ const CarouselBranding = ({
         style={{ paddingHorizontal: 16, marginLeft: 16 }}
       />
       <Carousel
-        data={data}
+        data={sections}
         inactiveSlideScale={1}
         inactiveSlideOpacity={1}
-        renderItem={({ item }) => (
-          <Card item={item} pageName={pageName} navigation={navigation} />
+        renderItem={({ index }) => (
+          <Card
+            data={itens[index]}
+            pageName={pageName}
+            showTitle={showTitle}
+            navigation={navigation}
+          />
         )}
-        sliderWidth={width}
         itemWidth={272}
+        sliderWidth={width}
         onSnapToItem={setDotIndex}
         activeSlideAlignment="start"
         containerCustomStyle={Styles.container}
@@ -83,15 +109,15 @@ const CarouselBranding = ({
           <Pagination
             inactiveDotScale={1}
             inactiveDotOpacity={0.2}
-            dotColor="#0D0D0D"
             activeDotIndex={indexDot}
+            dotsLength={sections.length}
+            dotColor={Styles[theme].color}
             dotStyle={Styles.paginationDot}
-            dotsLength={data.length}
             containerStyle={Styles.paginationContainer}
             dotContainerStyle={{ marginHorizontal: 0 }}
           />
-          <View style={Styles.ButtonSeeAll}>
-            <ButtonSeeAll theme="light" />
+          <View style={Styles.buttonSeeAll}>
+            <ButtonSeeAll theme={theme} />
           </View>
         </>
       )}
@@ -99,6 +125,8 @@ const CarouselBranding = ({
   );
 };
 CarouselBranding.propTypes = {
+  theme: PropTypes.string,
+  showTitle: PropTypes.bool,
   pageName: PropTypes.string,
   showFooter: PropTypes.bool,
   styleTitle: PropTypes.objectOf(PropTypes.any),
@@ -107,8 +135,10 @@ CarouselBranding.propTypes = {
 };
 
 CarouselBranding.defaultProps = {
+  theme: 'light',
   styleTitle: {},
   pageName: null,
+  showTitle: true,
   showFooter: false,
 };
 
