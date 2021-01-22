@@ -179,7 +179,7 @@ class Cart extends Component {
                 <Text
                   style={[
                     Styles.titlePage,
-                    currentScrollY >= 50 && Styles.TitleHeader,
+                    currentScrollY >= 50 && Styles.TitlePageSecond,
                   ]}
                 >
                   Carrinho

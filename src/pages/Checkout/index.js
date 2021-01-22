@@ -18,15 +18,16 @@ const Checkout = ({ navigation }) => {
   const [redirect, setRedirect] = useState('');
 
   async function loadCheckout() {
-    const token = await ShoppingService.getToken();
-    setRedirect(`${config.baseURL}/shopping/basket/checkout`);
-    setSource({
-      uri: `${config.baseURL}/shopping/basket/checkout`,
-      method: 'GET',
-      headers: {
-        'x-api-key': config.apiKey,
-        Authorization: `Bearer ${token}`
-      },
+    ShoppingService.basketCheckout().then((response) => {
+      if (response.success) {
+        setRedirect(response.url);
+        setSource({
+          uri: response.url,
+          method: 'GET'
+        });
+      } else {
+        navigation.goBack();
+      }
     });
   }
 
@@ -35,11 +36,13 @@ const Checkout = ({ navigation }) => {
     const { checkout: checkoutConfig } = config;
 
     if (!loadingPage && url !== redirect && url !== 'about:blank') {
-      if (checkoutConfig.whitelist.indexOf(url) === -1) {
+      const filter = checkoutConfig.whitelist.filter(item => item.indexOf(url) === -1);
+      if (filter.length === 0) {
         ShoppingService.getBasket().then(async (response) => {
           if (response && response.basket) {
             await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
-            navigation.goBack();
+            if (response.basket.items.length > 0) navigation.goBack();
+            else navigation.navigate('Home');
           }
         });
       } else {
@@ -63,7 +66,6 @@ const Checkout = ({ navigation }) => {
         })
       ]}
       >
-        {source && source.uri && (
         <WebView
           onNavigationStateChange={stateChange}
           source={source}
@@ -72,7 +74,6 @@ const Checkout = ({ navigation }) => {
             styles.container
           ]}
         />
-        )}
         <View style={styles.btnWrapper}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.btnImageIcon}>

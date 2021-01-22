@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
-import { TitleSmall, TitleLarge, TitleXSmall } from '@assets/style/typography';
+import {
+  TitleSmall, TitleLarge, TitleXSmall, TitleSmallBOLD
+} from '@assets/style/typography';
 import { WHITE, BLACK, TEXTGREYLIGHT } from '@assets/style/colors';
 
 const { width, height } = Dimensions.get('window');
@@ -47,6 +49,9 @@ export default StyleSheet.create({
   },
   TitleHeader: {
     ...TitleSmall,
+  },
+  TitlePageSecond: {
+    ...TitleSmallBOLD
   },
   containerScroll: {
     paddingTop: 85,

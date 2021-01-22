@@ -10,11 +10,15 @@ export default StyleSheet.create({
   },
   btnWrapper: {
     position: 'absolute',
-    top: 20,
-    left: 20,
-    zIndex: 1
+    top: 0,
+    left: 0,
+    zIndex: 999,
   },
   btnImageIcon: {
+    marginTop: 40,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 16,
     backgroundColor: WHITE,
     borderRadius: 50,
     padding: 10,
@@ -31,6 +35,13 @@ export default StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    height: 100,
+    marginLeft: -50,
+    marginTop: -50,
     zIndex: 2
   }
 });

@@ -5,12 +5,12 @@ export default () => {
   EventBus.subscribe('goToCheckout', ({ navigation }) => {
     // TODO: verify if user is logged
     AuthService.login({
-      username: 'thiago.santos@nodo.cc',
-      password: 'thiagoss'
-    }).then((response) => {
+      username: 'belshop-7f790a@inbox.mailtrap.io',
+      password: 'N0d01234'
+    }).then(async (response) => {
       if (response.success) {
         const { token } = response;
-        AuthService.setToken(token);
+        await AuthService.setToken(token);
         navigation.navigate('Checkout');
       }
     })
