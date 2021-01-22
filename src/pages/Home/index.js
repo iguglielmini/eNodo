@@ -63,7 +63,9 @@ class Home extends Component {
   };
 
   generateSections = (section, index, tempSections) => {
-    const { title, theme, widgets, style } = section;
+    const {
+      title, theme, widgets, style
+    } = section;
     const { navigation, lengthCart } = this.props;
 
     widgets.map((widget, widgetIndex) => {
@@ -73,7 +75,12 @@ class Home extends Component {
       if (index === 0) {
         tempSections.push(
           <Section style={{ paddingTop: 64, ...Styles.section }} key={index}>
-            <HeaderHome title={title} theme={theme} lengthCart={lengthCart} />
+            <HeaderHome
+              title={title}
+              theme={theme}
+              lengthCart={lengthCart}
+              navigation={navigation}
+            />
             <ListCard data={items} navigation={navigation} theme={theme} />
           </Section>
         );
@@ -159,6 +166,7 @@ class Home extends Component {
           </Section>
         );
       }
+      return true;
     });
 
     this.setState({ sections: tempSections });
@@ -185,13 +193,7 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,

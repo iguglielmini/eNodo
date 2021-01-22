@@ -12,7 +12,7 @@ class AuthService extends Api {
     */
     return this.post('/auth/login', data)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           return {
             success: true,
             ...response.data

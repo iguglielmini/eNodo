@@ -9,8 +9,9 @@ class HomeService extends Api {
         return false;
       })
       .catch(({ response }) => {
-        if (response && response.status === 500)
+        if (response && response.status === 500) {
           return 'Please try again later.';
+        }
         return APIErrorHandler.getErrorMessages(response);
       });
   }

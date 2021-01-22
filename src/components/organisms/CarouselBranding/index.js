@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  View, Image, Text, Dimensions, TouchableOpacity
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import Title from '@components/atoms/Title';
@@ -11,40 +13,39 @@ import Styles from './styles';
 
 const { width } = Dimensions.get('window');
 
-const Card = ({ data, showTitle, navigation, pageName }) => {
-  return (
-    <View style={Styles.cardContainer}>
-      {data.map((item, index) => {
-        const key = index;
-        const { title, image, link } = item;
-        return (
-          <TouchableOpacity
-            key={key}
-            onPress={() =>
-              pageName && navigation.navigate(pageName, { filter: link })
+const Card = ({
+  data, showTitle, navigation, pageName
+}) => (
+  <View style={Styles.cardContainer}>
+    {data.map((item, index) => {
+      const key = index;
+      const { title, image, link } = item;
+      return (
+        <TouchableOpacity
+          key={key}
+          onPress={() => pageName && navigation.navigate(pageName, { filter: link })
             }
-            activeOpacity={1}
-          >
-            <View style={Styles.containerCardImageTitle}>
-              <View style={Styles.imageCard}>
-                <Image
-                  resizeMode="cover"
-                  source={{ uri: image }}
-                  style={{ width: 120, height: 104, flex: 1 }}
-                />
-              </View>
-              {showTitle && (
-                <View style={Styles.titleCard}>
-                  <Text>{title}</Text>
-                </View>
-              )}
+          activeOpacity={1}
+        >
+          <View style={Styles.containerCardImageTitle}>
+            <View style={Styles.imageCard}>
+              <Image
+                resizeMode="cover"
+                source={{ uri: image }}
+                style={{ width: 120, height: 104, flex: 1 }}
+              />
             </View>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-};
+            {showTitle && (
+            <View style={Styles.titleCard}>
+              <Text>{title}</Text>
+            </View>
+            )}
+          </View>
+        </TouchableOpacity>
+      );
+    })}
+  </View>
+);
 
 const CarouselBranding = ({
   data,
@@ -67,6 +68,7 @@ const CarouselBranding = ({
     const tempSections = [];
     const count = Math.ceil(data.length / 4);
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i <= count - 1; i++) {
       tempSections.push(i);
     }

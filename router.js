@@ -11,6 +11,7 @@ import Cart from './src/pages/Cart';
 import Category from './src/pages/Category';
 import CategorySub from './src/pages/CategorySub';
 import ProductDetailsPage from './src/pages/ProductDetails';
+import Checkout from './src/pages/Checkout';
 
 // color
 import { BGGREY, BLACK, WHITE } from './src/assets/style/colors';
@@ -39,6 +40,10 @@ function Router() {
     ProductDetails: {
       color: WHITE,
       style: 'dark-content',
+    },
+    Checkout: {
+      color: WHITE,
+      style: 'dark-content'
     },
   };
 
@@ -85,6 +90,13 @@ function Router() {
           <Stack.Screen
             name="Cart"
             component={Cart}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Checkout"
+            component={Checkout}
             options={{
               headerShown: false,
             }}

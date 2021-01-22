@@ -8,6 +8,7 @@ export default StyleSheet.create({
   container: {
     width,
     paddingLeft: SPACE_32,
+    height: 224,
   },
   light: {
     color: '#0D0D0D'

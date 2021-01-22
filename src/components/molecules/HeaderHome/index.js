@@ -11,7 +11,9 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 import Styles from './styles';
 
-function HeaderHome({ title, theme, lengthCart }) {
+function HeaderHome({
+  title, theme, lengthCart, navigation
+}) {
   return (
     <Title title={title} theme={theme} styleFont={Styles.title}>
       <TouchableOpacity onPress={() => {}}>
@@ -31,10 +33,11 @@ HeaderHome.propTypes = {
   title: PropTypes.string,
   theme: PropTypes.string.isRequired,
   lengthCart: PropTypes.number.isRequired,
+  navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 HeaderHome.defaultProps = {
   title: '',
-}
+};
 
 export default HeaderHome;

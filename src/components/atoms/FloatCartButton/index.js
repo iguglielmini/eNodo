@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
+import EventBus from '@modules/services/EventBus';
 import Styles from './styles';
 
 function FloatCartButton({ navigation }) {
@@ -19,7 +20,7 @@ function FloatCartButton({ navigation }) {
         colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
         style={Styles.ContainerFloatButon}
       >
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => { EventBus.notify('goToCheckout', { navigation }); }}>
           <View style={Styles.btnPayment}>
             <Text style={Styles.text}>Fazer pagamento</Text>
           </View>

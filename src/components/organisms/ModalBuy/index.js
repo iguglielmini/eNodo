@@ -5,20 +5,27 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
+import EventBus from '@modules/services/EventBus';
 
 // Components
 import CardCart from '@components/molecules/CardCart';
 
 /** Styles */
+import CloseIcon from '@assets/svg/close';
 import Styles from './styles';
 // Icons
-import CloseIcon from '../../../assets/svg/close';
 
 function ModalBuy({ navigation, visible, setVisible }) {
   function handleShowCart() {
     navigation.navigate('Cart');
     setVisible(false);
   }
+
+  function openCheckout() {
+    EventBus.notify('goToCheckout', { navigation });
+    setVisible(false);
+  }
+
   return (
     <>
       <Modal
@@ -53,7 +60,7 @@ function ModalBuy({ navigation, visible, setVisible }) {
             <TouchableOpacity onPress={() => handleShowCart()}>
               <Text style={Styles.BtnCart}>Ver carrinho</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => openCheckout()}>
               <Text style={Styles.btnPayment}>Finalizar compra</Text>
             </TouchableOpacity>
           </LinearGradient>

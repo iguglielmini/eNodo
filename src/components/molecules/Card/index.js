@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+import {
+  View, Text, ImageBackground, TouchableOpacity
+} from 'react-native';
 
 // Utils
 import { convertToPriceText } from '@modules/utils';
@@ -12,8 +14,12 @@ import FavoriteIcon from '@assets/svg/favorite';
 // Styles
 import Styles from './styles';
 
-function Card({ item, style, theme, onClick, onClickFavorite }) {
-  const { id, sku, title, image, url, price } = item;
+function Card({
+  item, style, theme, onClick, onClickFavorite
+}) {
+  const {
+    id, sku, title, image, price
+  } = item;
   const { discount, current, previous } = price;
   return (
     <>
@@ -38,7 +44,10 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
         {discount && (
           <View style={Styles.discount}>
             <BadgeIcon size={48} />
-            <Text style={Styles.discountText}>{discount}%</Text>
+            <Text style={Styles.discountText}>
+              {discount}
+%
+            </Text>
           </View>
         )}
         <Text style={[Styles[theme], Styles.description]}>{title}</Text>

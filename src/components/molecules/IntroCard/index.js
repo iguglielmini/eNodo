@@ -8,7 +8,9 @@ import { convertToPriceText } from '@modules/utils';
 // Styles
 import Styles from './styles';
 
-function IntroCard({ price, title, image, onClick }) {
+function IntroCard({
+  price, title, image, onClick
+}) {
   return (
     <TouchableOpacity onPress={onClick} style={Styles.container}>
       <Text style={Styles.title}>{title}</Text>

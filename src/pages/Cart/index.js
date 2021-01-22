@@ -78,11 +78,11 @@ class Cart extends Component {
       if (!items.length) cart.items = [];
       if (items.length) {
         lengthItens = items
-        .map(item => item.quantity)
-        .reduce((acumulator, currentValue) => acumulator + currentValue);
+          .map(item => item.quantity)
+          .reduce((acumulator, currentValue) => acumulator + currentValue);
       }
     }
-    
+
     this.props.saveLengthCart(lengthItens);
     this.setState({ cart });
   };
@@ -266,8 +266,7 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   null,

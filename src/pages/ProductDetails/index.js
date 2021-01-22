@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View, Text, ScrollView, TouchableOpacity
+} from 'react-native';
 
 /* component */
 import ListCard from '@components/molecules/ListCard';
@@ -201,13 +203,12 @@ ProductDetails.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+  },
+  dispatch
+);
 
 export default connect(
   null,
