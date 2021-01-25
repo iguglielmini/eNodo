@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  View, Text, Image,
-} from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 // Styles
 import ProductImage from '@assets/images/product1.png';
@@ -20,12 +18,10 @@ function CardCart() {
           {/* Text Title */}
           <View style={Styles.contaninerTitle}>
             <Text style={Styles.titleProduct}>
-            Kérastase Genesis Anti-Chute Fortifiant - Sérum Finalizador - 90ml
+              Kérastase Genesis Anti-Chute Fortifiant - Sérum Finalizador - 90ml
             </Text>
             {/* Price */}
-            <Text style={Styles.titlePrice}>
-              R$ 305,23
-            </Text>
+            <Text style={Styles.titlePrice}>R$ 305,23</Text>
           </View>
         </View>
       </View>

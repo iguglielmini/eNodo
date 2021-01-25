@@ -8,22 +8,25 @@ import { convertToPriceText } from '@modules/utils';
 // Styles
 import Styles from './styles';
 
-function IntroCard({
-  price, title, image, onClick
-}) {
+function IntroCard({ price, title, image, onClick }) {
+  const { url, width, height } = image;
   return (
     <TouchableOpacity onPress={onClick} style={Styles.container}>
       <Text style={Styles.title}>{title}</Text>
       <Text style={Styles.price}>{convertToPriceText(price.current)}</Text>
-      <Image source={{ uri: image }} resizeMode="cover" style={Styles.image} />
+      <Image
+        resizeMode="cover"
+        style={Styles.image}
+        source={{ uri: url, width, height }}
+      />
     </TouchableOpacity>
   );
 }
 
 IntroCard.propTypes = {
   onClick: PropTypes.func,
-  image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  image: PropTypes.objectOf(PropTypes.any).isRequired,
   price: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

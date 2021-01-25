@@ -13,6 +13,7 @@ export default StyleSheet.create({
   },
   description: {
     fontSize: 14,
+    textAlign: 'center',
     marginTop: SPACE_16,
     marginBottom: SPACE_24,
     fontWeight: FONT_WEIGHT_MEDIUM,

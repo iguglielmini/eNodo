@@ -11,8 +11,8 @@ const Section = ({ children, theme, style }) => (
 
 Section.propTypes = {
   theme: PropTypes.string,
-  children: PropTypes.element,
   style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
 };
 
 Section.defaultProps = {

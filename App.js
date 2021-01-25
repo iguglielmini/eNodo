@@ -11,8 +11,8 @@ import GlobalEvent from '@modules/services/global-events';
 // import config from '@/config';
 import ApiAuth from '@modules/api/api-auth';
 import DeviceStorage from '@modules/services/device-storage';
-import Router from './router';
 import reduxStore from '@redux';
+import Router from './router';
 
 export const Notification = React.createRef();
 
