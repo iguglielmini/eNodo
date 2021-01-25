@@ -27,8 +27,7 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 // API
 import ApiCart from '@modules/api/api-shopping';
-// import ApiProduct from '@modules/api/api-product';
-import ApiProduct from '../../modules/api/api-product';
+import ApiProduct from '@modules/api/api-product';
 
 // Redux
 import { saveLengthCart } from '@redux/actions';
