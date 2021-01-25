@@ -1,59 +1,20 @@
 import Api from '.';
-import APIErrorHandler from './api-error-handler';
+import APIRturn from './api-return';
 
 export default class ProdutcService extends Api {
-  getProduct(slug) {
-    return this.get(`/product/${slug}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getProduct(slug) {
+    return APIRturn(this.get(`/product/${slug}`));
   }
 
-  getProductAssociations(slug) {
-    return this.get(`/product/${slug}/associations`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getProductAssociations(slug) {
+    return APIRturn(this.get(`/product/${slug}/associations`));
   }
 
-  getProductReview(slug) {
-    return this.get(`/product/${slug}/review`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getProductReview(slug) {
+    return APIRturn(this.get(`/product/${slug}/review`));
   }
 
-  createProductReview(slug, data) {
+  async createProductReview(slug, data) {
     /* DATA STRUCTURE
       {
         "name": "Daniel",
@@ -63,19 +24,6 @@ export default class ProdutcService extends Api {
         "rating": 5
       }
     */
-    return this.post(`/product/${slug}/review`, data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.post(`/product/${slug}/review`, data));
   }
 }

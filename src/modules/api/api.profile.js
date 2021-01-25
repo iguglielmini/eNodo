@@ -1,59 +1,20 @@
 import Api from '.';
-import APIErrorHandler from './api-error-handler';
+import APIRturn from './api-return';
 
 export default class ProfileService extends Api {
-  getCpf(cpf) {
-    return this.get(`/profile/cpf/${cpf}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getCpf(cpf) {
+    return APIRturn(this.get(`/profile/cpf/${cpf}`));
   }
 
-  getAddresses() {
-    return this.get('/profile/address')
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getAddresses() {
+    return APIRturn(this.get('/profile/address'));
   }
 
   getAddress(id) {
-    return this.get(`/profile/address/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.get(`/profile/address/${id}`));
   }
 
-  createAddress(data) {
+  async createAddress(data) {
     /*
       DATA SCTRUTURE
       {
@@ -73,23 +34,10 @@ export default class ProfileService extends Api {
         "default": false
       }
     */
-    return this.post('/profile/address', data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.post('/profile/address', data));
   }
 
-  updateAddress(id, data) {
+  async updateAddress(id, data) {
     /*
       DATA SCTRUTURE
       {
@@ -109,74 +57,22 @@ export default class ProfileService extends Api {
         "default": false
       }
     */
-    return this.put(`/profile/address/${id}`, data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.put(`/profile/address/${id}`, data));
   }
 
-  deleteAddress(id) {
-    return this.delete(`/profile/address/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async deleteAddress(id) {
+    return APIRturn(this.delete(`/profile/address/${id}`));
   }
 
-  getWhishlisties() {
-    return this.get('/profile/whishlist')
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getWhishlisties() {
+    return APIRturn(this.get('/profile/whishlist'));
   }
 
-  getWhishlist(id) {
-    return this.get(`/profile/whishlist/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getWhishlist(id) {
+    return APIRturn(this.get(`/profile/whishlist/${id}`));
   }
 
-  createWhishlist(data) {
+  async createWhishlist(data) {
     /*
       DATA SCTRUTURE
       {
@@ -188,23 +84,10 @@ export default class ProfileService extends Api {
         "expiration": 1609342606952
       }
     */
-    return this.post('/profile/whishlist', data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.post('/profile/whishlist', data));
   }
 
-  addItemWhishlist(id, data) {
+  async addItemWhishlist(id, data) {
     /*
       DATA SCTRUTURE
       {
@@ -216,23 +99,10 @@ export default class ProfileService extends Api {
         ]
       }
     */
-    return this.post(`/profile/whishlist/${id}/item`, data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.post(`/profile/whishlist/${id}/item`, data));
   }
 
-  updateWhishlist(id, data) {
+  async updateWhishlist(id, data) {
     /*
       DATA SCTRUTURE
       {
@@ -244,114 +114,36 @@ export default class ProfileService extends Api {
         "expiration": 1609342606952
       }
     */
-    return this.put(`/profile/whishlist/${id}`, data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.put(`/profile/whishlist/${id}`, data));
   }
 
-  updateItemWhishlist(id, item, data) {
+  async updateItemWhishlist(id, item, data) {
     /*
       DATA SCTRUTURE
       {
         "quantity": 2
       }
     */
-    return this.put(`/profile/whishlist/${id}/item/${item}`, data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.put(`/profile/whishlist/${id}/item/${item}`, data));
   }
 
-  deleteWhishlist(id) {
-    return this.delete(`/profile/whishlist/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async deleteWhishlist(id) {
+    return APIRturn(this.delete(`/profile/whishlist/${id}`));
   }
 
-  deleteIitemWhishlist(id, item) {
-    return this.delete(`/profile/whishlist/${id}/item/${item}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async deleteIitemWhishlist(id, item) {
+    return APIRturn(this.delete(`/profile/whishlist/${id}/item/${item}`));
   }
 
-  getEmail(email) {
-    return this.get(`/profile/email/${email}`)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getEmail(email) {
+    return APIRturn(this.get(`/profile/email/${email}`));
   }
 
-  getProfile() {
-    return this.get('/profile')
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+  async getProfile() {
+    return APIRturn(this.get('/profile'));
   }
 
-  createProfile(data) {
+  async createProfile(data) {
     /*
       DATA STRUCTURE
       {
@@ -364,23 +156,10 @@ export default class ProfileService extends Api {
         "password": "Senha1234"
       }
     */
-    return this.post('/profile', data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.post('/profile', data));
   }
 
-  updateProfile(data) {
+  async updateProfile(data) {
     /*
       DATA STRUCTURE
       {
@@ -392,19 +171,6 @@ export default class ProfileService extends Api {
         "cpf": "11144477735"
       }
     */
-    return this.put('/profile', data)
-      .then((response) => {
-        if (response.status === 200) {
-          return {
-            success: true,
-            data: response.data
-          };
-        }
-        return false;
-      })
-      .catch((err) => {
-        if (err.response.status === 500) return 'Please try again later.';
-        return APIErrorHandler.getErrorMessages(err.response);
-      });
+    return APIRturn(this.put('/profile', data));
   }
 }

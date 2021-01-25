@@ -38,6 +38,7 @@ import DeviceStorage from '@modules/services/device-storage';
 import { saveLengthCart } from '@redux/actions';
 
 /** Styles */
+import DefaultStyles from '@assets/style/default';
 import Styles from './styles';
 
 const HEADER_MAX_HEIGHT = 120;
@@ -200,7 +201,7 @@ class Cart extends Component {
             </View>
           </LinearGradient>
           {loading && (
-            <View style={Styles.loading}>
+            <View style={DefaultStyles.loading}>
               <ActivityIndicator size="large" color="#ffffff" />
             </View>
           )}

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
 import { Text, Image, TouchableOpacity } from 'react-native';
 
 // Utils
@@ -15,10 +14,10 @@ function IntroCard({ price, title, image, onClick }) {
     <TouchableOpacity onPress={onClick} style={Styles.container}>
       <Text style={Styles.title}>{title}</Text>
       <Text style={Styles.price}>{convertToPriceText(price.current)}</Text>
-      <FastImage
+      <Image
         style={Styles.image}
         resizeMode="contain"
-        source={{ uri: url, width, height, priority: "normal" }}
+        source={{ uri: url, width, height }}
       />
     </TouchableOpacity>
   );

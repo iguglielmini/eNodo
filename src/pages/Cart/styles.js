@@ -90,16 +90,4 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  loading: {
-    width,
-    height,
-    top: 0,
-    left: 0,
-    zIndex: 9999,
-    alignItems: 'center',
-    position: 'absolute',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-  },
 });

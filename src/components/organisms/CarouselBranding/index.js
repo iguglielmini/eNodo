@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
-import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 
 import Title from '@components/atoms/Title';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
@@ -27,10 +26,10 @@ const Card = ({ data, showTitle, navigation, pageName }) => (
         >
           <View style={Styles.containerCardImageTitle}>
             <View style={Styles.imageCard}>
-              <FastImage
+              <Image
                 resizeMode="cover"
-                source={{ uri: image, priority: 'high' }}
                 style={{ width: 120, height: 104, flex: 1 }}
+                source={{ uri: image, width: 120, height: 104 }}
               />
             </View>
             {showTitle && (
