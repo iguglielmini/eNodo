@@ -10,7 +10,7 @@ import Styles from './styles';
 function ImageIntroCard() {
   return (
     <ImageBackground
-      resizeMode="contain"
+      resizeMode="cover"
       source={EsponjaImage}
       style={Styles.container}
     >

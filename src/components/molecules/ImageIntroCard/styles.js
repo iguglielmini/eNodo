@@ -11,9 +11,9 @@ export default StyleSheet.create({
     padding: SPACE_32,
     overflow: 'hidden',
     marginLeft: SPACE_16,
+    marginBottom: SPACE_48,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    marginVertical: SPACE_48,
     justifyContent: 'flex-end',
   },
   title: {

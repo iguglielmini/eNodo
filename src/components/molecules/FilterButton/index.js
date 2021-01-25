@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FastImage from 'react-native-fast-image';
 import {
-  View, Text, Image, TouchableOpacity
+  View, Text, TouchableOpacity
 } from 'react-native';
 
 // Styles
@@ -20,10 +21,10 @@ function FilterButton({ data, onClick }) {
             onPress={onClick}
             style={Styles.card}
           >
-            <Image
+            <FastImage
               resizeMode="cover"
-              source={{ uri: item.image }}
               style={Styles.containerImage}
+              source={{ uri: item.image, priority: 'normal' }}
             />
             <Text style={Styles.description}>{item.title}</Text>
           </TouchableOpacity>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 // Utils
 import { convertToPriceText } from '@modules/utils';
@@ -26,13 +27,18 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
         style={[Styles.card, style]}
         onPress={() => onClick(id, sku)}
       >
-        <ImageBackground
+        <FastImage
           resizeMode="contain"
           style={Styles.containerImage}
           source={
             !image
               ? NotFoundImage
-              : { uri: image.url, width: image.width, height: image.height }
+              : {
+                  uri: image.url,
+                  priority: 'high',
+                  width: image.width,
+                  height: image.height,
+                }
           }
         >
           <TouchableOpacity
@@ -42,7 +48,7 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
           >
             <FavoriteIcon size={24} />
           </TouchableOpacity>
-        </ImageBackground>
+        </FastImage>
         {discount && (
           <View style={Styles.discount}>
             <BadgeIcon size={48} />

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Image, Text, Dimensions, TouchableOpacity
-} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import Title from '@components/atoms/Title';
@@ -13,9 +12,7 @@ import Styles from './styles';
 
 const { width } = Dimensions.get('window');
 
-const Card = ({
-  data, showTitle, navigation, pageName
-}) => (
+const Card = ({ data, showTitle, navigation, pageName }) => (
   <View style={Styles.cardContainer}>
     {data.map((item, index) => {
       const key = index;
@@ -23,22 +20,23 @@ const Card = ({
       return (
         <TouchableOpacity
           key={key}
-          onPress={() => pageName && navigation.navigate(pageName, { filter: link })
-            }
+          onPress={() =>
+            pageName && navigation.navigate(pageName, { filter: link })
+          }
           activeOpacity={1}
         >
           <View style={Styles.containerCardImageTitle}>
             <View style={Styles.imageCard}>
-              <Image
+              <FastImage
                 resizeMode="cover"
-                source={{ uri: image }}
+                source={{ uri: image, priority: 'high' }}
                 style={{ width: 120, height: 104, flex: 1 }}
               />
             </View>
             {showTitle && (
-            <View style={Styles.titleCard}>
-              <Text>{title}</Text>
-            </View>
+              <View style={Styles.titleCard}>
+                <Text>{title}</Text>
+              </View>
             )}
           </View>
         </TouchableOpacity>
