@@ -63,6 +63,10 @@ class ProductDetails extends Component {
       loading: true,
       theme: 'light',
       modalCepVisible: false,
+      productsAssociations: {
+        similar: [],
+        clientsBy: [],
+      },
       modalDetailsVisible: false,
       daysCep: '7 dia(s) útil(eis)',
     };
@@ -73,15 +77,43 @@ class ProductDetails extends Component {
   }
 
   getData = async () => {
-    const {
-      route: { params },
-    } = this.props;
-    const { data } = await ApiProduct.getProduct(params.slug);
+    const { route } = this.props;
+    const { slug } = route.params;
+    const requests = await Promise.all([
+      ApiProduct.getProduct(slug),
+      ApiProduct.getProductAssociations(slug),
+    ]);
 
-    if (data) {
-      const { theme, widgets } = data;
+    if (requests.length) this.setState({ loading: false });
+
+    const dataProduct = requests[0].data;
+    const dataProductAssociations = requests[1].data;
+
+    if (dataProduct) {
+      const { theme, widgets } = dataProduct;
       const product = widgets[0].details;
-      this.setState({ product, theme, loading: false });
+      this.setState({ product, theme });
+    }
+
+    if (dataProductAssociations.length) {
+      const { productsAssociations } = this.state;
+
+      dataProductAssociations.map(section => {
+        const { widgets } = section;
+
+        widgets.map(widget => {
+          const { items } = widget;
+
+          if (widget.alias === 'quem-comprou-comprou-tambem') {
+            productsAssociations.clientsBy = items;
+          }
+          if (widget.alias === 'quem-viu-viu-tambem') {
+            productsAssociations.similar = items;
+          }
+        });
+      });
+
+      this.setState({ productsAssociations });
     }
   };
 
@@ -123,18 +155,24 @@ class ProductDetails extends Component {
       .catch(() => setLoading(false));
   };
 
-  handleSaveCep = (cep) => {
+  handleSaveCep = cep => {
     const { route } = this.props;
     const { id, sku } = route.params;
 
     this.setState({ textCep: cep, loading: true }, async () => {
       let { textCep } = this.state;
       textCep = textCep.replace('-', '');
-      
-      const { data: { deliveryOption } } = await ApiShopping.getProductDelivery({ product: id, sku, postalCode: textCep });
+
+      const {
+        data: { deliveryOption },
+      } = await ApiShopping.getProductDelivery({
+        product: id,
+        sku,
+        postalCode: textCep,
+      });
       this.setState({ daysCep: deliveryOption.estimatedTime, loading: false });
     });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -146,6 +184,7 @@ class ProductDetails extends Component {
       loading,
       modalCepVisible,
       modalDetailsVisible,
+      productsAssociations,
     } = this.state;
 
     const { brand, price } = product;
@@ -187,8 +226,7 @@ class ProductDetails extends Component {
                 <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
                 <View style={Styles.modalContainer}>
                   <Text style={Styles.descriptionSubTitle}>
-                    Entrega em até {daysCep} após a postagem do produto.
-                    &nbsp;
+                    Entrega em até {daysCep} após a postagem do produto. &nbsp;
                     <Text
                       style={Styles.btnModal}
                       onPress={() => this.setModalCepVisible(true)}
@@ -222,7 +260,10 @@ class ProductDetails extends Component {
 
           {/* Accordion */}
           <View style={Styles.containerAccordion}>
-            <Accordion data={product.descriptions} actionMore={this.showModalDetails} />
+            <Accordion
+              data={product.descriptions}
+              actionMore={this.showModalDetails}
+            />
             <ModalDetails
               details={details}
               visible={modalDetailsVisible}
@@ -239,15 +280,15 @@ class ProductDetails extends Component {
           {/* Clientes Tambem Compraram Area */}
           <View style={Styles.ContainerClientPay}>
             <Text style={Styles.ClientPayTitle}>Clientes também compraram</Text>
-            {/* <ListCard data={CardListMock} navigation={navigation} /> */}
+            <ListCard data={productsAssociations.clientsBy} navigation={navigation} />
           </View>
 
           {/* Produtos semelhantes */}
-          {/* <View style={Styles.ContainerProductSimilar}>
+          <View style={Styles.ContainerProductSimilar}>
             <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
-            <Text style={Styles.budget}>Cabelos › Finalizadores</Text>
-            <ListCard data={CardListMock} navigation={navigation} />
-          </View> */}
+            {/* <Text style={Styles.budget}>Cabelos › Finalizadores</Text> */}
+            <ListCard data={productsAssociations.similar} navigation={navigation} />
+          </View>
         </ScrollView>
         <FloatButtonBuy
           price={price}
