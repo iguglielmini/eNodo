@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, ImageBackground, Text, TouchableOpacity } from 'react-native';
 
 // Utils
-import { convertToPriceText } from '@modules/utils';
+import { convertToPriceText, convertDiscount } from '@modules/utils';
 
 // Icons
 import BadgeIcon from '@assets/svg/badge';
@@ -16,7 +16,7 @@ import NotFoundImage from '@assets/images/notfound.png';
 import Styles from './styles';
 
 function Card({ item, style, theme, onClick, onClickFavorite }) {
-  const { slug, sku, title, price, image } = item;
+  const { id, slug, sku, title, price, image } = item;
   const { discount, current, previous } = price;
 
   return (
@@ -24,7 +24,7 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
       <TouchableOpacity
         activeOpacity={1}
         style={[Styles.card, style]}
-        onPress={() => onClick(slug, sku)}
+        onPress={() => onClick(slug, id, sku)}
       >
         <ImageBackground
           resizeMode="contain"
@@ -49,7 +49,9 @@ function Card({ item, style, theme, onClick, onClickFavorite }) {
         {discount && (
           <View style={Styles.discount}>
             <BadgeIcon size={48} />
-            <Text style={Styles.discountText}>{discount}%</Text>
+            <Text style={Styles.discountText}>
+              {convertDiscount(discount)}%
+            </Text>
           </View>
         )}
         <Text style={[Styles[theme], Styles.description]}>{title}</Text>

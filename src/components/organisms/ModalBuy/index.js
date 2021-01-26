@@ -1,37 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Text, TouchableOpacity, ScrollView
-} from 'react-native';
+import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import LinearGradient from 'react-native-linear-gradient';
+import { bindActionCreators } from 'redux';
 import EventBus from '@modules/services/EventBus';
-
-// Components
 import CardCart from '@components/molecules/CardCart';
+import LinearGradient from 'react-native-linear-gradient';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+
+// Redux
+import { saveAddProductCart } from '@redux/actions';
 
 /** Styles */
 import CloseIcon from '@assets/svg/close';
 import Styles from './styles';
-// Icons
 
-function ModalBuy({ navigation, visible, setVisible }) {
+function ModalBuy({ navigation, visible, setVisible, saveAddProductCart }) {
   function handleShowCart() {
     navigation.navigate('Cart');
     setVisible(false);
+    saveAddProductCart([]);
   }
 
   function openCheckout() {
     EventBus.notify('goToCheckout', { navigation });
     setVisible(false);
+    saveAddProductCart([]);
   }
 
   return (
     <>
       <Modal
-        onBackdropPress={() => setVisible(false)}
         isVisible={visible}
         style={Styles.modal}
+        onBackdropPress={() => setVisible(false)}
       >
         {/* Header */}
         <View style={Styles.cardModal}>
@@ -79,4 +81,15 @@ ModalBuy.defaultProps = {
   visible: false,
 };
 
-export default ModalBuy;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveAddProductCart,
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ModalBuy);

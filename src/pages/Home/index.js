@@ -20,9 +20,10 @@ import CarouselBranding from '@components/organisms/CarouselBranding';
 import imageBel from '@assets/images/bel.png';
 import imageKiss from '@assets/images/kiss.png';
 
-// Redux, Storage e API
+// Redux, Storage, Utils e API
 import Api from '@modules/api/api-home';
 import { saveLengthCart } from '@redux/actions';
+import { calcTotalQuantityCart } from '@modules/utils';
 import DeviceStorage from '@modules/services/device-storage';
 
 /* Styles */
@@ -44,7 +45,7 @@ class Home extends Component {
 
   getData = async () => {
     const sections = [];
-    const data = await Api.getHome();
+    const { data } = await Api.getHome();
     data.map((item, index) => this.generateSections(item, index, sections));
   };
 
@@ -54,9 +55,7 @@ class Home extends Component {
 
     if (cart) {
       const { items } = cart;
-      lengthItems = items
-        .map(item => item.quantity)
-        .reduce((acumulator, currentValue) => acumulator + currentValue);
+      lengthItems = calcTotalQuantityCart(items);
     }
 
     this.props.saveLengthCart(lengthItems);
@@ -140,7 +139,11 @@ class Home extends Component {
                 />
                 <ImageIntroCard />
                 <View style={Styles.section}>
-                  <ListCard data={items} theme={theme} navigation={navigation} />
+                  <ListCard
+                    data={items}
+                    theme={theme}
+                    navigation={navigation}
+                  />
                 </View>
                 <ButtonSeeAll theme={theme} />
               </Section>

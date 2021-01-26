@@ -1,7 +1,7 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
-class ShoppingService extends Api {
+export default new class ShoppingService extends Api {
   async getBasket() {
     return APIRturn(this.get('/shopping/basket'));
   }
@@ -23,7 +23,7 @@ class ShoppingService extends Api {
         ]
       }
     */
-    return APIRturn(this.post('/shopping/basket/item', data), 201, 500);
+    return APIRturn(this.post('/shopping/basket/item', data));
   }
 
   async basketUpdateItem(id, data) {
@@ -87,6 +87,8 @@ class ShoppingService extends Api {
   async getPostCode(postalCode) {
     return APIRturn(this.get(`/shopping/postal-code/${postalCode}`));
   }
-}
 
-export default new ShoppingService();
+  async getProductDelivery(data) {
+    return APIRturn(this.post('/shopping/product/delivery', data));
+  }
+}();

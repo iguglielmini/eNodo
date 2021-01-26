@@ -8,12 +8,12 @@
         "alias": {
           "~": "./",
           "@": "./src",
-          "@assets": "./src/assets",
-          "@components": "./src/components",
           "@mock": "./src/mock",
+          "@assets": "./src/assets",
           "@modules": "./src/modules",
+          "@redux": "./src/redux-store",
           "@constants": "./src/constants",
-          "@redux": "./src/redux-store"
+          "@components": "./src/components"
         }
       }
     ]

@@ -1,10 +1,8 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
-class HomeService extends Api {
+export default new class HomeService extends Api {
   async getHome() {
     return APIRturn(this.get('/home'));
   }
-}
-
-export default new HomeService();
+}();

@@ -2,6 +2,7 @@ import {
   USER_SAVE,
   USER_EDIT,
   SAVE_NEW_FLAGS,
+  ADD_PRODUCT_CART,
   TOTAL_LENGTH_CART,
   SAVE_MY_CAMPAIGN_DATA,
   SAVE_SHARE_CAMPAIGN_DATA,
@@ -20,6 +21,13 @@ function saveLengthCart(value) {
     type: TOTAL_LENGTH_CART,
     lengthCart: value,
   };
+}
+
+function saveAddProductCart(value) {
+  return {
+    type: ADD_PRODUCT_CART,
+    products: value,
+  }
 }
 
 function saveMyCampaigns(payload) {
@@ -62,6 +70,7 @@ export {
   saveNewFlags,
   saveLengthCart,
   saveMyCampaigns,
+  saveAddProductCart,
   saveShareCampaigns,
   decreaseNotification,
 };

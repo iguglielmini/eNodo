@@ -1,7 +1,7 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
-export default class ProdutcService extends Api {
+export default new class ProdutcService extends Api {
   async getProduct(slug) {
     return APIRturn(this.get(`/product/${slug}`));
   }
@@ -26,4 +26,4 @@ export default class ProdutcService extends Api {
     */
     return APIRturn(this.post(`/product/${slug}/review`, data));
   }
-}
+}();

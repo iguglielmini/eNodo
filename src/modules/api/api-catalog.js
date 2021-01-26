@@ -1,7 +1,7 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
-export default class CatalogService extends Api {
+export default new class CatalogService extends Api {
   getCatalogSearch(queryParams) {
     const query = new URLSearchParams(queryParams).toString();
     /*
@@ -19,4 +19,4 @@ export default class CatalogService extends Api {
     */
     return APIRturn(this.get(`/catalog/search/${query}`));
   }
-}
+}();

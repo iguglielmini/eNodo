@@ -1,5 +1,5 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
 export default class CategoryService extends Api {
   getCategory(slug) {

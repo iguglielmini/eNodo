@@ -1,33 +1,48 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import Slick from 'react-native-slick';
 import { View, Image } from 'react-native';
 
-/* Components */
-import Slick from 'react-native-slick';
-// Mock Image
-import ProductImage from '@assets/images/product1.png';
 // Styles
 import Styles from './styles';
 
-const CarouselProduct = () => (
-  <>
-    <Slick
-      autoplay
-      showsButtons={false}
-      style={Styles.container}
-      activeDotColor="#0d0d0d"
-      paginationStyle={Styles.dot}
-    >
-      <View style={Styles.cardContainer}>
-        <Image style={Styles.cardImage} source={ProductImage} />
-      </View>
-      <View style={Styles.cardContainer}>
-        <Image style={Styles.cardImage} source={ProductImage} />
-      </View>
-      <View style={Styles.cardContainer}>
-        <Image style={Styles.cardImage} source={ProductImage} />
-      </View>
-    </Slick>
-  </>
-);
+function CarouselProduct({ gallery }) {
+  if (!gallery.length) return null;
+
+  return (
+    <>
+      <Slick
+        autoplay
+        showsButtons={false}
+        style={Styles.container}
+        activeDotColor="#0d0d0d"
+        paginationStyle={Styles.dot}
+      >
+        {gallery.map((image, index) => {
+          const key = index;
+          const { width, height, url } = image;
+
+          return (
+            <View style={Styles.cardContainer} key={key}>
+              <Image
+                resizeMode="cover"
+                style={Styles.cardImage}
+                source={{ uri: url, width, height }}
+              />
+            </View>
+          );
+        })}
+      </Slick>
+    </>
+  );
+}
+
+CarouselProduct.propTypes = {
+  gallery: PropTypes.arrayOf(PropTypes.object),
+};
+
+CarouselProduct.defaultProps = {
+  gallery: [],
+};
 
 export default CarouselProduct;

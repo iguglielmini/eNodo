@@ -1,7 +1,7 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
-class AuthService extends Api {
+export default new class AuthService extends Api {
   async login(data) {
     /**
       DATA STRUCTURE
@@ -10,7 +10,7 @@ class AuthService extends Api {
         "password": "password123 "
       }
     */
-    return APIRturn(this.post('/auth/login', data), 201, 500);
+    return APIRturn(this.post('/auth/login', data));
   }
 
   async logout() {
@@ -29,8 +29,7 @@ class AuthService extends Api {
   }
 
   async session() {
-    return APIRturn(this.get('/auth/session'));
+    const { token } = (await APIRturn(this.get('/auth/session'))).data;
+    this.setToken(token);
   }
-}
-
-export default new AuthService();
+}();

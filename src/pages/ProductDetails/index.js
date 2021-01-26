@@ -28,9 +28,15 @@ import FavoriteIcon from '@assets/svg/favorite';
 // API
 import ApiCart from '@modules/api/api-shopping';
 import ApiProduct from '@modules/api/api-product';
+import ApiShopping from '@modules/api/api-shopping';
 
-// Redux
-import { saveLengthCart } from '@redux/actions';
+// Redux e Utils
+import { calcTotalQuantityCart } from '@modules/utils';
+import { saveLengthCart, saveAddProductCart } from '@redux/actions';
+
+// Mocks
+import CardListMock from '@mock/CardListMock';
+import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 
 /** Styles */
 import DefaultStyles from '@assets/style/default';
@@ -43,10 +49,22 @@ class ProductDetails extends Component {
     this.state = {
       textCep: '',
       details: {},
-      product: {},
+      product: {
+        brand: {
+          title: '',
+        },
+        gallery: [],
+        descriptions: [],
+        price: {
+          current: 0.0,
+          previous: 0.0,
+        },
+      },
       loading: true,
+      theme: 'light',
       modalCepVisible: false,
       modalDetailsVisible: false,
+      daysCep: '7 dia(s) útil(eis)',
     };
   }
 
@@ -58,15 +76,14 @@ class ProductDetails extends Component {
     const {
       route: { params },
     } = this.props;
+    const { data } = await ApiProduct.getProduct(params.slug);
 
-    console.log('XAMOU');
-    const data = await ApiProduct.getProduct(params.slug);
-    console.log('XOLA ', data);
-
-    // if (data) this.setState({ product: data, loading: false });
+    if (data) {
+      const { theme, widgets } = data;
+      const product = widgets[0].details;
+      this.setState({ product, theme, loading: false });
+    }
   };
-
-  setTextCep = textCep => this.setState({ textCep });
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
@@ -85,38 +102,56 @@ class ProductDetails extends Component {
 
     setLoading(true);
 
-    const data = {
+    const form = {
       products: [{ product: id, sku, quantity: 1 }],
     };
-    ApiCart.basketAddItem(data)
-      .then(response => {
+    ApiCart.basketAddItem(form)
+      .then(({ data }) => {
         setLoading(false);
         setModalBuyVisible(true);
 
-        if (response && response.basket) {
-          const { items } = response.basket;
-          const lengthItems = items
-            .map(item => item.quantity)
-            .reduce((acumulator, currentValue) => acumulator + currentValue);
+        if (data) {
+          const {
+            basket: { items },
+          } = data;
+          const lengthItems = calcTotalQuantityCart(items);
+
+          this.props.saveAddProductCart(items);
           this.props.saveLengthCart(lengthItems);
         }
       })
       .catch(() => setLoading(false));
   };
 
+  handleSaveCep = (cep) => {
+    const { route } = this.props;
+    const { id, sku } = route.params;
+
+    this.setState({ textCep: cep, loading: true }, async () => {
+      let { textCep } = this.state;
+      textCep = textCep.replace('-', '');
+      
+      const { data: { deliveryOption } } = await ApiShopping.getProductDelivery({ product: id, sku, postalCode: textCep });
+      this.setState({ daysCep: deliveryOption.estimatedTime, loading: false });
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     const {
+      product,
       textCep,
+      daysCep,
       details,
       loading,
       modalCepVisible,
       modalDetailsVisible,
     } = this.state;
 
+    const { brand, price } = product;
+
     return (
       <>
-        {/* Header */}
         <View style={Styles.ContainerHeader}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={Styles.btnImageIcon}>
@@ -139,25 +174,20 @@ class ProductDetails extends Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={Styles.ContainerScroll}
         >
-          {/* Carousel Product */}
-          <CarouselProduct />
-          {/* Title Product */}
+          <CarouselProduct gallery={product.gallery} />
           <View style={Styles.containerTitle}>
-            <Text style={Styles.titleProduct}>KÉRASTASE</Text>
-            <Text style={Styles.subTitle}>
-              Kérastase Genesis Anti-Chute Fortifiant - Sérum Finalizador - 90ml
-            </Text>
+            <Text style={Styles.titleProduct}>{brand.title}</Text>
+            <Text style={Styles.subTitle}>{product.title}</Text>
           </View>
-
           {/* Details Payment */}
-          {/* <View style={Styles.containerDescription}>
+          <View style={Styles.containerDescription}>
             <View style={Styles.detailsProduct}>
               <DetailIcon />
               <View style={Styles.description}>
                 <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
                 <View style={Styles.modalContainer}>
                   <Text style={Styles.descriptionSubTitle}>
-                    Entrega em até 7 dias úteis após a postagem do produto.
+                    Entrega em até {daysCep} após a postagem do produto.
                     &nbsp;
                     <Text
                       style={Styles.btnModal}
@@ -169,7 +199,7 @@ class ProductDetails extends Component {
                   <ModalCep
                     cepValue={textCep}
                     visible={modalCepVisible}
-                    onChangeCep={this.setTextCep}
+                    handleSave={this.handleSaveCep}
                     setVisible={this.setModalCepVisible}
                   />
                 </View>
@@ -188,40 +218,39 @@ class ProductDetails extends Component {
                 </Text>
               </View>
             </View>
-          </View> */}
+          </View>
 
           {/* Accordion */}
-          {/* <View style={Styles.containerAccordion}>
-            <Accordion actionMore={this.showModalDetails} />
+          <View style={Styles.containerAccordion}>
+            <Accordion data={product.descriptions} actionMore={this.showModalDetails} />
             <ModalDetails
               details={details}
               visible={modalDetailsVisible}
               setVisible={this.setModalDetailsVisible}
             />
-          </View> */}
+          </View>
 
           {/* Compre Junto Area */}
-          {/* <View style={Styles.containerCarouselPay}>
+          <View style={Styles.containerCarouselPay}>
             <Text style={Styles.ClientPayTitle}>Compre junto</Text>
             <CarouselBuyTogether data={CardBuyTogetherMock} />
-          </View> */}
+          </View>
 
           {/* Clientes Tambem Compraram Area */}
-          {/* <View style={Styles.ContainerClientPay}>
+          <View style={Styles.ContainerClientPay}>
             <Text style={Styles.ClientPayTitle}>Clientes também compraram</Text>
-            <ListCard data={CardlistMock} navigation={navigation} />
-          </View> */}
+            {/* <ListCard data={CardListMock} navigation={navigation} /> */}
+          </View>
 
           {/* Produtos semelhantes */}
           {/* <View style={Styles.ContainerProductSimilar}>
             <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
             <Text style={Styles.budget}>Cabelos › Finalizadores</Text>
-            <ListCard data={CardlistMock} navigation={navigation} />
+            <ListCard data={CardListMock} navigation={navigation} />
           </View> */}
         </ScrollView>
-        {/* Modal But */}
-        {/* Float button */}
         <FloatButtonBuy
+          price={price}
           navigation={navigation}
           addProductToCart={this.addProductToCart}
         />
@@ -239,6 +268,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       saveLengthCart,
+      saveAddProductCart,
     },
     dispatch
   );

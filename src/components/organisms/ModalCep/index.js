@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Text, TouchableOpacity, Alert
-} from 'react-native';
 import Modal from 'react-native-modal';
+import Input from '@components/atoms/Input';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 
-// Component
-import Input from '../../atoms/Input';
+// Icons
+import CloseIcon from '@assets/svg/close';
+
 /** Styles */
 import Styles from './styles';
-// Icons
-import CloseIcon from '../../../assets/svg/close';
 
 function ModalCep({
-  visible, setVisible, onChangeCep, cepValue = ''
+  visible,
+  handleSave,
+  setVisible,
+  cepValue = '',
 }) {
   const [textCep, setTextCep] = useState(cepValue);
   const [inputRef, setInputRef] = useState(null);
@@ -22,32 +23,34 @@ function ModalCep({
     inputRef.focus();
   }
 
-  function handleSave() {
+  function handleSubmit() {
     if (textCep.length < 9) {
       Alert.alert('CEP Inválido');
       return;
     }
 
-    onChangeCep(textCep);
     setVisible(false);
+    handleSave(textCep);
   }
 
   function handleClear() {
-    onChangeCep('');
     setTextCep('');
     setVisible(false);
   }
 
   return (
     <Modal
-      onBackdropPress={() => setVisible(false)}
+      avoidKeyboard
       isVisible={visible}
       style={Styles.modal}
-      avoidKeyboard
       onModalShow={handleOnShow}
+      onBackdropPress={() => setVisible(false)}
     >
       <View style={Styles.cardModal}>
-        <TouchableOpacity style={Styles.closeBtn} onPress={() => setVisible(false)}>
+        <TouchableOpacity
+          style={Styles.closeBtn}
+          onPress={() => setVisible(false)}
+        >
           <CloseIcon />
         </TouchableOpacity>
         <View style={Styles.containerTitle}>
@@ -55,10 +58,15 @@ function ModalCep({
         </View>
         <View style={Styles.bodyModal}>
           <Text style={Styles.label}>CEP</Text>
-          <Input typeInput="cep" onChangeText={setTextCep} refInput={r => setInputRef(r)} value={textCep} />
+          <Input
+            typeInput="cep"
+            value={textCep}
+            onChangeText={setTextCep}
+            refInput={r => setInputRef(r)}
+          />
         </View>
         <View style={Styles.footerModal}>
-          <TouchableOpacity onPress={handleSave}>
+          <TouchableOpacity onPress={handleSubmit}>
             <Text style={Styles.btnSave}>Salvar</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleClear}>
@@ -72,8 +80,8 @@ function ModalCep({
 
 ModalCep.propTypes = {
   visible: PropTypes.bool,
+  handleSave: PropTypes.func.isRequired,
   setVisible: PropTypes.func.isRequired,
-  onChangeCep: PropTypes.func,
 };
 ModalCep.defaultProps = {
   visible: false,

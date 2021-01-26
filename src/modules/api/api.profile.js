@@ -1,7 +1,7 @@
 import Api from '.';
-import APIRturn from './api-return';
+import APIRturn from './utils/return';
 
-export default class ProfileService extends Api {
+export default new class ProfileService extends Api {
   async getCpf(cpf) {
     return APIRturn(this.get(`/profile/cpf/${cpf}`));
   }
@@ -173,4 +173,4 @@ export default class ProfileService extends Api {
     */
     return APIRturn(this.put('/profile', data));
   }
-}
+}();

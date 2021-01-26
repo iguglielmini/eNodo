@@ -25,7 +25,7 @@ class AccordionView extends Component {
     };
   }
 
-  renderEvaluation = (numberStar) => {
+  renderEvaluation = numberStar => {
     const itemStar = [];
     if (!numberStar) return null;
     for (let qtd = 1; qtd <= 5; qtd += 1) {
@@ -38,49 +38,67 @@ class AccordionView extends Component {
     return itemStar;
   };
 
-  renderHeader = (section, _, isActive) => (
-    <View style={Styles.header}>
-      <Text style={Styles.headerText}>{section.title}</Text>
-      <View style={Styles.contentIcons}>
-        <View style={Styles.evaluationStar}>
-          {this.renderEvaluation(section.stars)}
+  renderHeader = ({ title, average, content }, _, isActive) => {
+    const { description } = content;
+
+    if (!description) return <></>;
+
+    return (
+      <View style={Styles.header}>
+        <Text style={Styles.headerText}>{title}</Text>
+        <View style={Styles.contentIcons}>
+          {average > 0 && (
+            <View style={Styles.evaluationStar}>
+              {this.renderEvaluation(average)}
+            </View>
+          )}
+          {isActive ? <ArrowUp /> : <ArrowDown />}
         </View>
-        {isActive ? <ArrowUp /> : <ArrowDown />}
       </View>
-    </View>
-  );
+    );
+  };
 
-  renderContent = section => (
-    <View style={Styles.content}>
-      <Text style={Styles.contentText}>
-        {truncateString(section.content, 190)}
-        &nbsp;
-        {section.type === 'text' && (
-          <Text
-            suppressHighlighting
-            style={Styles.contentModal}
-            onPress={() => this.props.actionMore(section)}
-          >
-            Ler&nbsp;mais
-          </Text>
-        )}
-      </Text>
-    </View>
-  );
+  renderContent = ({ content }) => {
+    const { description } = content;
 
-  updateSections = (activeSections) => {
+    if (!description) return null;
+
+    return (
+      <View style={Styles.content}>
+        <Text style={Styles.contentText}>
+          {truncateString(description, 190)}
+          &nbsp;
+          {section.type === 'text' && (
+            <Text
+              suppressHighlighting
+              style={Styles.contentModal}
+              onPress={() => this.props.actionMore(section)}
+            >
+              Ler&nbsp;mais
+            </Text>
+          )}
+        </Text>
+      </View>
+    );
+  };
+
+  updateSections = activeSections => {
     this.setState({ activeSections });
   };
 
   render() {
+    const { data } = this.props;
     const { activeSections } = this.state;
+
+    if (!data.length) return null;
+
     return (
       <Accordion
-        sections={AccordionMock}
+        sections={data}
+        onChange={this.updateSections}
         activeSections={activeSections}
         renderHeader={this.renderHeader}
         renderContent={this.renderContent}
-        onChange={this.updateSections}
       />
     );
   }
@@ -88,5 +106,6 @@ class AccordionView extends Component {
 
 AccordionView.propTypes = {
   actionMore: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 export default AccordionView;

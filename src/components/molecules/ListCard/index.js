@@ -9,8 +9,8 @@ import Card from '@components/molecules/Card';
 import Styles from './styles';
 
 function ListCard({ data, theme, navigation }) {
-  function handleShowDetailProduct(slug, sku) {
-    navigation.navigate('ProductDetails', { slug, sku });
+  function handleShowDetailProduct(slug, id, sku) {
+    navigation.navigate('ProductDetails', { slug, id, sku });
   }
 
   if (!data.length) return null;
