@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Input from '@components/atoms/Input';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import {
+  View, Text, TouchableOpacity, Alert
+} from 'react-native';
 
 // Icons
 import CloseIcon from '@assets/svg/close';
@@ -85,7 +87,6 @@ ModalCep.propTypes = {
 };
 ModalCep.defaultProps = {
   visible: false,
-  onChangeCep: () => {},
 };
 
 export default ModalCep;

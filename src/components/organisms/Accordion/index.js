@@ -8,9 +8,6 @@ import ArrowDown from '@assets/svg/arrowDown';
 import ArrowUp from '@assets/svg/arrowUp';
 import StarIcon from '@assets/svg/star';
 
-// Mock
-import AccordionMock from '@mock/AccordionMock';
-
 // Utils
 import { truncateString } from '../../../modules/utils';
 
@@ -25,7 +22,7 @@ class AccordionView extends Component {
     };
   }
 
-  renderEvaluation = numberStar => {
+  renderEvaluation = (numberStar) => {
     const itemStar = [];
     if (!numberStar) return null;
     for (let qtd = 1; qtd <= 5; qtd += 1) {
@@ -58,7 +55,7 @@ class AccordionView extends Component {
     );
   };
 
-  renderContent = ({ content }) => {
+  renderContent = ({ content, type }) => {
     const { description } = content;
 
     if (!description) return null;
@@ -68,11 +65,11 @@ class AccordionView extends Component {
         <Text style={Styles.contentText}>
           {truncateString(description, 190)}
           &nbsp;
-          {section.type === 'text' && (
+          {type === 'text' && (
             <Text
               suppressHighlighting
               style={Styles.contentModal}
-              onPress={() => this.props.actionMore(section)}
+              onPress={() => this.props.actionMore(description)}
             >
               Ler&nbsp;mais
             </Text>
@@ -82,7 +79,7 @@ class AccordionView extends Component {
     );
   };
 
-  updateSections = activeSections => {
+  updateSections = (activeSections) => {
     this.setState({ activeSections });
   };
 

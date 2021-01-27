@@ -25,7 +25,6 @@ function CarouselProduct({ gallery }) {
           return (
             <View style={Styles.cardContainer} key={key}>
               <Image
-                resizeMode="cover"
                 style={Styles.cardImage}
                 source={{ uri: url, width, height }}
               />

@@ -22,7 +22,7 @@ export default function cartReducer(state = initialState, action) {
       return {
         ...state,
         products: action.products,
-      }
+      };
     default:
       return state;
   }

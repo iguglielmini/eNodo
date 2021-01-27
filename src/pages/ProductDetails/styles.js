@@ -59,7 +59,9 @@ export default StyleSheet.create({
     color: BLACK,
     textDecorationLine: 'underline',
   },
-  containerCarouselPay: {},
+  containerCarouselPay: {
+    paddingBottom: 80,
+  },
   ContainerClientPay: {
     padding: 15,
   },

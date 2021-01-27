@@ -6,7 +6,9 @@ import { bindActionCreators } from 'redux';
 import EventBus from '@modules/services/EventBus';
 import CardCart from '@components/molecules/CardCart';
 import LinearGradient from 'react-native-linear-gradient';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import {
+  View, Text, TouchableOpacity, ScrollView
+} from 'react-native';
 
 // Redux
 import { saveAddProductCart } from '@redux/actions';
@@ -15,7 +17,10 @@ import { saveAddProductCart } from '@redux/actions';
 import CloseIcon from '@assets/svg/close';
 import Styles from './styles';
 
-function ModalBuy({ navigation, visible, setVisible, saveAddProductCart }) {
+function ModalBuy({
+  // eslint-disable-next-line no-shadow
+  navigation, visible, setVisible, saveAddProductCart
+}) {
   function handleShowCart() {
     navigation.navigate('Cart');
     setVisible(false);
@@ -81,13 +86,12 @@ ModalBuy.defaultProps = {
   visible: false,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveAddProductCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveAddProductCart,
+  },
+  dispatch
+);
 
 export default connect(
   null,

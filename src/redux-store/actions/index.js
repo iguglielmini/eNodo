@@ -27,7 +27,7 @@ function saveAddProductCart(value) {
   return {
     type: ADD_PRODUCT_CART,
     products: value,
-  }
+  };
 }
 
 function saveMyCampaigns(payload) {
