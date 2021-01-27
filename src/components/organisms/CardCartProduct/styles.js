@@ -30,7 +30,6 @@ export default StyleSheet.create({
     maxHeight: 250,
     marginVertical: 50,
     overflow: 'hidden',
-    resizeMode: 'contain',
     paddingVertical: SPACE_24,
   },
   // Title Image

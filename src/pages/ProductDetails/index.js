@@ -174,6 +174,10 @@ class ProductDetails extends Component {
     });
   };
 
+  handleClearCep = () => {
+    this.setState({ textCep: '', daysCep: '7 dia(s) útil(eis)' });
+  }
+
   render() {
     const { navigation } = this.props;
     const {
@@ -238,6 +242,7 @@ class ProductDetails extends Component {
                     cepValue={textCep}
                     visible={modalCepVisible}
                     handleSave={this.handleSaveCep}
+                    handleClear={this.handleClearCep}
                     setVisible={this.setModalCepVisible}
                   />
                 </View>

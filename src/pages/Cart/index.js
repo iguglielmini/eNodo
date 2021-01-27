@@ -60,12 +60,11 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    ApiCart.getBasket().then(async response => {
-      if (response && response.basket) {
-        this.setState({ loading: false });
-        await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
-        await this.getCart();
-      }
+    ApiCart.getBasket().then(async ({ data }) => {
+      this.setState({ loading: false });
+
+      await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
+      await this.getCart();
     });
   }
 
@@ -90,12 +89,13 @@ class Cart extends Component {
     const { cart } = this.state;
     cart.items[index].quantity = value;
 
+    this.setState({ loading: true });
+
     ApiCart.basketUpdateItem(itemId, { quantity: Number(value) }).then(
-      async response => {
-        if (response && response.basket) {
-          await DeviceStorage.setItem('@BelshopApp:cart', response.basket);
-          await this.getCart();
-        }
+      async ({ data }) => {
+        this.setState({ loading: false });
+        await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
+        await this.getCart();
       }
     );
   };
@@ -108,15 +108,15 @@ class Cart extends Component {
   handleRemoveProduct = itemId => {
     this.setState({ loading: true });
 
-    ApiCart.basketDeleteItem(itemId).then(async response => {
-      const { basket } = response;
-      if (response && basket) {
-        this.setState({ loading: false });
-        await DeviceStorage.setItem('@BelshopApp:cart', basket);
-        await this.getCart();
-      }
+    ApiCart.basketDeleteItem(itemId).then(async ({ data }) => {
+      const { basket } = data;
+      this.setState({ loading: false });
+      await DeviceStorage.setItem('@BelshopApp:cart', basket);
+      await this.getCart();
     });
   };
+
+  handleSaveCep = () => {}
 
   render() {
     const { navigation } = this.props;
@@ -225,6 +225,7 @@ class Cart extends Component {
                 <Section style={Styles.container}>
                   <CardCartProduct
                     cart={cart}
+                    handleSaveCep={this.handleSaveCep}
                     selectQuantity={this.selectQuantity}
                     removeProduct={this.handleRemoveProduct}
                   />

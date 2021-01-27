@@ -14,6 +14,7 @@ function ModalCep({
   visible,
   handleSave,
   setVisible,
+  handleClear,
   cepValue = '',
 }) {
   const [textCep, setTextCep] = useState(cepValue);
@@ -33,7 +34,8 @@ function ModalCep({
     handleSave(textCep);
   }
 
-  function handleClear() {
+  function handleClearCep() {
+    handleClear();
     setTextCep('');
     setVisible(false);
   }
@@ -69,7 +71,7 @@ function ModalCep({
           <TouchableOpacity onPress={handleSubmit}>
             <Text style={Styles.btnSave}>Salvar</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleClear}>
+          <TouchableOpacity onPress={handleClearCep}>
             <Text style={Styles.btnClear}>Limpar</Text>
           </TouchableOpacity>
         </View>

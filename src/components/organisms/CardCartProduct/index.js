@@ -6,16 +6,18 @@ import Title from '@components/atoms/Title';
 import ModalCep from '@components/organisms/ModalCep';
 import QuantityProduct from '@components/atoms/QuantityProduct';
 
-// Images
-import ProductImage from '@assets/images/product1.png';
-
 // icons
 import DetailIcon from '@assets/svg/detail';
 
 // Styles
 import Styles from './styles';
 
-function CardCartProduct({ cart, removeProduct, selectQuantity }) {
+function CardCartProduct({
+  cart,
+  removeProduct,
+  handleSaveCep,
+  selectQuantity,
+}) {
   const { items } = cart;
   const [textCep, setTextCep] = useState('');
   const [modalCepVisible, setModalCepVisible] = useState(false);
@@ -26,17 +28,19 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
         {items.map((item, index) => {
           const key = index;
           const { product } = item;
+          const { image } = product;
+
           return (
             <Fragment key={key}>
               <View style={Styles.containerImageProduct}>
                 <Image
+                  resizeMode="contain"
                   style={Styles.imageProduct}
-                  // source={{
-                  //   width: 640,
-                  //   height: 640,
-                  //   uri: product.image,
-                  // }}
-                  source={ProductImage}
+                  source={{
+                    uri: image.url,
+                    width: image.width,
+                    height: image.height,
+                  }}
                 />
               </View>
               <View style={Styles.containerTitleProduct}>
@@ -50,7 +54,8 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
                 price={product.price}
                 quantity={item.quantity}
                 removeProduct={() => removeProduct(item.basketItemId)}
-                onSelect={value => selectQuantity(index, value, item.basketItemId)
+                onSelect={value =>
+                  selectQuantity(index, value, item.basketItemId)
                 }
               />
             </Fragment>
@@ -74,10 +79,10 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
               {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
             </Text>
             <ModalCep
-              visible={modalCepVisible}
-              setVisible={setModalCepVisible}
-              onChangeCep={setTextCep}
               cepValue={textCep}
+              visible={modalCepVisible}
+              handleSave={handleSaveCep}
+              setVisible={setModalCepVisible}
             />
           </View>
         </View>
@@ -85,4 +90,5 @@ function CardCartProduct({ cart, removeProduct, selectQuantity }) {
     </>
   );
 }
+
 export default CardCartProduct;
