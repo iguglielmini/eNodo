@@ -1,6 +1,6 @@
 import axios from 'axios';
-import config from '@/config';
 import DeviceStorage from '@modules/services/device-storage';
+import config from '@/config';
 
 export default class Api {
   constructor() {

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, Image, TouchableOpacity } from 'react-native';
+import {
+  View, Text, Image, TouchableOpacity
+} from 'react-native';
 
 // Utils
 import { convertToPriceText } from '@modules/utils';
@@ -8,12 +10,16 @@ import { convertToPriceText } from '@modules/utils';
 // Styles
 import Styles from './styles';
 
-function IntroCard({ price, title, image, onClick }) {
+function IntroCard({
+  price, title, image, onClick
+}) {
   const { url, width, height } = image;
   return (
     <TouchableOpacity onPress={onClick} style={Styles.container}>
-      <Text style={Styles.title}>{title}</Text>
-      <Text style={Styles.price}>{convertToPriceText(price.current)}</Text>
+      <View style={Styles.containerTitlePrice}>
+        <Text style={Styles.title}>{title}</Text>
+        <Text style={Styles.price}>{convertToPriceText(price.current)}</Text>
+      </View>
       <Image
         style={Styles.image}
         resizeMode="contain"

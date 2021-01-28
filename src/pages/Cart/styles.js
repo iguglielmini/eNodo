@@ -5,7 +5,7 @@ import {
 } from '@assets/style/typography';
 import { WHITE, BLACK, TEXTGREYLIGHT } from '@assets/style/colors';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   page: {

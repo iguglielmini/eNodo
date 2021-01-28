@@ -16,7 +16,9 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   cardImage: {
-    resizeMode: 'cover',
+    maxWidth: 261,
+    maxHeight: 415,
+    resizeMode: 'contain',
   },
   dot: {
     position: 'absolute',

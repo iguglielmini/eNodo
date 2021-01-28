@@ -105,7 +105,7 @@ class Cart extends Component {
     this.setState({ currentScrollY: Math.floor(contentOffset.y) });
   };
 
-  handleRemoveProduct = itemId => {
+  handleRemoveProduct = (itemId) => {
     this.setState({ loading: true });
 
     ApiCart.basketDeleteItem(itemId).then(async ({ data }) => {
@@ -120,7 +120,9 @@ class Cart extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { cart, scrollY, loading, currentScrollY } = this.state;
+    const {
+      cart, scrollY, loading, currentScrollY
+    } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -261,8 +263,7 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   null,

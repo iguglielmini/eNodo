@@ -26,7 +26,6 @@ import DetailIcon from '@assets/svg/detail';
 import FavoriteIcon from '@assets/svg/favorite';
 
 // API
-import ApiCart from '@modules/api/api-shopping';
 import ApiProduct from '@modules/api/api-product';
 import ApiShopping from '@modules/api/api-shopping';
 
@@ -35,7 +34,6 @@ import { calcTotalQuantityCart } from '@modules/utils';
 import { saveLengthCart, saveAddProductCart } from '@redux/actions';
 
 // Mocks
-import CardListMock from '@mock/CardListMock';
 import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 
 /** Styles */
@@ -61,6 +59,7 @@ class ProductDetails extends Component {
         },
       },
       loading: true,
+      // eslint-disable-next-line react/no-unused-state
       theme: 'light',
       modalCepVisible: false,
       productsAssociations: {
@@ -92,16 +91,17 @@ class ProductDetails extends Component {
     if (dataProduct) {
       const { theme, widgets } = dataProduct;
       const product = widgets[0].details;
+      // eslint-disable-next-line react/no-unused-state
       this.setState({ product, theme });
     }
 
     if (dataProductAssociations.length) {
       const { productsAssociations } = this.state;
 
-      dataProductAssociations.map(section => {
+      dataProductAssociations.forEach((section) => {
         const { widgets } = section;
 
-        widgets.map(widget => {
+        widgets.forEach((widget) => {
           const { items } = widget;
 
           if (widget.alias === 'quem-comprou-comprou-tambem') {
@@ -119,11 +119,11 @@ class ProductDetails extends Component {
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
-  setModalDetailsVisible = modalDetailsVisible => {
+  setModalDetailsVisible = (modalDetailsVisible) => {
     this.setState({ modalDetailsVisible });
   };
 
-  showModalDetails = details => {
+  showModalDetails = (details) => {
     const { modalDetailsVisible } = this.state;
     this.setState({ modalDetailsVisible: !modalDetailsVisible, details });
   };
@@ -137,7 +137,7 @@ class ProductDetails extends Component {
     const form = {
       products: [{ product: id, sku, quantity: 1 }],
     };
-    ApiCart.basketAddItem(form)
+    ApiShopping.basketAddItem(form)
       .then(({ data }) => {
         setLoading(false);
         setModalBuyVisible(true);
@@ -155,7 +155,7 @@ class ProductDetails extends Component {
       .catch(() => setLoading(false));
   };
 
-  handleSaveCep = cep => {
+  handleSaveCep = (cep) => {
     const { route } = this.props;
     const { id, sku } = route.params;
 
@@ -230,7 +230,11 @@ class ProductDetails extends Component {
                 <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
                 <View style={Styles.modalContainer}>
                   <Text style={Styles.descriptionSubTitle}>
-                    Entrega em até {daysCep} após a postagem do produto. &nbsp;
+                    Entrega em até
+                    {' '}
+                    {daysCep}
+                    {' '}
+após a postagem do produto. &nbsp;
                     <Text
                       style={Styles.btnModal}
                       onPress={() => this.setModalCepVisible(true)}
@@ -283,17 +287,28 @@ class ProductDetails extends Component {
           </View>
 
           {/* Clientes Tambem Compraram Area */}
-          <View style={Styles.ContainerClientPay}>
-            <Text style={Styles.ClientPayTitle}>Clientes também compraram</Text>
-            <ListCard data={productsAssociations.clientsBy} navigation={navigation} />
-          </View>
+          {productsAssociations.clientsBy.length > 0 && (
+            <View style={Styles.ContainerClientPay}>
+              <Text style={Styles.ClientPayTitle}>
+                Clientes também compraram
+              </Text>
+              <ListCard
+                data={productsAssociations.clientsBy}
+                navigation={navigation}
+              />
+            </View>
+          )}
 
           {/* Produtos semelhantes */}
-          <View style={Styles.ContainerProductSimilar}>
-            <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
-            {/* <Text style={Styles.budget}>Cabelos › Finalizadores</Text> */}
-            <ListCard data={productsAssociations.similar} navigation={navigation} />
-          </View>
+          {productsAssociations.similar.length > 0 && (
+            <View style={Styles.ContainerProductSimilar}>
+              <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
+              <ListCard
+                data={productsAssociations.similar}
+                navigation={navigation}
+              />
+            </View>
+          )}
         </ScrollView>
         <FloatButtonBuy
           price={price}
@@ -310,14 +325,13 @@ ProductDetails.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-      saveAddProductCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+    saveAddProductCart,
+  },
+  dispatch
+);
 
 export default connect(
   null,

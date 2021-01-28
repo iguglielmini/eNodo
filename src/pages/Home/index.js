@@ -62,7 +62,9 @@ class Home extends Component {
   };
 
   generateSections = (section, index, tempSections) => {
-    const { title, theme, widgets, style } = section;
+    const {
+      title, theme, widgets, style
+    } = section;
     const { navigation, lengthCart } = this.props;
 
     widgets.map((widget, widgetIndex) => {
@@ -83,6 +85,7 @@ class Home extends Component {
         );
       }
 
+      // eslint-disable-next-line default-case
       switch (template) {
         case 'swiper':
           tempSections.push(
@@ -199,8 +202,7 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,

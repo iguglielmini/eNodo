@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { BORDERGREY } from '@assets/style/colors';
-import { SPACE_32 } from '@assets/style/wrapper';
+import { SPACE_16, SPACE_32 } from '@assets/style/wrapper';
 import { TitleSmall } from '@assets/style/typography';
 
 export default StyleSheet.create({
   containerHelp: {
-    marginTop: 67,
+    marginTop: SPACE_16,
     flexDirection: 'column',
   },
   btn: {

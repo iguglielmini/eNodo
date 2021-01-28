@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  View, Text, Image, Dimensions, TouchableOpacity
+} from 'react-native';
 
 import Title from '@components/atoms/Title';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
@@ -11,7 +13,9 @@ import Styles from './styles';
 
 const { width } = Dimensions.get('window');
 
-const Card = ({ data, showTitle, navigation, pageName }) => (
+const Card = ({
+  data, showTitle, navigation, pageName
+}) => (
   <View style={Styles.cardContainer}>
     {data.map((item, index) => {
       const key = index;
@@ -19,8 +23,7 @@ const Card = ({ data, showTitle, navigation, pageName }) => (
       return (
         <TouchableOpacity
           key={key}
-          onPress={() =>
-            pageName && navigation.navigate(pageName, { filter: link })
+          onPress={() => pageName && navigation.navigate(pageName, { filter: link })
           }
           activeOpacity={1}
         >
