@@ -12,7 +12,7 @@ function Badge({ theme, count }) {
     return (
       <>
         <BagFillIcon name="Bag" size={24} color={Styles[theme].color} />
-        <Text style={[Styles.badgeText, ...Styles[theme]]}>{count}</Text>
+        <Text style={[Styles.badgeText, Styles[theme]]}>{count}</Text>
       </>
     );
   }

@@ -34,7 +34,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      sections: [],
+      data: [],
     };
   }
 
@@ -44,9 +44,8 @@ class Home extends Component {
   }
 
   getData = async () => {
-    const sections = [];
     const { data } = await Api.getHome();
-    data.map((item, index) => this.generateSections(item, index, sections));
+    this.setState({ data });
   };
 
   getLengthCart = async () => {
@@ -61,133 +60,137 @@ class Home extends Component {
     this.props.saveLengthCart(lengthItems);
   };
 
-  generateSections = (section, index, tempSections) => {
-    const {
-      title, theme, widgets, style
-    } = section;
-    const { navigation, lengthCart } = this.props;
+  generateSections = (navigation, lengthCart) => {
+    const tempSections = [];
+    const { data } = this.state;
 
-    widgets.map((widget, widgetIndex) => {
-      const key = widgetIndex + index;
-      const { items, template, highlight } = widget;
+    if (!data.length) return null;
 
-      if (index === 0) {
-        tempSections.push(
-          <Section style={{ paddingTop: 64, ...Styles.section }} key={index}>
-            <HeaderHome
-              title={title}
-              theme={theme}
-              lengthCart={lengthCart}
-              navigation={navigation}
-            />
-            <ListCard data={items} navigation={navigation} theme={theme} />
-          </Section>
-        );
-      }
+    data.forEach((section, index) => {
+      const { title, theme, widgets, style } = section;
 
-      // eslint-disable-next-line default-case
-      switch (template) {
-        case 'swiper':
+      widgets.forEach((widget, widgetIndex) => {
+        const key = widgetIndex + index;
+        const { items, template, highlight } = widget;
+
+        if (index === 0) {
           tempSections.push(
-            <Section style={{ paddingTop: 16 }} key={key}>
-              <CarouselBranding
-                showFooter
-                data={items}
+            <Section style={{ paddingTop: 64, ...Styles.section }} key={index}>
+              <HeaderHome
+                title={title}
                 theme={theme}
-                title="Marcas"
-                showTitle={false}
+                lengthCart={lengthCart}
                 navigation={navigation}
               />
+              <ListCard data={items} navigation={navigation} theme={theme} />
             </Section>
           );
-          break;
+        }
 
-        case 'grid':
-          if (highlight) {
-            if (style === 'queridinhos') {
-              tempSections.push(
-                <Section style={[Styles.belSection, Styles.section]} key={key}>
-                  <View style={Styles.containerBel}>
-                    <View style={Styles.containerTitleBel}>
-                      <Title
-                        size="xlarge"
-                        title={'Queri\ndinhos'}
-                        style={Styles.belTitle}
-                      />
-                      <Image source={imageBel} style={Styles.belImage} />
+        // eslint-disable-next-line default-case
+        switch (template) {
+          case 'swiper':
+            tempSections.push(
+              <Section style={{ paddingTop: 16 }} key={key}>
+                <CarouselBranding
+                  showFooter
+                  data={items}
+                  theme={theme}
+                  title="Marcas"
+                  showTitle={false}
+                  navigation={navigation}
+                />
+              </Section>
+            );
+            break;
+
+          case 'grid':
+            if (highlight) {
+              if (style === 'queridinhos') {
+                tempSections.push(
+                  <Section
+                    style={[Styles.belSection, Styles.section]}
+                    key={key}
+                  >
+                    <View style={Styles.containerBel}>
+                      <View style={Styles.containerTitleBel}>
+                        <Title
+                          size="xlarge"
+                          title={'Queri\ndinhos'}
+                          style={Styles.belTitle}
+                        />
+                        <Image source={imageBel} style={Styles.belImage} />
+                      </View>
+                      <Image source={imageKiss} style={Styles.kissImage} />
                     </View>
-                    <Image source={imageKiss} style={Styles.kissImage} />
-                  </View>
-                  <View style={{ paddingBottom: 44 }}>
-                    <IntroCard
-                      price={highlight.price}
-                      title={highlight.title}
-                      image={highlight.image}
+                    <View style={{ paddingBottom: 44 }}>
+                      <IntroCard
+                        price={highlight.price}
+                        title={highlight.title}
+                        image={highlight.image}
+                      />
+                    </View>
+                    <ListCard data={items} navigation={navigation} />
+                    <ButtonSeeAll theme={theme} />
+                  </Section>
+                );
+              }
+            }
+
+            if (style === 'default' && theme === 'dark') {
+              tempSections.push(
+                <Section style={{ paddingTop: 48 }} theme={theme} key={key}>
+                  <Title
+                    theme={theme}
+                    title={title}
+                    style={Styles.novidadeBellTitle}
+                  />
+                  <ImageIntroCard />
+                  <View style={Styles.section}>
+                    <ListCard
+                      data={items}
+                      theme={theme}
+                      navigation={navigation}
                     />
                   </View>
-                  <ListCard data={items} navigation={navigation} />
                   <ButtonSeeAll theme={theme} />
                 </Section>
               );
             }
-          }
+            break;
 
-          if (style === 'default' && theme === 'dark') {
+          case 'bullets':
             tempSections.push(
-              <Section style={{ paddingTop: 48 }} theme={theme} key={key}>
-                <Title
-                  theme={theme}
-                  title={title}
-                  style={Styles.novidadeBellTitle}
+              <Section key={key}>
+                <Title title={title} style={{ marginLeft: 16 }} />
+                <FilterButton
+                  data={items}
+                  onClick={() => navigation.navigate('Category')}
                 />
-                <ImageIntroCard />
-                <View style={Styles.section}>
-                  <ListCard
-                    data={items}
-                    theme={theme}
-                    navigation={navigation}
-                  />
-                </View>
-                <ButtonSeeAll theme={theme} />
               </Section>
             );
-          }
-          break;
+            break;
 
-        case 'bullets':
-          tempSections.push(
-            <Section key={key}>
-              <Title title={title} style={{ marginLeft: 16 }} />
-              <FilterButton
-                data={items}
-                onClick={() => navigation.navigate('Category')}
-              />
-            </Section>
-          );
-          break;
-
-        case 'links':
-          tempSections.push(
-            <Section key={key} style={{ paddingVertical: 0 }}>
-              <LinkHelp data={items} />
-            </Section>
-          );
-          break;
-      }
-
-      return true;
+          case 'links':
+            tempSections.push(
+              <Section key={key} style={{ paddingVertical: 0 }}>
+                <LinkHelp data={items} />
+              </Section>
+            );
+            break;
+        }
+      });
     });
 
-    this.setState({ sections: tempSections });
+    return tempSections;
   };
 
   render() {
-    const { sections } = this.state;
-
+    const { navigation, lengthCart } = this.props;
     return (
       <>
         <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
-          {sections}
+          {this.generateSections(navigation, lengthCart)}
         </ScrollView>
       </>
     );
@@ -202,7 +205,8 @@ const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,
