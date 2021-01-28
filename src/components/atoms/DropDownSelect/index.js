@@ -10,23 +10,21 @@ import IconArrowDonw from '../../../assets/svg/arrowDown';
 import IconArrowUp from '../../../assets/svg/arrowUp';
 
 function DropDownSelect({ data, selected, onSelect }) {
-  const newData = data.map(item => ({
+  const newData = data.map((item, index) => ({
     ...item,
-    icon: () => selected
-      && selected.value === item.value && (
-        <IconCheck />
-    ),
+    selected: index === 0,
+    icon: () => selected && selected.value === item.value && <IconCheck />,
   }));
 
   return (
     <DropDownPicker
-      customArrowUp={() => <IconArrowUp />}
-      customArrowDown={() => <IconArrowDonw />}
       items={newData}
       itemStyle={Styles.item}
       labelStyle={Styles.label}
       dropDownStyle={Styles.dropdown}
+      customArrowUp={() => <IconArrowUp />}
       onChangeItem={item => onSelect(item)}
+      customArrowDown={() => <IconArrowDonw />}
     />
   );
 }

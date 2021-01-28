@@ -3,23 +3,19 @@ import PropTypes from 'prop-types';
 import {
   View,
   Text,
+  Platform,
   ScrollView,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-
-// Components
 import SelectFilter from '@components/atoms/SelectFilter';
 import DropDownSelect from '@components/atoms/DropDownSelect';
 
-// Mock
-import FilterMock from '@mock/FilterMock';
-
 // Icons
 import CloseIcon from '@assets/svg/close';
+
 /** Styles */
 import Styles from './styles';
 
@@ -36,11 +32,11 @@ class ModalFilter extends Component {
     this.setState({ selected: [], dropSelect: null });
   };
 
-  filterDrop = (selected) => {
+  filterDrop = selected => {
     this.setState({ dropSelect: selected });
   };
 
-  filterSelect = (value) => {
+  filterSelect = value => {
     const { selected } = this.state;
 
     if (selected.includes(value)) {
@@ -52,8 +48,11 @@ class ModalFilter extends Component {
   };
 
   render() {
-    const { visible, setVisible } = this.props;
+    const { visible, setVisible, data } = this.props;
     const { selected, dropSelect } = this.state;
+
+    const { sort, facets } = data;
+
     return (
       <Animatable.View animation="slideInRight" style={Styles.container}>
         <Modal
@@ -84,41 +83,35 @@ class ModalFilter extends Component {
                   Platform.OS === 'ios' && { zIndex: 10 },
                 ]}
               >
-                <Text style={Styles.subTitle}>Ordernar por</Text>
+                <Text style={Styles.subTitle}>{sort.label}</Text>
                 <View>
                   <DropDownSelect
+                    data={sort.options}
                     selected={dropSelect}
                     onSelect={this.filterDrop}
-                    data={FilterMock.DropDownSelectInput}
                   />
                 </View>
               </View>
               {/* Section SubCategoria */}
-              <View style={Styles.selectContainer}>
-                <Text style={Styles.subTitle}>
-                  {FilterMock.subCategoria.titleSection}
-                </Text>
-                <View style={Styles.containerSelect}>
-                  <SelectFilter
-                    selected={selected}
-                    onSelect={this.filterSelect}
-                    data={FilterMock.subCategoria.itenSelect}
-                  />
-                </View>
-              </View>
-              {/* Section Marcas */}
-              <View style={Styles.selectContainer}>
-                <Text style={Styles.subTitle}>
-                  {FilterMock.subCategoriaDetails.titleSection}
-                </Text>
-                <View style={Styles.containerSelect}>
-                  <SelectFilter
-                    selected={selected}
-                    onSelect={this.filterSelect}
-                    data={FilterMock.subCategoriaDetails.itenSelect}
-                  />
-                </View>
-              </View>
+              {facets.map((item, index) => {
+                const key = index;
+                const { label, options } = item;
+
+                return (
+                  <View style={Styles.selectContainer} key={key}>
+                    <Text style={Styles.subTitle}>
+                      {label}
+                    </Text>
+                    <View style={Styles.containerSelect}>
+                      <SelectFilter
+                        data={options}
+                        selected={selected}
+                        onSelect={this.filterSelect}
+                      />
+                    </View>
+                  </View>
+                );
+              })}
             </ScrollView>
             {/* float button */}
             <LinearGradient
@@ -145,6 +138,7 @@ class ModalFilter extends Component {
 ModalFilter.propTypes = {
   visible: PropTypes.bool,
   setVisible: PropTypes.func.isRequired,
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 ModalFilter.defaultProps = {
   visible: false,

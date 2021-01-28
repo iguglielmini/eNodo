@@ -165,7 +165,7 @@ class Home extends Component {
                 <Title title={title} style={{ marginLeft: 16 }} />
                 <FilterButton
                   data={items}
-                  onClick={() => navigation.navigate('Category')}
+                  navigation={navigation}
                 />
               </Section>
             );

@@ -1,90 +1,151 @@
-import React, { useState } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View, Text, ScrollView, TouchableOpacity
-} from 'react-native';
-
-/* Components */
 import Title from '@components/atoms/Title';
-import HeaderCategory from '@components/atoms/HeaderCategory';
 import Section from '@components/atoms/Section';
 import ListCard from '@components/molecules/ListCard';
 import ModalFilter from '@components/organisms/ModalFilter';
+import HeaderCategory from '@components/atoms/HeaderCategory';
 import CarouselBranding from '@components/organisms/CarouselBranding';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
-// Mock
-import CardlistMock from '@mock/CardListMock';
-import BrandingMock from '@mock/CarouselBrandingMock';
-import CategoryMock from '@mock/CategoryMock';
+import ApiCategory from '@modules/api/api-category';
 
 /** Styles */
+import DefaultStyles from '@assets/style/default';
 import Styles from './styles';
 
-// eslint-disable-next-line
-function Category({ route, navigation }) {
-  // const { id } = route.params;
-  const [modalFilter, setModalFilter] = useState(false);
+class Category extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <View style={Styles.Container}>
-      {/* Header */}
-      <HeaderCategory navigation={navigation} />
-      {/* Section title category */}
-      <View style={Styles.containerPage}>
-        <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
-          <View style={{ paddingTop: 48 }}>
-            <Title title="Cabelos" style={{ paddingLeft: 32, marginBottom: 0, paddingBottom: 0 }} />
-            <CarouselBranding
-              styleTitle={Styles.subTitle}
-              data={CategoryMock.filterCabelo}
-              navigation={navigation}
-              pageName="CategorySub"
-            />
-          </View>
-          {/* Section 2 */}
-          <Section style={Styles.section}>
-            <CarouselBranding
-              styleTitle={Styles.subTitle}
-              title="Tipos de Cabelo"
-              data={CategoryMock.filterType}
-              navigation={navigation}
-              pageName="CategorySub"
-            />
-          </Section>
-          {/* Section 3 Branding */}
-          <Section style={Styles.section}>
-            <CarouselBranding
-              styleTitle={Styles.subTitle}
-              title="Marcas"
-              data={BrandingMock}
-              navigation={navigation}
-              pageName="CategorySub"
-            />
-          </Section>
-          {/* Section 4 Mais vendidos */}
-          <Section style={Styles.section}>
-            <View style={Styles.containerSubtitle}>
+    this.state = {
+      widgets: [],
+      loading: true,
+      theme: 'light',
+      showModalFilter: false,
+    };
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = async () => {
+    const { route } = this.props;
+    const { slug } = route.params;
+    const { data } = await ApiCategory.getCategory(slug);
+    this.setState({ widgets: data.widgets, theme: data.theme, loading: false });
+  };
+
+  handleShowModalFilter = showModalFilter => this.setState({ showModalFilter });
+
+  render() {
+    const { navigation, route } = this.props;
+    const { showModalFilter, loading, widgets } = this.state;
+
+    const { title } = route.params;
+
+    return (
+      <View style={Styles.Container}>
+        {/* Header */}
+        <HeaderCategory navigation={navigation} />
+        {/* Section title category */}
+        <View style={Styles.containerPage}>
+          {loading && (
+            <View style={DefaultStyles.loading}>
+              <ActivityIndicator size="large" color="#ffffff" />
+            </View>
+          )}
+          <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
+            <View style={{ paddingTop: 48 }}>
               <Title
-                title="Mais vendidos"
-                styleFont={Styles.subTitle}
-                style={Styles.AlignItems}
+                title={title}
+                style={{ paddingLeft: 32, marginBottom: 0, paddingBottom: 0 }}
               />
+              {widgets.map((widget, index) => {
+                const key = index;
+                const { title, template, items } = widget;
 
-              <TouchableOpacity onPress={() => setModalFilter(true)}>
-                <View style={Styles.btnFilter}>
-                  <Text>Filtrar</Text>
-                </View>
-              </TouchableOpacity>
+                if (!title && template === 'swiper') {
+                  return (
+                    <CarouselBranding
+                      key={key}
+                      data={items}
+                      pageName="CategorySub"
+                      navigation={navigation}
+                      styleTitle={Styles.subTitle}
+                    />
+                  );
+                }
+              })}
             </View>
-            <ModalFilter visible={modalFilter} setVisible={setModalFilter} />
-            <View style={Styles.ProductCard}>
-              <ListCard data={CardlistMock} navigation={navigation} />
-            </View>
-          </Section>
-        </ScrollView>
+            {/* Section 2 */}
+            {widgets.map((widget, index) => {
+              const key = index;
+              const { title, template, items } = widget;
+
+              if (title && template === 'swiper') {
+                return (
+                  <Section style={Styles.section} key={key}>
+                    <CarouselBranding
+                      title={title}
+                      data={items}
+                      navigation={navigation}
+                      pageName="CategorySub"
+                      styleTitle={Styles.subTitle}
+                    />
+                  </Section>
+                );
+              }
+            })}
+            {/* Section 4 Mais vendidos */}
+            <Section style={Styles.section}>
+              {widgets.map((widget, index) => {
+                const key = index;
+                const { title, template, items, filters } = widget;
+
+                if (title && template === 'grid') {
+                  return (
+                    <Fragment key={key}>
+                      <View style={Styles.containerSubtitle}>
+                        <Title
+                          title={title}
+                          styleFont={Styles.subTitle}
+                          style={Styles.AlignItems}
+                        />
+
+                        <TouchableOpacity
+                          onPress={() => this.handleShowModalFilter(true)}
+                        >
+                          <View style={Styles.btnFilter}>
+                            <Text>Filtrar</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                      <ModalFilter
+                        data={filters}
+                        visible={showModalFilter}
+                        setVisible={this.handleShowModalFilter}
+                      />
+                      <View style={Styles.ProductCard}>
+                        <ListCard data={items} navigation={navigation} />
+                      </View>
+                    </Fragment>
+                  );
+                }
+              })}
+            </Section>
+          </ScrollView>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 Category.propTypes = {
