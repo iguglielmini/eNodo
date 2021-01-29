@@ -7,8 +7,8 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     width,
+    height: 270,
     paddingLeft: SPACE_32,
-    height: 224,
   },
   light: {
     color: '#0D0D0D'

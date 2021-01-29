@@ -98,10 +98,10 @@ class ProductDetails extends Component {
     if (dataProductAssociations.length) {
       const { productsAssociations } = this.state;
 
-      dataProductAssociations.forEach((section) => {
+      dataProductAssociations.forEach(section => {
         const { widgets } = section;
 
-        widgets.forEach((widget) => {
+        widgets.forEach(widget => {
           const { items } = widget;
 
           if (widget.alias === 'quem-comprou-comprou-tambem') {
@@ -119,11 +119,11 @@ class ProductDetails extends Component {
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
-  setModalDetailsVisible = (modalDetailsVisible) => {
+  setModalDetailsVisible = modalDetailsVisible => {
     this.setState({ modalDetailsVisible });
   };
 
-  showModalDetails = (details) => {
+  showModalDetails = details => {
     const { modalDetailsVisible } = this.state;
     this.setState({ modalDetailsVisible: !modalDetailsVisible, details });
   };
@@ -155,7 +155,7 @@ class ProductDetails extends Component {
       .catch(() => setLoading(false));
   };
 
-  handleSaveCep = (cep) => {
+  handleSaveCep = cep => {
     const { route } = this.props;
     const { id, sku } = route.params;
 
@@ -176,7 +176,7 @@ class ProductDetails extends Component {
 
   handleClearCep = () => {
     this.setState({ textCep: '', daysCep: '7 dia(s) útil(eis)' });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -230,11 +230,7 @@ class ProductDetails extends Component {
                 <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
                 <View style={Styles.modalContainer}>
                   <Text style={Styles.descriptionSubTitle}>
-                    Entrega em até
-                    {' '}
-                    {daysCep}
-                    {' '}
-após a postagem do produto. &nbsp;
+                    Entrega em até {daysCep} após a postagem do produto. &nbsp;
                     <Text
                       style={Styles.btnModal}
                       onPress={() => this.setModalCepVisible(true)}
@@ -325,13 +321,14 @@ ProductDetails.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    saveLengthCart,
-    saveAddProductCart,
-  },
-  dispatch
-);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveLengthCart,
+      saveAddProductCart,
+    },
+    dispatch
+  );
 
 export default connect(
   null,

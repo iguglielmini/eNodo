@@ -50,7 +50,6 @@ class ModalFilter extends Component {
   render() {
     const { visible, setVisible, data } = this.props;
     const { selected, dropSelect } = this.state;
-
     const { sort, facets } = data;
 
     return (
@@ -115,11 +114,11 @@ class ModalFilter extends Component {
             </ScrollView>
             {/* float button */}
             <LinearGradient
+              locations={[0.8, 1]}
               start={{ x: 0, y: 0.9 }}
               end={{ x: 0.0, y: 0.0 }}
-              locations={[0.8, 1]}
-              colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
               style={Styles.buttonContainer}
+              colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
             >
               <TouchableOpacity onPress={() => this.clearFilter()}>
                 <Text style={Styles.btnClear}>Limpar filtros</Text>

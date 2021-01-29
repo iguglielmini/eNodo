@@ -8,9 +8,6 @@ import ArrowDown from '@assets/svg/arrowDown';
 import ArrowUp from '@assets/svg/arrowUp';
 import StarIcon from '@assets/svg/star';
 
-// Utils
-import { truncateString } from '../../../modules/utils';
-
 // Styles
 import Styles from './styles';
 
@@ -22,7 +19,7 @@ class AccordionView extends Component {
     };
   }
 
-  renderEvaluation = (numberStar) => {
+  renderEvaluation = numberStar => {
     const itemStar = [];
     if (!numberStar) return null;
     for (let qtd = 1; qtd <= 5; qtd += 1) {
@@ -36,9 +33,9 @@ class AccordionView extends Component {
   };
 
   renderHeader = ({ title, average, content }, _, isActive) => {
-    const { description } = content;
+    const { description, shortDescription } = content;
 
-    if (!description) return <></>;
+    if (!description || !shortDescription) return <></>;
 
     return (
       <View style={Styles.header}>
@@ -55,21 +52,21 @@ class AccordionView extends Component {
     );
   };
 
-  renderContent = ({ content, type }) => {
-    const { description } = content;
+  renderContent = ({ content, title, type }) => {
+    const { description, shortDescription } = content;
 
-    if (!description) return null;
+    if (!description || !shortDescription) return null;
 
     return (
       <View style={Styles.content}>
         <Text style={Styles.contentText}>
-          {truncateString(description, 190)}
+          {shortDescription}
           &nbsp;
-          {type === 'text' && (
+          {['text', 'about'].includes(type) && (
             <Text
               suppressHighlighting
               style={Styles.contentModal}
-              onPress={() => this.props.actionMore(description)}
+              onPress={() => this.props.actionMore({ description, title })}
             >
               Ler&nbsp;mais
             </Text>
@@ -79,7 +76,7 @@ class AccordionView extends Component {
     );
   };
 
-  updateSections = (activeSections) => {
+  updateSections = activeSections => {
     this.setState({ activeSections });
   };
 
