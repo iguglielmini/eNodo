@@ -16,6 +16,7 @@ function DropDownSelect({ data, selected, onSelect }) {
 
     if (!selected && isFirst) {
       select = true;
+      onSelect(item);
     }
 
     if (selected && selected.value === item.value) {

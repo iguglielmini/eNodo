@@ -9,6 +9,7 @@
           "~": "./",
           "@": "./src",
           "@mock": "./src/mock",
+          "@pages": "./src/pages",
           "@assets": "./src/assets",
           "@modules": "./src/modules",
           "@redux": "./src/redux-store",

@@ -6,15 +6,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Pages
-import InitialPage from './src/pages';
-import Cart from './src/pages/Cart';
-import Category from './src/pages/Category';
-import CategorySub from './src/pages/CategorySub';
-import ProductDetailsPage from './src/pages/ProductDetails';
-import Checkout from './src/pages/Checkout';
+import InitialPage from '@pages';
+import Cart from '@pages/Cart';
+import Category from '@pages/Category';
+import Checkout from '@pages/Checkout';
+import ProductDetailsPage from '@pages/ProductDetails';
 
 // color
-import { BGGREY, BLACK, WHITE } from './src/assets/style/colors';
+import { BGGREY, BLACK, WHITE } from '@assets/style/colors';
 
 const Stack = createStackNavigator();
 
@@ -43,11 +42,11 @@ function Router() {
     },
     Checkout: {
       color: WHITE,
-      style: 'dark-content'
+      style: 'dark-content',
     },
   };
 
-  const routeChange = (route) => {
+  const routeChange = route => {
     const selectRouter = route.routes[route.index];
     const colors = statusBarColors[selectRouter.name];
     setStatusBarColor(colors.color);
@@ -76,13 +75,6 @@ function Router() {
           <Stack.Screen
             name="Category"
             component={Category}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="CategorySub"
-            component={CategorySub}
             options={{
               headerShown: false,
             }}

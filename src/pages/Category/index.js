@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Title from '@components/atoms/Title';
 import Section from '@components/atoms/Section';
 import ListCard from '@components/molecules/ListCard';
+import SelectFilter from '@components/atoms/SelectFilter';
 import ModalFilter from '@components/organisms/ModalFilter';
 import HeaderCategory from '@components/atoms/HeaderCategory';
 import CarouselBranding from '@components/organisms/CarouselBranding';
@@ -14,6 +15,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+// APIS
+import ApiCatalogy from '@modules/api/api-catalog';
 import ApiCategory from '@modules/api/api-category';
 
 /** Styles */
@@ -28,6 +31,9 @@ class Category extends Component {
       widgets: [],
       loading: true,
       theme: 'light',
+      seletedItens: [],
+      dropSelected: null,
+      loadingFilter: false,
       showModalFilter: false,
     };
   }
@@ -40,15 +46,65 @@ class Category extends Component {
     const { route } = this.props;
     const { slug } = route.params;
     const { data } = await ApiCategory.getCategory(slug);
-    this.setState({ widgets: data.widgets, theme: data.theme, loading: false });
+
+    if (data) {
+      const { widgets, theme } = data;
+      this.setState({ widgets, theme, loading: false });
+    }
   };
 
-  handleShowModalFilter = showModalFilter => this.setState({ showModalFilter });
+  handleShowModalFilter = () => {
+    const { showModalFilter } = this.state;
+
+    if (showModalFilter) this.handleClearFilter();
+
+    this.setState({ showModalFilter: !showModalFilter });
+  };
+
+  handleDropSelect = dropSelected => {
+    this.setState({ dropSelected });
+  };
+
+  handleClearFilter = () => {
+    this.setState({ seletedItens: [], dropSelected: null });
+  };
+
+  handlerFilterSelect = value => {
+    const { seletedItens } = this.state;
+
+    if (seletedItens.includes(value)) {
+      seletedItens.splice(seletedItens.indexOf(value), 1);
+    } else {
+      seletedItens.push(value);
+    }
+
+    this.setState({ seletedItens });
+  };
+
+  handleFilter = async () => {
+    const { seletedItens, dropSelected } = this.state;
+    this.setState({ loadingFilter: true });
+
+    const filter = [...seletedItens, dropSelected.value];
+
+    if (filter.length) {
+      const data = await ApiCatalogy.getCatalogSearch(filter);
+      console.log('XOLA ', data);
+    }
+
+    this.setState({ loadingFilter: false, showModalFilter: false });
+  };
 
   render() {
     const { navigation, route } = this.props;
-    const { showModalFilter, loading, widgets } = this.state;
-
+    const {
+      loading,
+      widgets,
+      seletedItens,
+      dropSelected,
+      loadingFilter,
+      showModalFilter,
+    } = this.state;
     const { title } = route.params;
 
     return (
@@ -85,6 +141,7 @@ class Category extends Component {
                 }
               })}
             </View>
+            <ScrollView horizontal>{/* <SelectFilter /> */}</ScrollView>
             {/* Section 2 */}
             {widgets.map((widget, index) => {
               const key = index;
@@ -94,10 +151,10 @@ class Category extends Component {
                 return (
                   <Section style={Styles.section} key={key}>
                     <CarouselBranding
-                      title={title}
                       data={items}
-                      navigation={navigation}
+                      title={title}
                       pageName="CategorySub"
+                      navigation={navigation}
                       styleTitle={Styles.subTitle}
                     />
                   </Section>
@@ -120,9 +177,7 @@ class Category extends Component {
                           style={Styles.AlignItems}
                         />
 
-                        <TouchableOpacity
-                          onPress={() => this.handleShowModalFilter(true)}
-                        >
+                        <TouchableOpacity onPress={this.handleShowModalFilter}>
                           <View style={Styles.btnFilter}>
                             <Text>Filtrar</Text>
                           </View>
@@ -130,8 +185,15 @@ class Category extends Component {
                       </View>
                       <ModalFilter
                         data={filters}
+                        loading={loadingFilter}
                         visible={showModalFilter}
+                        dropSelected={dropSelected}
+                        seletedItens={seletedItens}
+                        handleFilter={this.handleFilter}
                         setVisible={this.handleShowModalFilter}
+                        handleDropSelect={this.handleDropSelect}
+                        handleClearFilter={this.handleClearFilter}
+                        handlerFilterSelect={this.handlerFilterSelect}
                       />
                       <View style={Styles.ProductCard}>
                         <ListCard data={items} navigation={navigation} />
