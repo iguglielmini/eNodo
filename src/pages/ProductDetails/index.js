@@ -81,9 +81,7 @@ class ProductDetails extends Component {
     const requests = await Promise.all([
       ApiProduct.getProduct(slug),
       ApiProduct.getProductAssociations(slug),
-    ]);
-
-    if (requests.length) this.setState({ loading: false });
+    ]).finally(() => this.setState({ loading: false }));
 
     const dataProduct = requests[0].data;
     const dataProductAssociations = requests[1].data;
@@ -91,7 +89,6 @@ class ProductDetails extends Component {
     if (dataProduct) {
       const { theme, widgets } = dataProduct;
       const product = widgets[0].details;
-      // eslint-disable-next-line react/no-unused-state
       this.setState({ product, theme });
     }
 

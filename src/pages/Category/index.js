@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import Title from '@components/atoms/Title';
 import Section from '@components/atoms/Section';
 import ListCard from '@components/molecules/ListCard';
-import SelectFilter from '@components/atoms/SelectFilter';
 import ModalFilter from '@components/organisms/ModalFilter';
 import HeaderCategory from '@components/atoms/HeaderCategory';
 import CarouselBranding from '@components/organisms/CarouselBranding';
+import SelectFilterOutline from '@components/atoms/SelectFilterOutline';
 import {
   View,
   Text,
+  Alert,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
@@ -31,7 +32,9 @@ class Category extends Component {
       widgets: [],
       loading: true,
       theme: 'light',
+      filtersQuery: [],
       seletedItens: [],
+      filterProducts: [],
       dropSelected: null,
       loadingFilter: false,
       showModalFilter: false,
@@ -55,9 +58,6 @@ class Category extends Component {
 
   handleShowModalFilter = () => {
     const { showModalFilter } = this.state;
-
-    if (showModalFilter) this.handleClearFilter();
-
     this.setState({ showModalFilter: !showModalFilter });
   };
 
@@ -66,7 +66,13 @@ class Category extends Component {
   };
 
   handleClearFilter = () => {
-    this.setState({ seletedItens: [], dropSelected: null });
+    this.setState({
+      seletedItens: [],
+      filtersQuery: [],
+      filterProducts: [],
+      dropSelected: null,
+      showModalFilter: false,
+    });
   };
 
   handlerFilterSelect = value => {
@@ -81,18 +87,50 @@ class Category extends Component {
     this.setState({ seletedItens });
   };
 
-  handleFilter = async () => {
+  handleFilter = () => {
     const { seletedItens, dropSelected } = this.state;
+
+    const filters = [...seletedItens, dropSelected.value];
+
+    if (filters.length) this.getFilterData(filters);
+  };
+
+  handleRemoveOneFilter = value => {
+    const { filtersQuery } = this.state;
+  
+    const findIndex = filtersQuery.findIndex(item => item.value === value);
+    filtersQuery.splice(findIndex, 1);
+
+    this.setState({ filtersQuery });
+
+    if (!this.state.filtersQuery.length) this.handleClearFilter();
+
+    const newFilterQuery = this.state.filtersQuery.map(item => item.value);
+    this.setState({ seletedItens: newFilterQuery });
+    this.getFilterData(newFilterQuery);
+  };
+
+  getFilterData = filters => {
     this.setState({ loadingFilter: true });
+    ApiCatalogy.getCatalogSearch(filters)
+      .then(({ data }) => {
+        const { products, current } = data;
 
-    const filter = [...seletedItens, dropSelected.value];
+        if (!products.length) {
+          Alert.alert('Ooops!', 'Produto não disponível.');
+          return;
+        }
 
-    if (filter.length) {
-      const data = await ApiCatalogy.getCatalogSearch(filter);
-      console.log('XOLA ', data);
-    }
+        const filtersQuery = current.facets;
+        filtersQuery.push(current.sort);
 
-    this.setState({ loadingFilter: false, showModalFilter: false });
+        this.setState({
+          filtersQuery,
+          showModalFilter: false,
+          filterProducts: products,
+        });
+      })
+      .finally(() => this.setState({ loadingFilter: false }));
   };
 
   render() {
@@ -100,15 +138,17 @@ class Category extends Component {
     const {
       loading,
       widgets,
+      filtersQuery,
       seletedItens,
       dropSelected,
       loadingFilter,
+      filterProducts,
       showModalFilter,
     } = this.state;
     const { title } = route.params;
 
     return (
-      <View style={Styles.Container}>
+      <View style={Styles.container}>
         {/* Header */}
         <HeaderCategory navigation={navigation} />
         {/* Section title category */}
@@ -119,90 +159,154 @@ class Category extends Component {
             </View>
           )}
           <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
-            <View style={{ paddingTop: 48 }}>
-              <Title
-                title={title}
-                style={{ paddingLeft: 32, marginBottom: 0, paddingBottom: 0 }}
-              />
-              {widgets.map((widget, index) => {
-                const key = index;
-                const { title, template, items } = widget;
+            {filtersQuery.length > 0 && (
+              <View style={Styles.content}>
+                <View style={Styles.containerTitle}>
+                  <Title title={title} style={Styles.AlignItems} />
 
-                if (!title && template === 'swiper') {
-                  return (
-                    <CarouselBranding
-                      key={key}
-                      data={items}
-                      pageName="CategorySub"
-                      navigation={navigation}
-                      styleTitle={Styles.subTitle}
-                    />
-                  );
-                }
-              })}
-            </View>
-            <ScrollView horizontal>{/* <SelectFilter /> */}</ScrollView>
-            {/* Section 2 */}
-            {widgets.map((widget, index) => {
-              const key = index;
-              const { title, template, items } = widget;
+                  <TouchableOpacity onPress={this.handleShowModalFilter}>
+                    <View style={Styles.btnFilter}>
+                      <Text>Filtrar</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <ScrollView
+                  horizontal
+                  contentContainerStyle={Styles.scrollSelectFilter}
+                >
+                  <SelectFilterOutline
+                    isSelected
+                    data={filtersQuery}
+                    onSelect={this.handleRemoveOneFilter}
+                  />
+                </ScrollView>
+                <Section style={Styles.section}>
+                  {widgets.map((widget, index) => {
+                    const key = index;
+                    const { title, template, filters } = widget;
 
-              if (title && template === 'swiper') {
-                return (
-                  <Section style={Styles.section} key={key}>
-                    <CarouselBranding
-                      data={items}
-                      title={title}
-                      pageName="CategorySub"
-                      navigation={navigation}
-                      styleTitle={Styles.subTitle}
-                    />
-                  </Section>
-                );
-              }
-            })}
-            {/* Section 4 Mais vendidos */}
-            <Section style={Styles.section}>
-              {widgets.map((widget, index) => {
-                const key = index;
-                const { title, template, items, filters } = widget;
-
-                if (title && template === 'grid') {
-                  return (
-                    <Fragment key={key}>
-                      <View style={Styles.containerSubtitle}>
-                        <Title
-                          title={title}
-                          styleFont={Styles.subTitle}
-                          style={Styles.AlignItems}
-                        />
-
-                        <TouchableOpacity onPress={this.handleShowModalFilter}>
-                          <View style={Styles.btnFilter}>
-                            <Text>Filtrar</Text>
+                    if (title && template === 'grid') {
+                      return (
+                        <Fragment key={key}>
+                          <ModalFilter
+                            data={filters}
+                            loading={loadingFilter}
+                            visible={showModalFilter}
+                            dropSelected={dropSelected}
+                            seletedItens={seletedItens}
+                            handleFilter={this.handleFilter}
+                            setVisible={this.handleShowModalFilter}
+                            handleDropSelect={this.handleDropSelect}
+                            handleClearFilter={this.handleClearFilter}
+                            handlerFilterSelect={this.handlerFilterSelect}
+                          />
+                          <View style={Styles.ProductCard}>
+                            <ListCard
+                              data={filterProducts}
+                              navigation={navigation}
+                            />
                           </View>
-                        </TouchableOpacity>
-                      </View>
-                      <ModalFilter
-                        data={filters}
-                        loading={loadingFilter}
-                        visible={showModalFilter}
-                        dropSelected={dropSelected}
-                        seletedItens={seletedItens}
-                        handleFilter={this.handleFilter}
-                        setVisible={this.handleShowModalFilter}
-                        handleDropSelect={this.handleDropSelect}
-                        handleClearFilter={this.handleClearFilter}
-                        handlerFilterSelect={this.handlerFilterSelect}
-                      />
-                      <View style={Styles.ProductCard}>
-                        <ListCard data={items} navigation={navigation} />
-                      </View>
-                    </Fragment>
-                  );
-                }
-              })}
-            </Section>
+                        </Fragment>
+                      );
+                    }
+                  })}
+                </Section>
+              </View>
+            )}
+
+            {!filtersQuery.length && (
+              <>
+                <View style={Styles.content}>
+                  <Title
+                    title={title}
+                    style={{
+                      paddingLeft: 32,
+                      marginBottom: 0,
+                      paddingBottom: 0,
+                    }}
+                  />
+                  {widgets.map((widget, index) => {
+                    const key = index;
+                    const { title, template, items } = widget;
+
+                    if (!title && template === 'swiper') {
+                      return (
+                        <CarouselBranding
+                          key={key}
+                          data={items}
+                          pageName="CategorySub"
+                          navigation={navigation}
+                          styleTitle={Styles.subTitle}
+                        />
+                      );
+                    }
+                  })}
+                </View>
+                {/* Section 2 */}
+                {widgets.map((widget, index) => {
+                  const key = index;
+                  const { title, template, items } = widget;
+
+                  if (title && template === 'swiper') {
+                    return (
+                      <Section style={Styles.section} key={key}>
+                        <CarouselBranding
+                          data={items}
+                          title={title}
+                          pageName="CategorySub"
+                          navigation={navigation}
+                          styleTitle={Styles.subTitle}
+                        />
+                      </Section>
+                    );
+                  }
+                })}
+                {/* Section 4 Mais vendidos */}
+                <Section style={Styles.section}>
+                  {widgets.map((widget, index) => {
+                    const key = index;
+                    const { title, template, items, filters } = widget;
+
+                    if (title && template === 'grid') {
+                      return (
+                        <Fragment key={key}>
+                          <View style={Styles.containerSubtitle}>
+                            <Title
+                              title={title}
+                              styleFont={Styles.subTitle}
+                              style={Styles.AlignItems}
+                            />
+
+                            <TouchableOpacity
+                              onPress={this.handleShowModalFilter}
+                            >
+                              <View style={Styles.btnFilter}>
+                                <Text>Filtrar</Text>
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                          <ModalFilter
+                            data={filters}
+                            loading={loadingFilter}
+                            visible={showModalFilter}
+                            dropSelected={dropSelected}
+                            seletedItens={seletedItens}
+                            handleFilter={this.handleFilter}
+                            setVisible={this.handleShowModalFilter}
+                            handleDropSelect={this.handleDropSelect}
+                            handleClearFilter={this.handleClearFilter}
+                            handlerFilterSelect={this.handlerFilterSelect}
+                          />
+                          <View style={Styles.ProductCard}>
+                            <ListCard data={items} navigation={navigation} />
+                          </View>
+                        </Fragment>
+                      );
+                    }
+                  })}
+                </Section>
+              </>
+            )}
           </ScrollView>
         </View>
       </View>

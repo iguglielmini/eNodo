@@ -91,13 +91,12 @@ class Cart extends Component {
 
     this.setState({ loading: true });
 
-    ApiCart.basketUpdateItem(itemId, { quantity: Number(value) }).then(
-      async ({ data }) => {
-        this.setState({ loading: false });
+    ApiCart.basketUpdateItem(itemId, { quantity: Number(value) })
+      .then(async ({ data }) => {
         await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
         await this.getCart();
-      }
-    );
+      })
+      .finally(() => this.setState({ loading: false }));
   };
 
   handleOnScroll = ({ nativeEvent }) => {
@@ -108,12 +107,13 @@ class Cart extends Component {
   handleRemoveProduct = itemId => {
     this.setState({ loading: true });
 
-    ApiCart.basketDeleteItem(itemId).then(async ({ data }) => {
-      const { basket } = data;
-      this.setState({ loading: false });
-      await DeviceStorage.setItem('@BelshopApp:cart', basket);
-      await this.getCart();
-    });
+    ApiCart.basketDeleteItem(itemId)
+      .then(async ({ data }) => {
+        const { basket } = data;
+        await DeviceStorage.setItem('@BelshopApp:cart', basket);
+        await this.getCart();
+      })
+      .finally(() => this.setState({ loading: false }));
   };
 
   handleSaveCep = () => {};

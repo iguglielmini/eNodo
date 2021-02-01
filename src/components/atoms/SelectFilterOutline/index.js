@@ -8,7 +8,7 @@ import IconClose from '@assets/svg/close';
 /** Styles */
 import Styles from './styles';
 
-function SelectFilter({ data, selected, onSelect }) {
+function SelectFilter({ data, onSelect }) {
   if (!data.length) return null;
 
   return data.map((item, index) => {
@@ -16,18 +16,12 @@ function SelectFilter({ data, selected, onSelect }) {
     return (
       <TouchableOpacity key={key} onPress={() => onSelect(item.value)}>
         <View
-          style={
-            selected.includes(item.value)
-              ? Styles.btnActive
-              : Styles.btnInactive
-          }
+          style={Styles.btn}
         >
           <Text>{item.label}</Text>
-          {selected.includes(item.value) && (
-            <View style={Styles.iconSpace}>
-              <IconClose />
-            </View>
-          )}
+          <View style={Styles.iconSpace}>
+            <IconClose />
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -36,7 +30,6 @@ function SelectFilter({ data, selected, onSelect }) {
 
 SelectFilter.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
-  selected: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 SelectFilter.defaultTypes = {
