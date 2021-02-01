@@ -23,8 +23,8 @@ import imageKiss from '@assets/images/kiss.png';
 // Redux, Storage, Utils e API
 import Api from '@modules/api/api-home';
 import { saveLengthCart } from '@redux/actions';
-import { calcTotalQuantityCart } from '@modules/utils';
 import DeviceStorage from '@modules/services/device-storage';
+import { calcTotalQuantityCart, getTitleAndDataSource } from '@modules/utils';
 
 /* Styles */
 import Styles from './styles';
@@ -71,7 +71,12 @@ class Home extends Component {
 
       widgets.forEach((widget, widgetIndex) => {
         const key = widgetIndex + index;
-        const { items, template, highlight } = widget;
+        const { items, template, highlight, showAll, searchQuery } = widget;
+
+        function showMore() {
+          const { datasource } = getTitleAndDataSource(searchQuery);
+          navigation.navigate('Filter', { showAll, title, datasource });
+        }
 
         if (index === 0) {
           tempSections.push(
@@ -83,6 +88,7 @@ class Home extends Component {
                 navigation={navigation}
               />
               <ListCard data={items} navigation={navigation} theme={theme} />
+              {showAll && <ButtonSeeAll theme={theme} onPress={showMore} />}
             </Section>
           );
         }
@@ -131,7 +137,9 @@ class Home extends Component {
                       />
                     </View>
                     <ListCard data={items} navigation={navigation} />
-                    <ButtonSeeAll theme={theme} />
+                    {showAll && (
+                      <ButtonSeeAll theme={theme} onPress={showMore} />
+                    )}
                   </Section>
                 );
               }
@@ -153,7 +161,7 @@ class Home extends Component {
                       navigation={navigation}
                     />
                   </View>
-                  <ButtonSeeAll theme={theme} />
+                  {showAll && <ButtonSeeAll theme={theme} onPress={showMore} />}
                 </Section>
               );
             }
@@ -163,10 +171,7 @@ class Home extends Component {
             tempSections.push(
               <Section key={key}>
                 <Title title={title} style={{ marginLeft: 16 }} />
-                <FilterButton
-                  data={items}
-                  navigation={navigation}
-                />
+                <FilterButton data={items} navigation={navigation} />
               </Section>
             );
             break;

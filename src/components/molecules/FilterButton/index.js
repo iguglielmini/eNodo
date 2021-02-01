@@ -17,7 +17,7 @@ function FilterButton({ data, navigation }) {
           <TouchableOpacity
             key={key}
             style={Styles.card}
-            onPress={() => navigation.navigate('Category', { slug, title })}
+            onPress={() => navigation.navigate('Filter', { slug, title })}
           >
             <Image
               resizeMode="cover"

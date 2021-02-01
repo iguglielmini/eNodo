@@ -9,10 +9,7 @@ import BagOutlineIcon from '@assets/svg/bagOutline';
 
 import Styles from './styles';
 
-function HeaderCategory({ navigation }) {
-  function handleGoBack() {
-    navigation.goBack();
-  }
+function HeaderCategory({ handleGoBack }) {
   function handleShowCart() {
     navigation.navigate('Cart');
   }
@@ -37,6 +34,7 @@ function HeaderCategory({ navigation }) {
 }
 
 HeaderCategory.propTypes = {
+  handleGoBack: PropTypes.func.isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

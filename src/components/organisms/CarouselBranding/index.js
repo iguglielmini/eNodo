@@ -1,31 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import {
-  View, Text, Image, Dimensions, TouchableOpacity
-} from 'react-native';
 
 import Title from '@components/atoms/Title';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
+
+// Utils
+import { getTitleAndFilter } from '@modules/utils';
 
 // Styles
 import Styles from './styles';
 
 const { width } = Dimensions.get('window');
 
-const Card = ({
-  data, showTitle, navigation, pageName
-}) => (
+const Card = ({ data, showTitle, onPress }) => (
   <View style={Styles.cardContainer}>
     {data.map((item, index) => {
       const key = index;
-      const { title, image, link } = item;
+      const { title, image, searchQuery } = item;
+
       return (
         <TouchableOpacity
           key={key}
-          onPress={() => pageName && navigation.navigate(pageName, { filter: link })
-          }
           activeOpacity={1}
+          onPress={() => {
+            const { filter } = getTitleAndFilter(searchQuery);
+            onPress(title, filter);
+          }}
         >
           <View style={Styles.containerCardImageTitle}>
             <View style={Styles.imageCard}>
@@ -46,12 +48,11 @@ const Card = ({
     })}
   </View>
 );
-
 const CarouselBranding = ({
   data,
   title,
   theme,
-  pageName,
+  onPress,
   showTitle,
   styleTitle,
   showFooter,
@@ -94,8 +95,8 @@ const CarouselBranding = ({
         inactiveSlideOpacity={1}
         renderItem={({ index }) => (
           <Card
+            onPress={onPress}
             data={itens[index]}
-            pageName={pageName}
             showTitle={showTitle}
             navigation={navigation}
           />
@@ -127,9 +128,9 @@ const CarouselBranding = ({
   );
 };
 CarouselBranding.propTypes = {
+  onPress: PropTypes.func,
   theme: PropTypes.string,
   showTitle: PropTypes.bool,
-  pageName: PropTypes.string,
   showFooter: PropTypes.bool,
   styleTitle: PropTypes.objectOf(PropTypes.any),
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -139,8 +140,8 @@ CarouselBranding.propTypes = {
 CarouselBranding.defaultProps = {
   theme: 'light',
   styleTitle: {},
-  pageName: null,
   showTitle: true,
+  onPress: () => {},
   showFooter: false,
 };
 

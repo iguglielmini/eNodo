@@ -178,3 +178,25 @@ export const calcTotalQuantityCart = items => {
   total = total.reduce((acumulator, currentValue) => acumulator + currentValue);
   return total;
 };
+
+export const getTitleAndDataSource = data => {
+  if (!data) return {};
+
+  let [title, datasource] = data.split('&');
+
+  title = title.replace('title=', '');
+  datasource = datasource.replace('datasource=', '');
+
+  return { title, datasource };
+};
+
+export const getTitleAndFilter = data => {
+  if (!data) return {};
+
+  let [title, filter] = data.split('&');
+
+  title = title.replace('title=', '');
+  filter = filter.replace('filter[]=', '');
+
+  return { title, filter };
+};

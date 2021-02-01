@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // Pages
 import InitialPage from '@pages';
 import Cart from '@pages/Cart';
-import Category from '@pages/Category';
+import Filter from '@pages/Filter';
 import Checkout from '@pages/Checkout';
 import ProductDetailsPage from '@pages/ProductDetails';
 
@@ -28,11 +28,7 @@ function Router() {
       color: WHITE,
       style: 'dark-content',
     },
-    Category: {
-      color: BLACK,
-      style: 'light-content',
-    },
-    CategorySub: {
+    Filter: {
       color: BLACK,
       style: 'light-content',
     },
@@ -73,8 +69,8 @@ function Router() {
             }}
           />
           <Stack.Screen
-            name="Category"
-            component={Category}
+            name="Filter"
+            component={Filter}
             options={{
               headerShown: false,
             }}

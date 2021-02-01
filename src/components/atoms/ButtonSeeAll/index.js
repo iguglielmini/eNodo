@@ -30,8 +30,8 @@ ButtonSeeAll.propTypes = {
 
 ButtonSeeAll.defaultProps = {
   onPress: () => {},
-  title: 'Ver Todos',
   style: null,
   theme: 'dark',
+  title: 'Ver Todos',
 };
 export default ButtonSeeAll;
