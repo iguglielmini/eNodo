@@ -97,17 +97,16 @@ class Category extends Component {
 
   handleRemoveOneFilter = value => {
     const { filtersQuery } = this.state;
-  
     const findIndex = filtersQuery.findIndex(item => item.value === value);
     filtersQuery.splice(findIndex, 1);
-
     this.setState({ filtersQuery });
-
-    if (!this.state.filtersQuery.length) this.handleClearFilter();
-
+    
     const newFilterQuery = this.state.filtersQuery.map(item => item.value);
-    this.setState({ seletedItens: newFilterQuery });
-    this.getFilterData(newFilterQuery);
+
+    this.setState({ seletedItens: newFilterQuery }, () => {
+      if (!this.state.filtersQuery.length) this.handleClearFilter();
+      else this.getFilterData(newFilterQuery);
+    });
   };
 
   getFilterData = filters => {
