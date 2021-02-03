@@ -28,7 +28,7 @@ import ArrowVIcon from '@assets/svg/arrowv';
 import ArrowIcon from '@assets/svg/arrow';
 
 // API
-import ApiCart from '@modules/api/api-shopping';
+import ApiShopping from '@modules/api/api-shopping';
 
 // Utils
 import DeviceStorage from '@modules/services/device-storage';
@@ -49,6 +49,7 @@ class Cart extends Component {
     super(props);
 
     this.state = {
+      textCep: '',
       loading: true,
       currentScrollY: 0,
       scrollY: new Animated.Value(0),
@@ -60,12 +61,12 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    ApiCart.getBasket().then(async ({ data }) => {
-      this.setState({ loading: false });
-
-      await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
-      await this.getCart();
-    });
+    ApiShopping.getBasket()
+      .then(async ({ data }) => {
+        await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
+        await this.getCart();
+      })
+      .finally(() => this.setState({ loading: false }));
   }
 
   getCart = async () => {
@@ -91,7 +92,7 @@ class Cart extends Component {
 
     this.setState({ loading: true });
 
-    ApiCart.basketUpdateItem(itemId, { quantity: Number(value) })
+    ApiShopping.basketUpdateItem(itemId, { quantity: Number(value) })
       .then(async ({ data }) => {
         await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
         await this.getCart();
@@ -107,7 +108,7 @@ class Cart extends Component {
   handleRemoveProduct = itemId => {
     this.setState({ loading: true });
 
-    ApiCart.basketDeleteItem(itemId)
+    ApiShopping.basketDeleteItem(itemId)
       .then(async ({ data }) => {
         const { basket } = data;
         await DeviceStorage.setItem('@BelshopApp:cart', basket);
@@ -116,11 +117,27 @@ class Cart extends Component {
       .finally(() => this.setState({ loading: false }));
   };
 
-  handleSaveCep = () => {};
+  handleSaveCep = cep => {
+    this.setState({ textCep: cep, loading: true }, () => {
+      let { textCep } = this.state;
+      textCep = textCep.replace('-', '');
+
+      ApiShopping.basketSetPostalCode({ postalCode: textCep })
+        .then(async ({ data }) => {
+          await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
+          await this.getCart();
+        })
+        .finally(() => this.setState({ loading: false }));
+    });
+  };
+
+  handleClearCep = () => {
+    this.setState({ textCep: '' });
+  }
 
   render() {
     const { navigation } = this.props;
-    const { cart, scrollY, loading, currentScrollY } = this.state;
+    const { cart, scrollY, loading, currentScrollY, textCep } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -225,7 +242,9 @@ class Cart extends Component {
                 <Section style={Styles.container}>
                   <CardCartProduct
                     cart={cart}
+                    textCep={textCep}
                     handleSaveCep={this.handleSaveCep}
+                    handleClearCep={this.handleClearCep}
                     selectQuantity={this.selectQuantity}
                     removeProduct={this.handleRemoveProduct}
                   />

@@ -67,7 +67,7 @@ export default StyleSheet.create({
     color: BORDERGREY,
   },
   textCep: {
-    ...TitleXXXSmall,
+    color: BLACK,
     paddingTop: SPACE_16,
     textDecorationColor: BLACK,
     textDecorationStyle: 'solid',

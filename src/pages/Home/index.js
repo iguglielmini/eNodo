@@ -45,7 +45,7 @@ class Home extends Component {
 
   getData = async () => {
     const { data } = await Api.getHome();
-    this.setState({ data });
+    if (data) this.setState({ data });
   };
 
   getLengthCart = async () => {

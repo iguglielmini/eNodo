@@ -9,17 +9,21 @@ import QuantityProduct from '@components/atoms/QuantityProduct';
 // icons
 import DetailIcon from '@assets/svg/detail';
 
+// Utils
+import { convertToPriceText } from '@modules/utils';
+
 // Styles
 import Styles from './styles';
 
 function CardCartProduct({
   cart,
+  textCep,
   removeProduct,
   handleSaveCep,
+  handleClearCep,
   selectQuantity,
 }) {
-  const { items } = cart;
-  const [textCep, setTextCep] = useState('');
+  const { items, selectedDeliveryOption } = cart;
   const [modalCepVisible, setModalCepVisible] = useState(false);
 
   return (
@@ -70,18 +74,25 @@ function CardCartProduct({
               styleFont={Styles.titleLocation}
               title="Pedidos feito hoje são entregues"
             />
-            <Text style={Styles.subTitleLocation}>Qui 24 Dez - Grátis</Text>
-            {/* Cep */}
-            <Text
-              style={Styles.textCep}
-              onPress={() => setModalCepVisible(true)}
-            >
-              {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+            <Text style={Styles.subTitleLocation}>
+              {selectedDeliveryOption
+                ? `${selectedDeliveryOption.estimatedTime} via ${
+                    selectedDeliveryOption.name
+                  } - ${convertToPriceText(selectedDeliveryOption.amount)}\n`
+                : '7 dia(s) útil(eis) após a postagen \ndos produtos.'}
+              <Text
+                style={Styles.textCep}
+                onPress={() => setModalCepVisible(true)}
+              >
+                {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+              </Text>
             </Text>
+            {/* Cep */}
             <ModalCep
               cepValue={textCep}
               visible={modalCepVisible}
               handleSave={handleSaveCep}
+              handleClear={handleClearCep}
               setVisible={setModalCepVisible}
             />
           </View>

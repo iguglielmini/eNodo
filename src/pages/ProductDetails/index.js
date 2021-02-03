@@ -126,13 +126,15 @@ class ProductDetails extends Component {
   };
 
   addProductToCart = (setLoading, setModalBuyVisible) => {
+    let { textCep } = this.state;
     const { route } = this.props;
     const { id, sku } = route.params;
 
+    textCep = textCep.replace('-', '');
     setLoading(true);
 
     const form = {
-      products: [{ product: id, sku, quantity: 1 }],
+      products: [{ product: id, sku, quantity: 1, postalCode: textCep }],
     };
     ApiShopping.basketAddItem(form)
       .then(({ data }) => {
@@ -156,18 +158,21 @@ class ProductDetails extends Component {
     const { route } = this.props;
     const { id, sku } = route.params;
 
-    this.setState({ textCep: cep, loading: true }, async () => {
+    this.setState({ textCep: cep, loading: true }, () => {
       let { textCep } = this.state;
       textCep = textCep.replace('-', '');
 
-      const {
-        data: { deliveryOption },
-      } = await ApiShopping.getProductDelivery({
-        product: id,
+      ApiShopping.getProductDelivery({
         sku,
+        product: id,
         postalCode: textCep,
-      });
-      this.setState({ daysCep: deliveryOption.estimatedTime, loading: false });
+      })
+        .then(({ data }) => {
+          const { deliveryOption } = data;
+
+          this.setState({ daysCep: deliveryOption.estimatedTime });
+        })
+        .finally(() => this.setState({ loading: false }));
     });
   };
 
