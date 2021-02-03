@@ -7,13 +7,13 @@ const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: BLACK,
     paddingTop: 100,
+    backgroundColor: BLACK,
   },
   containerPage: {
-    backgroundColor: '#F3F3F3',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    backgroundColor: '#F3F3F3',
   },
   content: {
     paddingTop: SPACE_48,
@@ -31,7 +31,7 @@ export default StyleSheet.create({
     width,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingLeft: SPACE_32,
+    paddingLeft: SPACE_16,
     paddingRight: SPACE_32,
     justifyContent: 'space-between',
   },
@@ -47,10 +47,10 @@ export default StyleSheet.create({
     paddingHorizontal: SPACE_16,
   },
   btnFilter: {
-    backgroundColor: WHITE,
+    borderRadius: 4,
     paddingVertical: 10,
     paddingHorizontal: 14,
-    borderRadius: 4,
+    backgroundColor: WHITE,
   },
   scrollSelectFilter: {
     paddingTop: SPACE_36,
