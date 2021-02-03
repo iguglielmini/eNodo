@@ -50,6 +50,7 @@ class Cart extends Component {
 
     this.state = {
       textCep: '',
+      delivery: {},
       loading: true,
       currentScrollY: 0,
       scrollY: new Animated.Value(0),
@@ -61,6 +62,7 @@ class Cart extends Component {
   }
 
   componentDidMount() {
+    this.getDelivery();
     ApiShopping.getBasket()
       .then(async ({ data }) => {
         await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
@@ -68,6 +70,11 @@ class Cart extends Component {
       })
       .finally(() => this.setState({ loading: false }));
   }
+
+  getDelivery = async () => {
+    const delivery = await DeviceStorage.getItem('@BelshopApp:delivery');
+    if (delivery) this.setState({ delivery });
+  };
 
   getCart = async () => {
     let lengthItens = 0;
@@ -124,7 +131,13 @@ class Cart extends Component {
 
       ApiShopping.basketSetPostalCode({ postalCode: textCep })
         .then(async ({ data }) => {
-          await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
+          const { basket } = data;
+          await DeviceStorage.setItem('@BelshopApp:cart', basket);
+          await DeviceStorage.setItem('@BelshopApp:delivery', {
+            postalCode: cep,
+            ...basket.selectedDeliveryOption,
+          });
+          await this.getDelivery();
           await this.getCart();
         })
         .finally(() => this.setState({ loading: false }));
@@ -133,11 +146,18 @@ class Cart extends Component {
 
   handleClearCep = () => {
     this.setState({ textCep: '' });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
-    const { cart, scrollY, loading, currentScrollY, textCep } = this.state;
+    const {
+      cart,
+      scrollY,
+      loading,
+      textCep,
+      delivery,
+      currentScrollY,
+    } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -243,6 +263,7 @@ class Cart extends Component {
                   <CardCartProduct
                     cart={cart}
                     textCep={textCep}
+                    delivery={delivery}
                     handleSaveCep={this.handleSaveCep}
                     handleClearCep={this.handleClearCep}
                     selectQuantity={this.selectQuantity}

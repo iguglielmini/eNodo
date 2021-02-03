@@ -31,6 +31,7 @@ import ApiShopping from '@modules/api/api-shopping';
 
 // Redux e Utils
 import { calcTotalQuantityCart } from '@modules/utils';
+import DeviceStorage from '@modules/services/device-storage';
 import { saveLengthCart, saveAddProductCart } from '@redux/actions';
 
 // Mocks
@@ -47,6 +48,7 @@ class ProductDetails extends Component {
     this.state = {
       textCep: '',
       details: {},
+      delivery: {},
       product: {
         brand: {
           title: '',
@@ -73,6 +75,7 @@ class ProductDetails extends Component {
 
   componentDidMount() {
     this.getData();
+    this.getDelivery();
   }
 
   getData = async () => {
@@ -112,6 +115,11 @@ class ProductDetails extends Component {
 
       this.setState({ productsAssociations });
     }
+  };
+
+  getDelivery = async () => {
+    const delivery = await DeviceStorage.getItem('@BelshopApp:delivery');
+    if (delivery) this.setState({ delivery });
   };
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
@@ -167,9 +175,13 @@ class ProductDetails extends Component {
         product: id,
         postalCode: textCep,
       })
-        .then(({ data }) => {
+        .then(async ({ data }) => {
           const { deliveryOption } = data;
-
+          await DeviceStorage.setItem('@BelshopApp:delivery', {
+            ...deliveryOption,
+            postalCode: cep,
+          });
+          await this.getDelivery();
           this.setState({ daysCep: deliveryOption.estimatedTime });
         })
         .finally(() => this.setState({ loading: false }));
@@ -188,12 +200,14 @@ class ProductDetails extends Component {
       daysCep,
       details,
       loading,
+      delivery,
       modalCepVisible,
       modalDetailsVisible,
       productsAssociations,
     } = this.state;
 
     const { brand, price } = product;
+    const { estimatedTime, postalCode } = delivery;
 
     return (
       <>
@@ -232,12 +246,12 @@ class ProductDetails extends Component {
                 <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
                 <View style={Styles.modalContainer}>
                   <Text style={Styles.descriptionSubTitle}>
-                    Entrega em até {daysCep} após a postagem do produto. &nbsp;
+                    Entrega em até {estimatedTime || daysCep} após a postagem do produto. &nbsp;
                     <Text
                       style={Styles.btnModal}
                       onPress={() => this.setModalCepVisible(true)}
                     >
-                      {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+                      {(!postalCode) ? 'Trocar CEP' : `CEP ${postalCode || textCep}`}
                     </Text>
                   </Text>
                   <ModalCep

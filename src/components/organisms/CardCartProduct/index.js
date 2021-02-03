@@ -18,6 +18,7 @@ import Styles from './styles';
 function CardCartProduct({
   cart,
   textCep,
+  delivery,
   removeProduct,
   handleSaveCep,
   handleClearCep,
@@ -25,6 +26,12 @@ function CardCartProduct({
 }) {
   const { items, selectedDeliveryOption } = cart;
   const [modalCepVisible, setModalCepVisible] = useState(false);
+
+  const cep = !delivery ? selectedDeliveryOption : delivery;
+
+  let deliveryText = `${cep.estimatedTime} via`;
+  deliveryText += ` ${cep.name} - `;
+  deliveryText += `${convertToPriceText(cep.amount)}\n`;
 
   return (
     <>
@@ -75,16 +82,16 @@ function CardCartProduct({
               title="Pedidos feito hoje são entregues"
             />
             <Text style={Styles.subTitleLocation}>
-              {selectedDeliveryOption
-                ? `${selectedDeliveryOption.estimatedTime} via ${
-                    selectedDeliveryOption.name
-                  } - ${convertToPriceText(selectedDeliveryOption.amount)}\n`
+              {Object.keys(cep).length > 0
+                ? deliveryText
                 : '7 dia(s) útil(eis) após a postagen \ndos produtos.'}
               <Text
                 style={Styles.textCep}
                 onPress={() => setModalCepVisible(true)}
               >
-                {!textCep ? 'Trocar CEP' : `CEP ${textCep}`}
+                {!cep.postalCode
+                  ? 'Trocar CEP'
+                  : `CEP ${cep.postalCode || textCep}`}
               </Text>
             </Text>
             {/* Cep */}

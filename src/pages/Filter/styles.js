@@ -31,7 +31,7 @@ export default StyleSheet.create({
     width,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingLeft: SPACE_16,
+    paddingLeft: SPACE_32,
     paddingRight: SPACE_32,
     justifyContent: 'space-between',
   },
