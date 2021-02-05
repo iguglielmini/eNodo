@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Title from '@components/atoms/Title';
 import Section from '@components/atoms/Section';
 import ListCard from '@components/molecules/ListCard';
@@ -52,6 +53,7 @@ class Filter extends Component {
 
   componentDidMount() {
     const { slug, isBranding, title, datasource } = this.state;
+
     if (!isBranding) this.getData(slug);
     if (isBranding && datasource) this.getFilterData({ title, datasource });
   }
@@ -175,12 +177,13 @@ class Filter extends Component {
       filterProducts,
       showModalFilter,
     } = this.state;
-    const { navigation } = this.props;
+    const { navigation, lengthCart } = this.props;
 
     return (
       <View style={Styles.container}>
         {/* Header */}
         <HeaderCategory
+          lengthCart={lengthCart}
           navigation={navigation}
           handleGoBack={this.handleBack}
         />
@@ -359,4 +362,11 @@ Filter.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default Filter;
+const mapStateToProps = store => ({
+  lengthCart: store.cart.lengthCart,
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(Filter);

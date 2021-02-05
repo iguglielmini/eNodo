@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Title from '@components/atoms/Title';
 import Section from '@components/atoms/Section';
 import ListCard from '@components/molecules/ListCard';
@@ -30,6 +31,7 @@ class ShowMore extends Component {
 
   componentDidMount() {
     const { title, datasource } = this.state;
+
     this.getFilterData({ title, datasource });
   }
 
@@ -59,12 +61,13 @@ class ShowMore extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, lengthCart } = this.props;
     const { products, title, loading } = this.state;
 
     return (
       <View style={Styles.container}>
         <HeaderCategory
+          lengthCart={lengthCart}
           navigation={navigation}
           handleGoBack={this.handleBack}
         />
@@ -97,4 +100,11 @@ ShowMore.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default ShowMore;
+const mapStateToProps = store => ({
+  lengthCart: store.cart.lengthCart,
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(ShowMore);

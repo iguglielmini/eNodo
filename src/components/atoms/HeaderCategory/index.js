@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Badge from '@components/atoms/Badge';
 import { View, TouchableOpacity } from 'react-native';
 
 // Icons
 import ArrowVIcon from '@assets/svg/arrowv';
 import FavoriteIcon from '@assets/svg/favorite';
-import BagOutlineIcon from '@assets/svg/bagOutline';
 
 import Styles from './styles';
 
-function HeaderCategory({ handleGoBack }) {
+function HeaderCategory({ handleGoBack, lengthCart, theme }) {
   function handleShowCart() {
     navigation.navigate('Cart');
   }
@@ -25,7 +25,7 @@ function HeaderCategory({ handleGoBack }) {
             <FavoriteIcon color="#ffffff" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShowCart} style={Styles.buttonBag}>
-            <BagOutlineIcon color="#ffffff" />
+            <Badge count={lengthCart} theme={theme} />
           </TouchableOpacity>
         </View>
       </View>
@@ -34,8 +34,15 @@ function HeaderCategory({ handleGoBack }) {
 }
 
 HeaderCategory.propTypes = {
+  theme: PropTypes.string,
+  lengthCart: PropTypes.number,
   handleGoBack: PropTypes.func.isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+HeaderCategory.defaultProps = {
+  lengthCart: 0,
+  theme: 'dark',
+}
 
 export default HeaderCategory;
