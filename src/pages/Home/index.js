@@ -75,7 +75,7 @@ class Home extends Component {
 
         function showMore() {
           const { datasource } = getTitleAndDataSource(searchQuery);
-          navigation.navigate('Filter', { showAll, title, datasource });
+          navigation.navigate('ShowMore', { title, datasource });
         }
 
         if (index === 0) {

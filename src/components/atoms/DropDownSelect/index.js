@@ -10,24 +10,12 @@ import IconArrowDonw from '@assets/svg/arrowDown';
 import Styles from './styles';
 
 function DropDownSelect({ data, selected, onSelect }) {
+  console.log('DROP OLD DATA', data);
   const newData = data.map((item, index) => {
-    let select = false;
-    let isFirst = index === 0;
-
-    if (!selected && isFirst) {
-      select = true;
-      onSelect(item);
-    }
-
-    if (selected && selected.value === item.value) {
-      select = true;
-      isFirst = false;
-    }
 
     return {
       ...item,
-      selected: select,
-      icon: () => select && <IconCheck />,
+      icon: () => item.selected && <IconCheck />,
     };
   });
 

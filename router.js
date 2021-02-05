@@ -10,6 +10,7 @@ import InitialPage from '@pages';
 import Cart from '@pages/Cart';
 import Filter from '@pages/Filter';
 import Checkout from '@pages/Checkout';
+import ShowMore from '@pages/ShowMore';
 import ProductDetailsPage from '@pages/ProductDetails';
 
 // color
@@ -30,6 +31,10 @@ function Router() {
     },
     Filter: {
       color: BLACK,
+      style: 'light-content',
+    },
+    ShowMore: {
+      color: WHITE,
       style: 'light-content',
     },
     ProductDetails: {
@@ -71,6 +76,13 @@ function Router() {
           <Stack.Screen
             name="Filter"
             component={Filter}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ShowMore"
+            component={ShowMore}
             options={{
               headerShown: false,
             }}

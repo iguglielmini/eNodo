@@ -29,13 +29,12 @@ class Filter extends Component {
     super(props);
 
     const { route } = this.props;
-    const { slug, showAll, title, datasource, filter } = route.params;
+    const { slug, title, datasource, filter } = route.params;
 
     this.state = {
       slug,
       title,
       filter,
-      showAll,
       datasource,
       widgets: [],
       loading: true,
@@ -52,9 +51,9 @@ class Filter extends Component {
   }
 
   componentDidMount() {
-    const { slug, showAll, title, datasource, filter } = this.state;
-    if (!showAll) this.getData(slug);
-    if (showAll && datasource) this.getFilterData({ title, datasource });
+    const { slug, isBranding, title, datasource } = this.state;
+    if (!isBranding) this.getData(slug);
+    if (isBranding && datasource) this.getFilterData({ title, datasource });
   }
 
   getData = slug => {
@@ -67,8 +66,6 @@ class Filter extends Component {
   };
 
   getFilterData = filter => {
-    const { showAll } = this.state;
-
     this.setState({ loadingFilter: true, loading: true });
     ApiCatalogy.getCatalogSearch(filter)
       .then(({ data }) => {
@@ -84,7 +81,7 @@ class Filter extends Component {
           return;
         }
 
-        if (!showAll && current) {
+        if (current) {
           const filtersQuery = current.facets;
           filtersQuery.push(current.sort);
 
@@ -152,27 +149,23 @@ class Filter extends Component {
 
   handleGetDataBranding = (title, filter) => {
     this.getFilterData({ title, 'filter[]': filter });
-    this.setState({ showAll: true, title, isBranding: true });
+    this.setState({ title, isBranding: true });
   };
 
   handleBack = (notBackError = false) => {
     const { navigation } = this.props;
-    const { oldTitle, showAll, isBranding } = this.state;
+    const { oldTitle, isBranding } = this.state;
 
     if (isBranding) {
       this.setState({ isBranding: false, title: oldTitle });
       this.handleClearFilter();
     }
-    if (showAll) {
-      this.setState({ showAll: false, title: oldTitle });
-    }
-    if ((!showAll || !isBranding) && notBackError) navigation.goBack();
+    if (!isBranding && notBackError) navigation.goBack();
   };
 
   render() {
     const {
       title,
-      showAll,
       loading,
       widgets,
       filtersQuery,
@@ -199,25 +192,7 @@ class Filter extends Component {
             </View>
           )}
 
-          {showAll && (
-            <ScrollView
-              alwaysBounceVertical
-              showsVerticalScrollIndicator={false}
-            >
-              <View style={Styles.content}>
-                <View style={Styles.containerTitle}>
-                  <Title title={title} style={Styles.AlignItems} />
-                </View>
-                <Section style={Styles.section}>
-                  <View style={Styles.ProductCard}>
-                    <ListCard data={filterProducts} navigation={navigation} />
-                  </View>
-                </Section>
-              </View>
-            </ScrollView>
-          )}
-
-          {filtersQuery.length > 0 && !showAll && (
+          {filtersQuery.length > 0 && (
             <ScrollView
               alwaysBounceVertical
               showsVerticalScrollIndicator={false}
@@ -232,55 +207,52 @@ class Filter extends Component {
                     </View>
                   </TouchableOpacity>
                 </View>
-                {!showAll && (
-                  <ScrollView
-                    horizontal
-                    contentContainerStyle={Styles.scrollSelectFilter}
-                  >
-                    <SelectFilterOutline
-                      isSelected
-                      data={filtersQuery}
-                      onSelect={this.handleRemoveOneFilter}
-                    />
-                  </ScrollView>
-                )}
+                <ScrollView
+                  horizontal
+                  contentContainerStyle={Styles.scrollSelectFilter}
+                >
+                  <SelectFilterOutline
+                    isSelected
+                    data={filtersQuery}
+                    onSelect={this.handleRemoveOneFilter}
+                  />
+                </ScrollView>
                 <Section style={Styles.section}>
-                  {!showAll &&
-                    widgets.map((widget, index) => {
-                      const key = index;
-                      const { title, template, filters } = widget;
+                  {widgets.map((widget, index) => {
+                    const key = index;
+                    const { title, template, filters } = widget;
 
-                      if (title && template === 'grid') {
-                        return (
-                          <Fragment key={key}>
-                            <ModalFilter
-                              data={filters}
-                              loading={loadingFilter}
-                              visible={showModalFilter}
-                              dropSelected={dropSelected}
-                              seletedItens={seletedItens}
-                              handleFilter={this.handleFilter}
-                              setVisible={this.handleShowModalFilter}
-                              handleDropSelect={this.handleDropSelect}
-                              handleClearFilter={this.handleClearFilter}
-                              handlerFilterSelect={this.handlerFilterSelect}
+                    if (title && template === 'grid') {
+                      return (
+                        <Fragment key={key}>
+                          <ModalFilter
+                            data={filters}
+                            loading={loadingFilter}
+                            visible={showModalFilter}
+                            dropSelected={dropSelected}
+                            seletedItens={seletedItens}
+                            handleFilter={this.handleFilter}
+                            setVisible={this.handleShowModalFilter}
+                            handleDropSelect={this.handleDropSelect}
+                            handleClearFilter={this.handleClearFilter}
+                            handlerFilterSelect={this.handlerFilterSelect}
+                          />
+                          <View style={Styles.ProductCard}>
+                            <ListCard
+                              data={filterProducts}
+                              navigation={navigation}
                             />
-                            <View style={Styles.ProductCard}>
-                              <ListCard
-                                data={filterProducts}
-                                navigation={navigation}
-                              />
-                            </View>
-                          </Fragment>
-                        );
-                      }
-                    })}
+                          </View>
+                        </Fragment>
+                      );
+                    }
+                  })}
                 </Section>
               </View>
             </ScrollView>
           )}
 
-          {!filtersQuery.length && !showAll && (
+          {!filtersQuery.length && (
             <ScrollView
               alwaysBounceVertical
               showsVerticalScrollIndicator={false}
