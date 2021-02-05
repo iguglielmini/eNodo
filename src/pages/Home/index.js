@@ -73,6 +73,8 @@ class Home extends Component {
         const key = widgetIndex + index;
         const { items, template, highlight, showAll, searchQuery } = widget;
 
+        if (!items.length) return;
+
         function showMore() {
           const { datasource } = getTitleAndDataSource(searchQuery);
           navigation.navigate('ShowMore', { title, datasource });
