@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  View, Image, ScrollView,
-} from 'react-native';
+import { View, Image, ScrollView } from 'react-native';
 
 /* Components */
 import Title from '@components/atoms/Title';
@@ -25,7 +23,7 @@ import imageBel from '@assets/images/bel.png';
 import imageKiss from '@assets/images/kiss.png';
 
 // Redux, Storage, Utils e API
-import Api from '@modules/api/api-home';
+import ApiHome from '@modules/api/api-home';
 import ApiShopping from '@modules/api/api-shopping';
 import { saveLengthCart } from '@redux/actions';
 import { changeStatusBar, queryStringToJSON } from '@modules/utils';
@@ -76,7 +74,7 @@ class Home extends Component {
   };
 
   getData = async () => {
-    const { data } = await Api.getHome();
+    const { data } = await ApiHome.getHome();
     if (data) this.setState({ data });
   };
 
@@ -115,12 +113,18 @@ class Home extends Component {
         function showMore() {
           const params = queryStringToJSON(searchQuery);
 
-          navigation.navigate('FilterResult', { params, hideFilterButton: true });
+          navigation.navigate('FilterResult', {
+            params,
+            hideFilterButton: true,
+          });
         }
 
         if (index === 0) {
           tempSections.push(
-            <Section style={{ ...Styles.section, paddingTop: SPACE_HEADER }} key={key}>
+            <Section
+              style={{ ...Styles.section, paddingTop: SPACE_HEADER }}
+              key={key}
+            >
               <HeaderHome
                 title={title}
                 theme={theme}
@@ -212,7 +216,11 @@ class Home extends Component {
             tempSections.push(
               <Section key={key}>
                 <Title title={title} style={{ marginLeft: 16 }} />
-                <CategoryList data={items} navigation={navigation} />
+                <CategoryList
+                  data={items}
+                  navigation={navigation}
+                  theme="dark"
+                />
               </Section>
             );
             break;
@@ -220,7 +228,7 @@ class Home extends Component {
           case 'links':
             tempSections.push(
               <Section key={key} style={{ paddingVertical: 0 }}>
-                <LinkHelp data={items} />
+                <LinkHelp data={items} theme="dark" />
               </Section>
             );
             break;

@@ -18,7 +18,7 @@ import styles from './style';
 
 const Checkout = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
-  const [source, setSource] = useState({});
+  const [source, setSource] = useState(null);
   const [redirect, setRedirect] = useState('');
   const checkoutTimeoutRef = useRef(null);
 
@@ -105,6 +105,7 @@ const Checkout = ({ navigation }) => {
         })
       ]}
       >
+        {source && (
         <WebView
           onNavigationStateChange={stateChange}
           source={source}
@@ -113,6 +114,7 @@ const Checkout = ({ navigation }) => {
             styles.container
           ]}
         />
+        )}
         <View style={styles.btnWrapper}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.btnImageIcon}>

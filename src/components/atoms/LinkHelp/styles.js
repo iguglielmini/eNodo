@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BORDERGREY } from '@assets/style/colors';
+import { BORDERGREY, BLACK, WHITE } from '@assets/style/colors';
 import { SPACE_16, SPACE_32 } from '@assets/style/wrapper';
 import { TitleSmall } from '@assets/style/typography';
 
@@ -27,10 +27,15 @@ export default StyleSheet.create({
   borderNone: {
     borderBottomWidth: 0
   },
-
   titleHelp: {
     ...TitleSmall,
     marginTop: SPACE_32,
     marginBottom: SPACE_32,
+  },
+  light: {
+    color: WHITE,
+  },
+  dark: {
+    color: BLACK,
   },
 });

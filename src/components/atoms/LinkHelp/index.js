@@ -10,7 +10,7 @@ import ArrowV from '@assets/svg/arrowRight';
 import config from '@/config';
 import Styles from './styles';
 
-function LinkHelp({ data }) {
+function LinkHelp({ data, theme }) {
   if (!data.length) return null;
   const navigation = useNavigation();
 
@@ -47,8 +47,8 @@ function LinkHelp({ data }) {
           return (
             <TouchableOpacity key={key} onPress={() => onClick(item)}>
               <View style={[Styles.btnHelp, (key === data.length - 1) && Styles.borderNone]}>
-                <Text style={Styles.titleHelp}>{item.title}</Text>
-                <ArrowV />
+                <Text style={[Styles.titleHelp, Styles[theme]]}>{item.title}</Text>
+                <ArrowV color={Styles[theme].color} />
               </View>
             </TouchableOpacity>
           );
@@ -59,7 +59,12 @@ function LinkHelp({ data }) {
 }
 
 LinkHelp.propTypes = {
+  theme: PropTypes.string,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+LinkHelp.defaultProps = {
+  theme: 'dark',
 };
 
 export default LinkHelp;

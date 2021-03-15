@@ -286,7 +286,7 @@ class Cart extends Component {
                     <PaymentBanner />
                   </Section>
                   <View style={Styles.LinkHelp}>
-                    <LinkHelp data={LinkHelpMock.LinkCart} />
+                    <LinkHelp data={LinkHelpMock} />
                   </View>
                 </>
               ) : (

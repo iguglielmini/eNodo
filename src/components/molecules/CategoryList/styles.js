@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { BLACK, WHITE } from '@assets/style/colors';
 import { SPACE_16, SPACE_24 } from '@assets/style/wrapper';
 import { FONT_WEIGHT_MEDIUM, FONT_FAMILY } from '@assets/style/typography';
 
@@ -32,5 +33,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
+  },
+  light: {
+    color: WHITE,
+  },
+  dark: {
+    color: BLACK,
   },
 });

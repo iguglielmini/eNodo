@@ -7,7 +7,7 @@ import {
 // Styles
 import Styles from './styles';
 
-function CategoryList({ data, navigation }) {
+function CategoryList({ data, navigation, theme }) {
   if (!data.length) return null;
 
   return (
@@ -26,7 +26,7 @@ function CategoryList({ data, navigation }) {
               style={Styles.containerImage}
               source={{ uri: item.image, width: 72, height: 72 }}
             />
-            <Text style={Styles.description}>{item.title}</Text>
+            <Text style={[Styles.description, Styles[theme]]}>{item.title}</Text>
           </TouchableOpacity>
         );
       })}
@@ -35,8 +35,12 @@ function CategoryList({ data, navigation }) {
 }
 
 CategoryList.propTypes = {
+  theme: PropTypes.string,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
+CategoryList.defaultProps = {
+  theme: 'dark',
+};
 export default CategoryList;

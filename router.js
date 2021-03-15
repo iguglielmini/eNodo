@@ -4,14 +4,14 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 
 // Pages
 import Cart from '@pages/Cart';
+import Login from '@pages/Login';
 import Filter from '@pages/Filter';
-import FilterResult from '@pages/FilterResult';
+import Account from '@pages/Account';
 import Category from '@pages/Category';
 import Checkout from '@pages/Checkout';
-import ProductDetailsPage from '@pages/ProductDetails';
-import Login from '@pages/Login';
+import FilterResult from '@pages/FilterResult';
 import ExternalLink from '@pages/ExternalLink';
-import Account from '@pages/Account';
+import ProductDetailsPage from '@pages/ProductDetails';
 
 // Initial Page
 import InitialPage from '@pages';

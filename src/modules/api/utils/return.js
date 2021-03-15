@@ -12,7 +12,7 @@ function apiReturn(request) {
         }
 
         if (response.status === 401) {
-          throw new AuthError('Error 401');
+          throw new AuthError(response);
         }
       }
       // return Alert.alert(APIErrorHandler.getErrorMessages(response).messages.join(''));
