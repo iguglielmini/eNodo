@@ -13,7 +13,8 @@ module.exports = {
     'react/destructuring-assignment': 'off',
     'import/no-cycle': 'off',
     'class-methods-use-this': 'off',
-    'import/no-unresolved': [2, { ignore: ['.png$', '.webp$', '.jpg$'] }] 
+    'import/no-unresolved': [2, { ignore: ['.png$', '.webp$', '.jpg$'] }],
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
   },
   'globals': {
     'fetch': false,

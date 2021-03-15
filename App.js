@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 // import OneSignal from 'react-native-onesignal';
 import { Provider } from 'react-redux';
+
 import { configureFontWeight } from '@modules/utils';
 import SplashScreen from 'react-native-splash-screen';
 import crashlytics from '@react-native-firebase/crashlytics';
 import GlobalEvent from '@modules/services/global-events';
-// import DeepLinkingService from '@modules/services/deep-linking';
-// import NotificationService from '@modules/api/api-notifications';
+import { ToastProvider } from '@components/molecules/Toast';
+import ToastComponent from '@components/molecules/Toast/Toast';
 
-// import config from '@/config';
-import ApiAuth from '@modules/api/api-auth';
-import DeviceStorage from '@modules/services/device-storage';
+import AuthService from '@modules/services/auth';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { Platform, StatusBar } from 'react-native';
+import { PRIMARY, WHITE } from '@assets/style/colors';
 import reduxStore from '@redux';
 import Router from './router';
 
@@ -26,29 +29,35 @@ class App extends Component {
     // global events
     GlobalEvent();
 
-    // configure font weight for android
-    configureFontWeight();
+    this.state = {
+      loaded: false,
+    };
 
-    // initialize crashlytics logs
+    configureFontWeight();
     crashlytics().log('App mounted.');
   }
 
-  componentDidMount() {
-    // Intro page
-    setTimeout(() => SplashScreen.hide(), 500);
-    ApiAuth.session();
-  }
+  async componentDidMount() {
+    await AuthService.start();
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
-    DeviceStorage.removeItem('@BelshopApp:cart');
+    setTimeout(() => SplashScreen.hide(), 500);
+
+    this.setState({
+      loaded: true,
+    });
   }
 
   render() {
-    return (
-      <Provider store={reduxStore}>
-        <Router />
-      </Provider>
+    return this.state.loaded && (
+      <NavigationContainer>
+        <Provider store={reduxStore}>
+          <ToastProvider>
+            <StatusBar backgroundColor={Platform.OS === 'ios' ? WHITE : PRIMARY} barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />
+            <Router />
+            <ToastComponent />
+          </ToastProvider>
+        </Provider>
+      </NavigationContainer>
     );
   }
 }

@@ -11,8 +11,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     width,
+    height: 300,
   },
-
   wrapper: {},
   swipperDot: {
     backgroundColor: 'rgba(0,0,0,.2)',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 // Icons
@@ -9,24 +9,28 @@ import IconArrowDonw from '@assets/svg/arrowDown';
 /** Styles */
 import Styles from './styles';
 
-function DropDownSelect({ data, selected, onSelect }) {
-  console.log('DROP OLD DATA', data);
-  const newData = data.map((item, index) => {
+function DropDownSelect({ data, onSelect }) {
+  const [dataList, setData] = useState(data.map(item => ({
+    ...item,
+    icon: () => item.selected && <IconCheck />,
+  })));
 
-    return {
-      ...item,
-      icon: () => item.selected && <IconCheck />,
-    };
-  });
+  function select(item) {
+    onSelect(item);
+    setData(dataList.map(l => ({
+      ...l,
+      icon: () => l.value === item.value && <IconCheck />,
+    })));
+  }
 
   return (
     <DropDownPicker
-      items={newData}
+      items={dataList}
       itemStyle={Styles.item}
       labelStyle={Styles.label}
-      dropDownStyle={Styles.dropdown}
+      // dropDownStyle={Styles.dropdown}
       customArrowUp={() => <IconArrowUp />}
-      onChangeItem={item => onSelect(item)}
+      onChangeItem={item => select(item)}
       customArrowDown={() => <IconArrowDonw />}
     />
   );

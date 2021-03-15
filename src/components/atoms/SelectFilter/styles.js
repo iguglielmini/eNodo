@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { BORDERGREY, WHITE } from '@assets/style/colors';
+import { TitleXXSmall } from '@assets/style/typography';
 
 export default StyleSheet.create({
   container: {
@@ -32,5 +33,15 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: '#E5E5E5',
     borderColor: BORDERGREY,
-  }
+  },
+  buttonWrapper: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  textButton: {
+    ...TitleXXSmall,
+    marginRight: 8,
+  },
 });

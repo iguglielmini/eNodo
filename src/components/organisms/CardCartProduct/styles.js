@@ -6,7 +6,6 @@ import {
 import {
   TitleSmall,
   TitleXSmall,
-  TitleXXXSmall,
 } from '@assets/style/typography';
 
 export default StyleSheet.create({

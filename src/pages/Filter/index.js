@@ -1,358 +1,178 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Title from '@components/atoms/Title';
-import Section from '@components/atoms/Section';
-import ListCard from '@components/molecules/ListCard';
-import ModalFilter from '@components/organisms/ModalFilter';
-import HeaderCategory from '@components/atoms/HeaderCategory';
-import CarouselBranding from '@components/organisms/CarouselBranding';
-import SelectFilterOutline from '@components/atoms/SelectFilterOutline';
 import {
   View,
   Text,
-  Alert,
+  Platform,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
+  SafeAreaView
 } from 'react-native';
 
-// APIS
-import ApiCatalogy from '@modules/api/api-catalog';
-import ApiCategory from '@modules/api/api-category';
+import LinearGradient from 'react-native-linear-gradient';
+import SelectFilter from '@components/atoms/SelectFilter';
+import DropDownSelect from '@components/atoms/DropDownSelect';
+
+import { changeStatusBar } from '@modules/utils';
+
+// Icons
+import CloseIcon from '@assets/svg/close';
 
 /** Styles */
-import DefaultStyles from '@assets/style/default';
 import Styles from './styles';
 
 class Filter extends Component {
   constructor(props) {
     super(props);
 
-    const { route } = this.props;
-    const { slug, title, datasource, filter } = route.params;
+    changeStatusBar('dark-content');
+
+    const { route, navigation } = this.props;
+    const {
+      filters
+    } = route.params;
+
+    const sortSelected = filters.sort.options.filter(item => item.selected);
+    const { facets } = filters;
+    const seletedItems = [];
+
+    facets.map((item) => {
+      item.options.map((opt) => {
+        if (opt.selected) seletedItems.push(opt.value);
+        return opt;
+      });
+      return item;
+    });
 
     this.state = {
-      slug,
-      title,
-      filter,
-      datasource,
-      widgets: [],
-      loading: true,
-      theme: 'light',
-      oldTitle: title,
-      filtersQuery: [],
-      seletedItens: [],
-      isBranding: false,
-      filterProducts: [],
-      dropSelected: null,
-      loadingFilter: false,
-      showModalFilter: false,
+      filters,
+      seletedItems,
+      navigation,
+      dropSelected: sortSelected.length > 0 ? sortSelected[0] : null
     };
   }
 
-  componentDidMount() {
-    const { slug, isBranding, title, datasource } = this.state;
-
-    if (!isBranding) this.getData(slug);
-    if (isBranding && datasource) this.getFilterData({ title, datasource });
+  handleDropSelect = (selected) => {
+    this.setState({ dropSelected: selected });
   }
 
-  getData = slug => {
-    ApiCategory.getCategory(slug)
-      .then(({ data }) => {
-        const { widgets, theme } = data;
-        this.setState({ widgets, theme });
-      })
-      .finally(() => this.setState({ loading: false }));
-  };
+  handlerFilterSelect = (value) => {
+    const { seletedItems } = this.state;
 
-  getFilterData = filter => {
-    this.setState({ loadingFilter: true, loading: true });
-    ApiCatalogy.getCatalogSearch(filter)
-      .then(({ data }) => {
-        const { products, current } = data;
-
-        if (!products.length) {
-          Alert.alert('Ooops!', 'Produto(s) não disponível(eis).', [
-            {
-              text: 'Ok',
-              onPress: () => this.handleBack(false),
-            },
-          ]);
-          return;
-        }
-
-        if (current) {
-          const filtersQuery = current.facets;
-          filtersQuery.push(current.sort);
-
-          const seletedItens = filtersQuery.map(item => item.value);
-          this.setState({ filtersQuery, seletedItens });
-        }
-
-        this.setState({ showModalFilter: false, filterProducts: products });
-      })
-      .finally(() => this.setState({ loadingFilter: false, loading: false }));
-  };
-
-  handleShowModalFilter = () => {
-    const { showModalFilter } = this.state;
-    this.setState({ showModalFilter: !showModalFilter });
-  };
-
-  handleDropSelect = dropSelected => {
-    this.setState({ dropSelected });
-  };
-
-  handleClearFilter = () => {
-    this.setState({
-      seletedItens: [],
-      filtersQuery: [],
-      filterProducts: [],
-      dropSelected: null,
-      showModalFilter: false,
-    });
-  };
-
-  handlerFilterSelect = value => {
-    const { seletedItens } = this.state;
-
-    if (seletedItens.includes(value)) {
-      seletedItens.splice(seletedItens.indexOf(value), 1);
+    if (seletedItems.includes(value)) {
+      seletedItems.splice(seletedItems.indexOf(value), 1);
     } else {
-      seletedItens.push(value);
+      seletedItems.push(value);
     }
 
-    this.setState({ seletedItens });
-  };
+    this.setState({ seletedItems });
+  }
 
-  handleFilter = () => {
-    const { seletedItens, dropSelected } = this.state;
-
-    const filter = [...seletedItens, dropSelected.value];
-
-    if (filter.length) this.getFilterData({ filter });
-  };
-
-  handleRemoveOneFilter = value => {
-    const { filtersQuery } = this.state;
-    const findIndex = filtersQuery.findIndex(item => item.value === value);
-    filtersQuery.splice(findIndex, 1);
-    this.setState({ filtersQuery });
-
-    const filter = this.state.filtersQuery.map(item => item.value);
-
-    this.setState({ seletedItens: filter }, () => {
-      if (!this.state.filtersQuery.length) this.handleClearFilter();
-      else this.getFilterData({ filter: filter });
+  clearFilter = () => {
+    this.setState({
+      seletedItems: [],
     });
-  };
+  }
 
-  handleGetDataBranding = (title, filter) => {
-    this.getFilterData({ title, 'filter[]': filter });
-    this.setState({ title, isBranding: true });
-  };
+  applyFilter = () => {
+    const {
+      seletedItems, dropSelected, filters, navigation
+    } = this.state;
 
-  handleBack = (notBackError = false) => {
-    const { navigation } = this.props;
-    const { oldTitle, isBranding } = this.state;
+    const {
+      title,
+      category,
+      // brand,
+      // datasource
+    } = filters;
 
-    if (isBranding) {
-      this.setState({ isBranding: false, title: oldTitle });
-      this.handleClearFilter();
-    }
-    if (!isBranding && notBackError) navigation.goBack();
-  };
+    const params = {
+      title,
+      sort: dropSelected.value
+    };
+
+    if (seletedItems.length > 0) params.facets = seletedItems;
+    if (category) params.category = category.value;
+
+    navigation.navigate('FilterResult', { params });
+  }
 
   render() {
     const {
-      title,
-      loading,
-      widgets,
-      filtersQuery,
-      seletedItens,
-      dropSelected,
-      loadingFilter,
-      filterProducts,
-      showModalFilter,
+      filters, navigation, dropSelected, seletedItems
     } = this.state;
-    const { navigation, lengthCart } = this.props;
+    const { facets, sort } = filters;
 
     return (
-      <View style={Styles.container}>
-        {/* Header */}
-        <HeaderCategory
-          lengthCart={lengthCart}
-          navigation={navigation}
-          handleGoBack={this.handleBack}
-        />
-        {/* Section title category */}
-        <View style={Styles.containerPage}>
-          {loading && (
-            <View style={DefaultStyles.loading}>
-              <ActivityIndicator size="large" color="#ffffff" />
-            </View>
-          )}
-
-          {filtersQuery.length > 0 && (
-            <ScrollView
-              alwaysBounceVertical
-              showsVerticalScrollIndicator={false}
+      <SafeAreaView style={Styles.saveArea}>
+        <View style={Styles.wrapper}>
+          <View style={Styles.containerTitle}>
+            <Text style={Styles.Title}>Filtrar por</Text>
+            <TouchableOpacity onPress={() => { navigation.goBack(); }}>
+              <CloseIcon />
+            </TouchableOpacity>
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={Styles.gradientTop}
+              colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
+            />
+          </View>
+          <ScrollView
+            alwaysBounceVertical
+            contentContainerStyle={Styles.bodyModal}
+            showsVerticalScrollIndicator={false}
+          >
+            <View
+              style={[
+                Styles.selectContainer,
+                Platform.OS === 'ios' && { zIndex: 10 },
+              ]}
             >
-              <View style={Styles.content}>
-                <View style={Styles.containerTitle}>
-                  <Title title={title} style={Styles.AlignItems} />
-
-                  <TouchableOpacity onPress={this.handleShowModalFilter}>
-                    <View style={Styles.btnFilter}>
-                      <Text>Filtrar</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <ScrollView
-                  horizontal
-                  contentContainerStyle={Styles.scrollSelectFilter}
-                >
-                  <SelectFilterOutline
-                    isSelected
-                    data={filtersQuery}
-                    onSelect={this.handleRemoveOneFilter}
-                  />
-                </ScrollView>
-                <Section style={Styles.section}>
-                  {widgets.map((widget, index) => {
-                    const key = index;
-                    const { title, template, filters } = widget;
-
-                    if (title && template === 'grid') {
-                      return (
-                        <Fragment key={key}>
-                          <ModalFilter
-                            data={filters}
-                            loading={loadingFilter}
-                            visible={showModalFilter}
-                            dropSelected={dropSelected}
-                            seletedItens={seletedItens}
-                            handleFilter={this.handleFilter}
-                            setVisible={this.handleShowModalFilter}
-                            handleDropSelect={this.handleDropSelect}
-                            handleClearFilter={this.handleClearFilter}
-                            handlerFilterSelect={this.handlerFilterSelect}
-                          />
-                          <View style={Styles.ProductCard}>
-                            <ListCard
-                              data={filterProducts}
-                              navigation={navigation}
-                            />
-                          </View>
-                        </Fragment>
-                      );
-                    }
-                  })}
-                </Section>
-              </View>
-            </ScrollView>
-          )}
-
-          {!filtersQuery.length && (
-            <ScrollView
-              alwaysBounceVertical
-              showsVerticalScrollIndicator={false}
-            >
-              <View style={Styles.content}>
-                <Title
-                  title={title}
-                  style={{
-                    paddingLeft: 32,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                  }}
+              <Text style={Styles.subTitle}>{sort.label}</Text>
+              <View>
+                <DropDownSelect
+                  data={sort.options}
+                  selected={dropSelected}
+                  onSelect={this.handleDropSelect}
                 />
-                {widgets.map((widget, index) => {
-                  const key = index;
-                  const { title, template, items } = widget;
-
-                  if (!title && template === 'swiper') {
-                    return (
-                      <CarouselBranding
-                        key={key}
-                        data={items}
-                        navigation={navigation}
-                        styleTitle={Styles.subTitle}
-                        onPress={this.handleGetDataBranding}
-                      />
-                    );
-                  }
-                })}
               </View>
-              {/* Section 2 */}
-              {widgets.map((widget, index) => {
-                const key = index;
-                const { title, template, items } = widget;
+            </View>
+            {facets.map((item, index) => {
+              const key = index;
+              const { label, options } = item;
 
-                if (title && template === 'swiper') {
-                  return (
-                    <Section style={Styles.section} key={key}>
-                      <CarouselBranding
-                        data={items}
-                        title={title}
-                        navigation={navigation}
-                        styleTitle={Styles.subTitle}
-                        onPress={this.handleGetDataBranding}
-                      />
-                    </Section>
-                  );
-                }
-              })}
-              {/* Section 4 Mais vendidos */}
-              <Section style={Styles.section}>
-                {widgets.map((widget, index) => {
-                  const key = index;
-                  const { title, template, items, filters } = widget;
-
-                  if (title && template === 'grid') {
-                    return (
-                      <Fragment key={key}>
-                        <View style={Styles.containerSubtitle}>
-                          <Title
-                            title={title}
-                            style={Styles.AlignItems}
-                            styleFont={Styles.subTitle}
-                          />
-
-                          <TouchableOpacity
-                            onPress={this.handleShowModalFilter}
-                          >
-                            <View style={Styles.btnFilter}>
-                              <Text>Filtrar</Text>
-                            </View>
-                          </TouchableOpacity>
-                        </View>
-                        <ModalFilter
-                          data={filters}
-                          loading={loadingFilter}
-                          visible={showModalFilter}
-                          dropSelected={dropSelected}
-                          seletedItens={seletedItens}
-                          handleFilter={this.handleFilter}
-                          setVisible={this.handleShowModalFilter}
-                          handleDropSelect={this.handleDropSelect}
-                          handleClearFilter={this.handleClearFilter}
-                          handlerFilterSelect={this.handlerFilterSelect}
-                        />
-                        <View style={Styles.ProductCard}>
-                          <ListCard data={items} navigation={navigation} />
-                        </View>
-                      </Fragment>
-                    );
-                  }
-                })}
-              </Section>
-            </ScrollView>
-          )}
+              return (
+                <View style={Styles.selectContainer} key={key}>
+                  <Text style={Styles.subTitle}>{label}</Text>
+                  <View style={Styles.containerSelect}>
+                    <SelectFilter
+                      data={options}
+                      selected={seletedItems}
+                      onSelect={this.handlerFilterSelect}
+                    />
+                  </View>
+                </View>
+              );
+            })}
+          </ScrollView>
+          <View style={Styles.buttonContainer}>
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={Styles.gradient}
+              colors={['rgba(243, 243, 243, 0)', '#F3F3F3']}
+            />
+            <TouchableOpacity onPress={this.clearFilter}>
+              <Text style={Styles.btnClear}>Limpar filtros</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.applyFilter}>
+              <Text style={Styles.btnSave}>Filtrar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -361,6 +181,7 @@ Filter.propTypes = {
   route: PropTypes.objectOf(PropTypes.any).isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
 
 const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,

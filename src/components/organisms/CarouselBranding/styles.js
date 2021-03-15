@@ -1,13 +1,14 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { WHITE, TEXTBLACK } from '@assets/style/colors';
 import { SPACE_16, SPACE_32 } from '@assets/style/wrapper';
+import { LabelSmall } from '@assets/style/typography';
 
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
     width,
-    height: 270,
+    // height: 270,
     paddingLeft: SPACE_32,
   },
   light: {
@@ -39,10 +40,12 @@ export default StyleSheet.create({
   },
   cardContainer: {
     width: 256,
-    minHeight: 224,
+    // minHeight: 224,
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignContent: 'flex-start',
+    flex: 1
   },
   containerCardImageTitle: {
     marginBottom: SPACE_16,
@@ -61,7 +64,12 @@ export default StyleSheet.create({
   },
   titleCard: {
     width: 120,
-    paddingTop: 4,
+    paddingTop: 12,
+    paddingBottom: 32,
+  },
+  titleCardText: {
+    ...LabelSmall,
+    height: 36
   },
   buttonSeeAll: {
     bottom: 50,

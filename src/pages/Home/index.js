@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Image, ScrollView } from 'react-native';
+import {
+  View, Image, ScrollView,
+} from 'react-native';
 
 /* Components */
 import Title from '@components/atoms/Title';
@@ -12,9 +14,11 @@ import ListCard from '@components/molecules/ListCard';
 import IntroCard from '@components/molecules/IntroCard';
 import HeaderHome from '@components/molecules/HeaderHome';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
-import FilterButton from '@components/molecules/FilterButton';
+import CategoryList from '@components/molecules/CategoryList';
 import ImageIntroCard from '@components/molecules/ImageIntroCard';
 import CarouselBranding from '@components/organisms/CarouselBranding';
+
+import { withToast } from '@components/molecules/Toast';
 
 /* Images */
 import imageBel from '@assets/images/bel.png';
@@ -22,42 +26,67 @@ import imageKiss from '@assets/images/kiss.png';
 
 // Redux, Storage, Utils e API
 import Api from '@modules/api/api-home';
+import ApiShopping from '@modules/api/api-shopping';
 import { saveLengthCart } from '@redux/actions';
-import DeviceStorage from '@modules/services/device-storage';
-import { calcTotalQuantityCart, getTitleAndDataSource } from '@modules/utils';
+import { changeStatusBar, queryStringToJSON } from '@modules/utils';
 
 /* Styles */
+import { SafeAreaView } from 'react-navigation';
+import { SPACE_HEADER } from '@assets/style/wrapper';
 import Styles from './styles';
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
+    changeStatusBar('dark-content');
+
     this.state = {
       data: [],
     };
+
+    this.updateLengthCart();
+
+    props.navigation.addListener(
+      'focus',
+      () => this.loadData()
+    );
   }
 
   componentDidMount() {
-    this.getData();
-    this.getLengthCart();
+    // TODO: refactor
+    setTimeout(() => {
+      this.checkSessionExpired();
+    }, 1000);
   }
+
+  checkSessionExpired = () => {
+    if (this.props.user.expired) {
+      this.props.toast.open({
+        title: 'Conta',
+        message: 'Sua sessão expirou, por favor, realize login novamente.',
+        type: 'warning',
+      });
+    }
+  };
+
+  loadData = () => {
+    changeStatusBar('dark-content');
+    this.getData();
+  };
 
   getData = async () => {
     const { data } = await Api.getHome();
     if (data) this.setState({ data });
   };
 
-  getLengthCart = async () => {
-    let lengthItems = 0;
-    const cart = await DeviceStorage.getItem('@BelshopApp:cart');
-
-    if (cart) {
-      const { items } = cart;
-      lengthItems = calcTotalQuantityCart(items);
+  updateLengthCart = async () => {
+    try {
+      const { data } = await ApiShopping.getBasket();
+      this.props.saveLengthCart(data.basket.totalItems);
+    } catch (error) {
+      this.props.saveLengthCart(0);
     }
-
-    this.props.saveLengthCart(lengthItems);
   };
 
   generateSections = (navigation, lengthCart) => {
@@ -66,23 +95,32 @@ class Home extends Component {
 
     if (!data.length) return null;
 
+    function handleGoFilterResult(params) {
+      navigation.navigate('FilterResult', { params, hideFilterButton: true });
+    }
+
     data.forEach((section, index) => {
-      const { title, theme, widgets, style } = section;
+      const {
+        title, theme, widgets, style
+      } = section;
 
       widgets.forEach((widget, widgetIndex) => {
         const key = widgetIndex + index;
-        const { items, template, highlight, showAll, searchQuery } = widget;
+        const {
+          items, template, highlight, showAll, searchQuery
+        } = widget;
 
         if (!items.length) return;
 
         function showMore() {
-          const { datasource } = getTitleAndDataSource(searchQuery);
-          navigation.navigate('ShowMore', { title, datasource });
+          const params = queryStringToJSON(searchQuery);
+
+          navigation.navigate('FilterResult', { params, hideFilterButton: true });
         }
 
         if (index === 0) {
           tempSections.push(
-            <Section style={{ paddingTop: 64, ...Styles.section }} key={index}>
+            <Section style={{ ...Styles.section, paddingTop: SPACE_HEADER }} key={key}>
               <HeaderHome
                 title={title}
                 theme={theme}
@@ -107,6 +145,7 @@ class Home extends Component {
                   title="Marcas"
                   showTitle={false}
                   navigation={navigation}
+                  onPress={handleGoFilterResult}
                 />
               </Section>
             );
@@ -173,7 +212,7 @@ class Home extends Component {
             tempSections.push(
               <Section key={key}>
                 <Title title={title} style={{ marginLeft: 16 }} />
-                <FilterButton data={items} navigation={navigation} />
+                <CategoryList data={items} navigation={navigation} />
               </Section>
             );
             break;
@@ -194,12 +233,13 @@ class Home extends Component {
 
   render() {
     const { navigation, lengthCart } = this.props;
+
     return (
-      <>
+      <SafeAreaView>
         <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
           {this.generateSections(navigation, lengthCart)}
         </ScrollView>
-      </>
+      </SafeAreaView>
     );
   }
 }
@@ -210,12 +250,12 @@ Home.propTypes = {
 
 const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
+  user: store.user,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(withToast(Home));

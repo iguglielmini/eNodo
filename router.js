@@ -1,110 +1,99 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 // Pages
-import InitialPage from '@pages';
 import Cart from '@pages/Cart';
 import Filter from '@pages/Filter';
+import FilterResult from '@pages/FilterResult';
+import Category from '@pages/Category';
 import Checkout from '@pages/Checkout';
-import ShowMore from '@pages/ShowMore';
 import ProductDetailsPage from '@pages/ProductDetails';
+import Login from '@pages/Login';
+import ExternalLink from '@pages/ExternalLink';
+import Account from '@pages/Account';
 
-// color
-import { BGGREY, BLACK, WHITE } from '@assets/style/colors';
+// Initial Page
+import InitialPage from '@pages';
 
 const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 function Router() {
-  const [statusBarColor, setStatusBarColor] = useState(BGGREY);
-  const statusBarColors = {
-    Home: {
-      color: BGGREY,
-      style: 'dark-content',
-    },
-    Cart: {
-      color: WHITE,
-      style: 'dark-content',
-    },
-    Filter: {
-      color: BLACK,
-      style: 'light-content',
-    },
-    ShowMore: {
-      color: WHITE,
-      style: 'light-content',
-    },
-    ProductDetails: {
-      color: WHITE,
-      style: 'dark-content',
-    },
-    Checkout: {
-      color: WHITE,
-      style: 'dark-content',
-    },
-  };
-
-  const routeChange = route => {
-    const selectRouter = route.routes[route.index];
-    const colors = statusBarColors[selectRouter.name];
-    setStatusBarColor(colors.color);
-    StatusBar.setBarStyle(colors.style);
-  };
   return (
     <>
-      <NavigationContainer onStateChange={routeChange}>
-        <SafeAreaView style={{ backgroundColor: statusBarColor }}>
-          <StatusBar backgroundColor={statusBarColor} barStyle="dark-content" />
-        </SafeAreaView>
-
-        <Stack.Navigator initialRouteName="Home" detachInactiveScreens>
-          <Stack.Screen
-            name="Home"
-            component={InitialPage}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ProductDetails"
-            component={ProductDetailsPage}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Filter"
-            component={Filter}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="ShowMore"
-            component={ShowMore}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Cart"
-            component={Cart}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Checkout"
-            component={Checkout}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Stack.Navigator initialRouteName="Home" detachInactiveScreens>
+        <Stack.Screen
+          name="Home"
+          component={InitialPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ProductDetails"
+          component={ProductDetailsPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Category"
+          component={Category}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="FilterResult"
+          component={FilterResult}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Cart"
+          component={Cart}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Checkout"
+          component={Checkout}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ExternalLink"
+          component={ExternalLink}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Account"
+          component={Account}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
     </>
   );
 }
 
-export default Router;
+const RootNavigator = () => (
+  <RootStack.Navigator initialRouteName="Main" mode="modal" headerMode="none">
+    <RootStack.Screen name="Main" component={Router} />
+    <RootStack.Screen name="Filter" component={Filter} options={{ ...TransitionPresets.ModalSlideFromBottomIOS }} />
+  </RootStack.Navigator>
+);
+
+export default RootNavigator;

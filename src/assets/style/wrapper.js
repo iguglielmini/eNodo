@@ -13,6 +13,8 @@ export const SPACE_56 = 56;
 export const SPACE_60 = 60;
 export const SPACE_64 = 64;
 
+export const SPACE_HEADER = 20;
+
 // Title Spacement
 
 export const SPACE_TITLE_CARD = {};

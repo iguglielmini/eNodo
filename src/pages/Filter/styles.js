@@ -1,59 +1,93 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { BLACK, WHITE } from '@assets/style/colors';
-import { TitleSmall } from '@assets/style/typography';
-import { SPACE_16, SPACE_32, SPACE_36, SPACE_48 } from '@assets/style/wrapper';
-
+import {
+  BLACK, WHITE, BGGREY
+} from '@assets/style/colors';
+import { TitleXSmall, TitleSmall, TitleMediumBold } from '@assets/style/typography';
+import { SPACE_24, SPACE_32, SPACE_48 } from '@assets/style/wrapper';
+// Dimension Responsive layout
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
-    paddingTop: 100,
-    backgroundColor: BLACK,
+    width,
   },
-  containerPage: {
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    backgroundColor: '#F3F3F3',
+  modal: {
+    margin: 0,
+    justifyContent: 'flex-end',
   },
-  content: {
-    paddingTop: SPACE_48,
+  saveArea: {
+    flex: 1,
   },
-  section: {
-    paddingLeft: 0,
+  wrapper: {
+    backgroundColor: BGGREY,
+    paddingLeft: SPACE_32,
+    paddingRight: SPACE_32,
+    flex: 1,
+  },
+  containerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: SPACE_24,
+    paddingTop: SPACE_24,
+    zIndex: 5,
+  },
+  Title: {
+    ...TitleMediumBold,
+  },
+  bodyModal: {
+    paddingTop: SPACE_24,
+    paddingBottom: SPACE_24,
+    flexDirection: 'column',
+    zIndex: 2,
   },
   subTitle: {
     ...TitleSmall,
+    paddingBottom: SPACE_24,
   },
-  AlignItems: {
-    marginBottom: 0,
+  selectContainer: {
+    paddingBottom: SPACE_48,
   },
-  containerTitle: {
-    width,
-    alignItems: 'center',
+  containerSelect: {
+    width: '100%',
     flexDirection: 'row',
-    paddingLeft: SPACE_16,
-    paddingRight: SPACE_32,
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  gradient: {
+    position: 'absolute',
+    height: 30,
+    width,
+    top: -30,
+    zIndex: 15
+  },
+  gradientTop: {
+    position: 'absolute',
+    height: 30,
+    width,
+    bottom: -30,
+    zIndex: 15
+  },
+  buttonContainer: {
+    paddingBottom: SPACE_24,
+    paddingTop: SPACE_24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
     justifyContent: 'space-between',
   },
-  containerSubtitle: {
-    width,
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: SPACE_32,
-    paddingHorizontal: SPACE_16,
-    justifyContent: 'space-between',
-  },
-  ProductCard: {
-    paddingHorizontal: SPACE_16,
-  },
-  btnFilter: {
+  btnSave: {
+    color: WHITE,
+    ...TitleXSmall,
     borderRadius: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    backgroundColor: WHITE,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    backgroundColor: BLACK,
   },
-  scrollSelectFilter: {
-    paddingTop: SPACE_36,
-    paddingLeft: SPACE_32,
-  },
+  btnClear: {
+    ...TitleXSmall,
+    color: BLACK,
+    textDecorationLine: 'underline',
+
+  }
 });

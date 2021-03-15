@@ -1,17 +1,29 @@
 import { StyleSheet } from 'react-native';
 import {
   SECONDARY, BLACK, WHITE, TEXTBLACK, WHITELIGHT, TEXTGREYLIGHT, TEXTPINK,
-  BORDERGREY
+  BORDERGREY, BGGREY
 } from '@assets/style/colors';
+import { SPACE_HEADER } from '../../assets/style/wrapper';
 
 export default StyleSheet.create({
+  saveAreaHeader: {
+    zIndex: 9999,
+    flex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingTop: SPACE_HEADER,
+    paddingLeft: 16,
+    paddingRight: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'space-between',
+  },
   containerTitle: {
     padding: 20,
     marginRight: 12,
     marginLeft: 12,
-  },
-  ContainerScroll: {
-    paddingBottom: 50,
   },
   titleProduct: {
     fontSize: 12,
@@ -31,8 +43,11 @@ export default StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
   },
+  wrapperPage: {
+    backgroundColor: BGGREY
+  },
   containerDescription: {
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   description: {
     marginLeft: 10,
@@ -133,7 +148,7 @@ export default StyleSheet.create({
     right: 0,
     height: 30,
     zIndex: 9999,
-    marginTop: 42,
+    marginTop: SPACE_HEADER,
     marginLeft: 16,
     marginRight: 16,
     flexDirection: 'row',
@@ -152,7 +167,6 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4.65,
-
     elevation: 8,
   },
 });

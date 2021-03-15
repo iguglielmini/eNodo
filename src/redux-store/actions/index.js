@@ -1,12 +1,11 @@
 import {
   USER_SAVE,
-  USER_EDIT,
+  USER_CLEAR,
   SAVE_NEW_FLAGS,
   ADD_PRODUCT_CART,
   TOTAL_LENGTH_CART,
   SAVE_MY_CAMPAIGN_DATA,
   SAVE_SHARE_CAMPAIGN_DATA,
-  USER_DECREASE_NOTIFICATION,
 } from './actionTypes';
 
 function saveNewFlags(payload) {
@@ -51,26 +50,21 @@ function saveUser(payload) {
   };
 }
 
-function editUser(payload) {
-  return {
-    type: USER_EDIT,
-    payload,
-  };
-}
+function clearUser(expired) {
+  const payload = { expired };
 
-function decreaseNotification() {
   return {
-    type: USER_DECREASE_NOTIFICATION,
+    type: USER_CLEAR,
+    payload
   };
 }
 
 export {
   saveUser,
-  editUser,
+  clearUser,
   saveNewFlags,
   saveLengthCart,
   saveMyCampaigns,
   saveAddProductCart,
   saveShareCampaigns,
-  decreaseNotification,
 };

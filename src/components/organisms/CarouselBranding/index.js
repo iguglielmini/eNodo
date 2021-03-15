@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import Title from '@components/atoms/Title';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 
 // Utils
-import { getTitleAndFilter } from '@modules/utils';
+import { queryStringToJSON, textCapitalize } from '@modules/utils';
 
 // Styles
 import Styles from './styles';
@@ -25,8 +31,8 @@ const Card = ({ data, showTitle, onPress }) => (
           key={key}
           activeOpacity={1}
           onPress={() => {
-            const { filter } = getTitleAndFilter(searchQuery);
-            onPress(title, filter);
+            const params = queryStringToJSON(searchQuery);
+            onPress(params);
           }}
         >
           <View style={Styles.containerCardImageTitle}>
@@ -39,7 +45,7 @@ const Card = ({ data, showTitle, onPress }) => (
             </View>
             {showTitle && (
               <View style={Styles.titleCard}>
-                <Text>{title}</Text>
+                <Text numberOfLines={2} ellipsizeMode="tail" style={Styles.titleCardText}>{textCapitalize(title)}</Text>
               </View>
             )}
           </View>
@@ -106,6 +112,7 @@ const CarouselBranding = ({
         onSnapToItem={setDotIndex}
         activeSlideAlignment="start"
         containerCustomStyle={Styles.container}
+        slideStyle={{ flex: 1 }}
       />
       {showFooter && (
         <>

@@ -9,7 +9,9 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 import Styles from './styles';
 
-function HeaderCategory({ handleGoBack, lengthCart, theme }) {
+function HeaderCategory({
+  handleGoBack, navigation, lengthCart, theme
+}) {
   function handleShowCart() {
     navigation.navigate('Cart');
   }
@@ -43,6 +45,6 @@ HeaderCategory.propTypes = {
 HeaderCategory.defaultProps = {
   lengthCart: 0,
   theme: 'dark',
-}
+};
 
 export default HeaderCategory;

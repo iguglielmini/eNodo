@@ -29,7 +29,7 @@ const ModalDetails = ({ visible, setVisible, details }) => (
       >
         <View style={Styles.bodyModal}>
           <Text style={Styles.Title}>{details.title}</Text>
-          <Text style={Styles.paragraphyModal}>{details.description}</Text>
+          <Text style={Styles.paragraphyModal} textBreakStrategy="simple">{details.description}</Text>
         </View>
       </ScrollView>
     </View>

@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
+import {
+  SPACE_24, SPACE_32, SPACE_HEADER
+} from '@assets/style/wrapper';
 
 const { width } = Dimensions.get('window');
 
@@ -14,7 +16,7 @@ export default StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingTop: SPACE_60,
+    paddingTop: SPACE_HEADER,
     paddingBottom: SPACE_24,
     paddingHorizontal: SPACE_32,
     justifyContent: 'space-between',
@@ -28,6 +30,12 @@ export default StyleSheet.create({
   buttonFavorite: {
     paddingRight: 32
   },
-  buttonBag: {},
+  buttonBag: {
+    marginTop: -1,
+    alignItems: 'center',
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 
 });

@@ -1,9 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { SPACE_24, SPACE_32, SPACE_60 } from '@assets/style/wrapper';
+import {
+  SPACE_24, SPACE_32, SPACE_16, SPACE_HEADER
+} from '@assets/style/wrapper';
 import {
   TitleSmall, TitleLarge, TitleXSmall, TitleSmallBOLD
 } from '@assets/style/typography';
 import { WHITE, BLACK, TEXTGREYLIGHT } from '@assets/style/colors';
+
 
 const { width } = Dimensions.get('window');
 
@@ -19,10 +22,10 @@ export default StyleSheet.create({
     right: 0,
     zIndex: 1,
     overflow: 'visible',
-    paddingTop: SPACE_60,
+    paddingTop: SPACE_HEADER,
     paddingBottom: SPACE_24,
     position: 'absolute',
-    paddingHorizontal: SPACE_32,
+    paddingHorizontal: SPACE_16,
   },
   contentHeader: {
     flexDirection: 'row',
@@ -45,7 +48,7 @@ export default StyleSheet.create({
     elevation: 8,
   },
   containerTitlePrice: {
-    right: 0,
+    right: 16,
   },
   TitleHeader: {
     ...TitleSmall,

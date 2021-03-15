@@ -1,6 +1,5 @@
-export const USER_EDIT = 'USER_EDIT';
 export const USER_SAVE = 'USER_SAVE';
-export const USER_DECREASE_NOTIFICATION = 'USER_DECREASE_NOTIFICATION';
+export const USER_CLEAR = 'USER_CLEAR';
 
 export const SAVE_NEW_FLAGS = 'SAVE_NEW_FLAGS';
 

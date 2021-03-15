@@ -6,9 +6,10 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /* component */
 import ListCard from '@components/molecules/ListCard';
@@ -16,7 +17,7 @@ import ModalCep from '@components/organisms/ModalCep';
 import Accordion from '@components/organisms/Accordion';
 import FloatButtonBuy from '@components/atoms/FloatButtonBuy';
 import ModalDetails from '@components/organisms/ModalDetails';
-import CarouselProduct from '@components/organisms/CarouselPodruct';
+import CarouselProduct from '@components/organisms/CarouselProduct';
 import CarouselBuyTogether from '@components/organisms/CarouselBuyTogether';
 
 /** icons */
@@ -30,7 +31,7 @@ import ApiProduct from '@modules/api/api-product';
 import ApiShopping from '@modules/api/api-shopping';
 
 // Redux e Utils
-import { calcTotalQuantityCart } from '@modules/utils';
+import { calcTotalQuantityCart, changeStatusBar } from '@modules/utils';
 import DeviceStorage from '@modules/services/device-storage';
 import { saveLengthCart, saveAddProductCart } from '@redux/actions';
 
@@ -39,11 +40,14 @@ import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 
 /** Styles */
 import DefaultStyles from '@assets/style/default';
+import { SafeAreaView } from 'react-navigation';
 import Styles from './styles';
 
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
+
+    changeStatusBar('dark-content');
 
     this.state = {
       textCep: '',
@@ -74,6 +78,7 @@ class ProductDetails extends Component {
   }
 
   componentDidMount() {
+    changeStatusBar('dark-content');
     this.getData();
     this.getDelivery();
   }
@@ -92,16 +97,17 @@ class ProductDetails extends Component {
     if (dataProduct) {
       const { theme, widgets } = dataProduct;
       const product = widgets[0].details;
+      // eslint-disable-next-line react/no-unused-state
       this.setState({ product, theme });
     }
 
     if (dataProductAssociations.length) {
       const { productsAssociations } = this.state;
 
-      dataProductAssociations.forEach(section => {
+      dataProductAssociations.forEach((section) => {
         const { widgets } = section;
 
-        widgets.forEach(widget => {
+        widgets.forEach((widget) => {
           const { items } = widget;
 
           if (widget.alias === 'quem-comprou-comprou-tambem') {
@@ -124,11 +130,11 @@ class ProductDetails extends Component {
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
-  setModalDetailsVisible = modalDetailsVisible => {
+  setModalDetailsVisible = (modalDetailsVisible) => {
     this.setState({ modalDetailsVisible });
   };
 
-  showModalDetails = details => {
+  showModalDetails = (details) => {
     const { modalDetailsVisible } = this.state;
     this.setState({ modalDetailsVisible: !modalDetailsVisible, details });
   };
@@ -142,7 +148,9 @@ class ProductDetails extends Component {
     setLoading(true);
 
     const form = {
-      products: [{ product: id, sku, quantity: 1, postalCode: textCep }],
+      products: [{
+        product: id, sku, quantity: 1, postalCode: textCep
+      }],
     };
     ApiShopping.basketAddItem(form)
       .then(({ data }) => {
@@ -162,7 +170,7 @@ class ProductDetails extends Component {
       .catch(() => setLoading(false));
   };
 
-  handleSaveCep = cep => {
+  handleSaveCep = (cep) => {
     const { route } = this.props;
     const { id, sku } = route.params;
 
@@ -211,122 +219,135 @@ class ProductDetails extends Component {
 
     return (
       <>
-        <View style={Styles.ContainerHeader}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <View style={Styles.btnImageIcon}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: '#fff' }} />
+        <SafeAreaView style={DefaultStyles.viewGrey}>
+          <SafeAreaView style={Styles.saveAreaHeader}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={Styles.btnImageIcon}>
               <ArrowVIcon />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <View style={Styles.btnImageIcon}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}} style={Styles.btnImageIcon}>
               <FavoriteIcon />
+            </TouchableOpacity>
+          </SafeAreaView>
+          {loading && (
+            <View style={DefaultStyles.loading}>
+              <ActivityIndicator size="large" color="#000" />
             </View>
-          </TouchableOpacity>
-        </View>
-        {loading && (
-          <View style={DefaultStyles.loading}>
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-        )}
-        <ScrollView
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={Styles.ContainerScroll}
-        >
-          <CarouselProduct gallery={product.gallery} />
-          <View style={Styles.containerTitle}>
-            <Text style={Styles.titleProduct}>{brand.title}</Text>
-            <Text style={Styles.subTitle}>{product.title}</Text>
-          </View>
-          {/* Details Payment */}
-          <View style={Styles.containerDescription}>
-            <View style={Styles.detailsProduct}>
-              <DetailIcon />
-              <View style={Styles.description}>
-                <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
-                <View style={Styles.modalContainer}>
-                  <Text style={Styles.descriptionSubTitle}>
-                    Entrega em até {estimatedTime || daysCep} após a postagem do produto. &nbsp;
-                    <Text
-                      style={Styles.btnModal}
-                      onPress={() => this.setModalCepVisible(true)}
-                    >
-                      {(!postalCode) ? 'Trocar CEP' : `CEP ${postalCode || textCep}`}
+          )}
+          <ScrollView
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: product && product.available ? 50 : 0
+            }}
+          >
+            {!loading && (
+              <>
+                <CarouselProduct gallery={product.gallery} />
+                <View style={Styles.wrapperPage}>
+                  <View style={Styles.containerTitle}>
+                    <Text style={Styles.titleProduct}>{brand.title}</Text>
+                    <Text style={Styles.subTitle}>{product.title}</Text>
+                  </View>
+                  {/* Details Payment */}
+                  <View style={Styles.containerDescription}>
+                    <View style={Styles.detailsProduct}>
+                      <DetailIcon />
+                      <View style={Styles.description}>
+                        <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
+                        <View style={Styles.modalContainer}>
+                          <Text style={Styles.descriptionSubTitle}>
+                          Entrega em até
+                            {' '}
+                            {estimatedTime || daysCep}
+                            {' '}
+                          após a postagem do produto. &nbsp;
+                            <Text
+                              style={Styles.btnModal}
+                              onPress={() => this.setModalCepVisible(true)}
+                            >
+                              {(!postalCode) ? 'Trocar CEP' : `CEP ${postalCode || textCep}`}
+                            </Text>
+                          </Text>
+                          <ModalCep
+                            cepValue={textCep}
+                            visible={modalCepVisible}
+                            handleSave={this.handleSaveCep}
+                            handleClear={this.handleClearCep}
+                            setVisible={this.setModalCepVisible}
+                          />
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={Styles.detailsProduct}>
+                      <LogoIcon />
+                      <View style={Styles.description}>
+                        <Text style={Styles.descriptionTitle}>Loja com estoque</Text>
+                        <Text style={Styles.descriptionSubTitle}>
+                        Av. Wenceslau Escobar. 2801 Tristeza, Porto Alegre-RS &nbsp;
+                          <Text style={Styles.btnModal} onPress={() => {}}>
+                          Outras lojas
+                          </Text>
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  {/* Accordion */}
+                  <View style={Styles.containerAccordion}>
+                    <Accordion
+                      data={product.descriptions}
+                      actionMore={this.showModalDetails}
+                    />
+                    <ModalDetails
+                      details={details}
+                      visible={modalDetailsVisible}
+                      setVisible={this.setModalDetailsVisible}
+                    />
+                  </View>
+
+                  {/* Compre Junto Area */}
+                  <View style={Styles.containerCarouselPay}>
+                    <Text style={Styles.ClientPayTitle}>Compre junto</Text>
+                    <CarouselBuyTogether data={CardBuyTogetherMock} />
+                  </View>
+
+                  {/* Clientes Tambem Compraram Area */}
+                  {productsAssociations.clientsBy.length > 0 && (
+                  <View style={Styles.ContainerClientPay}>
+                    <Text style={Styles.ClientPayTitle}>
+                      Clientes também compraram
                     </Text>
-                  </Text>
-                  <ModalCep
-                    cepValue={textCep}
-                    visible={modalCepVisible}
-                    handleSave={this.handleSaveCep}
-                    handleClear={this.handleClearCep}
-                    setVisible={this.setModalCepVisible}
-                  />
+                    <ListCard
+                      data={productsAssociations.clientsBy}
+                      navigation={navigation}
+                    />
+                  </View>
+                  )}
+
+                  {/* Produtos semelhantes */}
+                  {productsAssociations.similar.length > 0 && (
+                  <View style={Styles.ContainerProductSimilar}>
+                    <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
+                    <ListCard
+                      data={productsAssociations.similar}
+                      navigation={navigation}
+                    />
+                  </View>
+                  )}
                 </View>
-              </View>
-            </View>
-
-            <View style={Styles.detailsProduct}>
-              <LogoIcon />
-              <View style={Styles.description}>
-                <Text style={Styles.descriptionTitle}>Loja com estoque</Text>
-                <Text style={Styles.descriptionSubTitle}>
-                  Av. Wenceslau Escobar. 2801 Tristeza, Porto Alegre-RS &nbsp;
-                  <Text style={Styles.btnModal} onPress={() => {}}>
-                    Outras lojas
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Accordion */}
-          <View style={Styles.containerAccordion}>
-            <Accordion
-              data={product.descriptions}
-              actionMore={this.showModalDetails}
-            />
-            <ModalDetails
-              details={details}
-              visible={modalDetailsVisible}
-              setVisible={this.setModalDetailsVisible}
-            />
-          </View>
-
-          {/* Compre Junto Area */}
-          <View style={Styles.containerCarouselPay}>
-            <Text style={Styles.ClientPayTitle}>Compre junto</Text>
-            <CarouselBuyTogether data={CardBuyTogetherMock} />
-          </View>
-
-          {/* Clientes Tambem Compraram Area */}
-          {productsAssociations.clientsBy.length > 0 && (
-            <View style={Styles.ContainerClientPay}>
-              <Text style={Styles.ClientPayTitle}>
-                Clientes também compraram
-              </Text>
-              <ListCard
-                data={productsAssociations.clientsBy}
-                navigation={navigation}
-              />
-            </View>
+              </>
+            )}
+          </ScrollView>
+          {product && product.available && (
+          <FloatButtonBuy
+            price={price}
+            navigation={navigation}
+            addProductToCart={this.addProductToCart}
+          />
           )}
-
-          {/* Produtos semelhantes */}
-          {productsAssociations.similar.length > 0 && (
-            <View style={Styles.ContainerProductSimilar}>
-              <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
-              <ListCard
-                data={productsAssociations.similar}
-                navigation={navigation}
-              />
-            </View>
-          )}
-        </ScrollView>
-        <FloatButtonBuy
-          price={price}
-          navigation={navigation}
-          addProductToCart={this.addProductToCart}
-        />
+        </SafeAreaView>
       </>
     );
   }
@@ -337,14 +358,13 @@ ProductDetails.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveLengthCart,
-      saveAddProductCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+    saveAddProductCart,
+  },
+  dispatch
+);
 
 export default connect(
   null,

@@ -1,21 +1,13 @@
 import EventBus from '@modules/services/EventBus';
-import AuthService from '@modules/api/api-auth';
+import DeviceStorage from '@modules/services/device-storage';
 
 export default () => {
-  EventBus.subscribe('goToCheckout', ({ navigation }) => {
-    // TODO: verify if user is logged
-    AuthService.login({
-      username: 'belshop-7f790a@inbox.mailtrap.io',
-      password: 'N0d01234'
-    }).then(async (response) => {
-      if (response.success) {
-        const { token } = response;
-        await AuthService.setToken(token);
-        navigation.navigate('Checkout');
-      }
-    })
-      .catch(() => {
-        navigation.goBack();
-      });
+  EventBus.subscribe('goToCheckout', async ({ navigation }) => {
+    const login = await DeviceStorage.getItem('@BelshopApp:user');
+    if (login) {
+      navigation.navigate('Checkout');
+    } else {
+      navigation.navigate('Login', { to: 'Checkout', replace: true });
+    }
   });
 };

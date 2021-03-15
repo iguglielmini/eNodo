@@ -20,9 +20,9 @@ class Input extends Component {
 
     let textInput = (
       <TextInput
-        {...this.props}
         style={[Styles.input]}
         ref={(ref) => { this.ref = ref; }}
+        {...this.props}
       />
     );
 

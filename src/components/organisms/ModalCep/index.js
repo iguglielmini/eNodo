@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Input from '@components/atoms/Input';
 import {
-  View, Text, TouchableOpacity, Alert
+  View, Text, TouchableOpacity,
 } from 'react-native';
 
 // Icons
 import CloseIcon from '@assets/svg/close';
+import { useToast } from '@components/molecules/Toast';
 
 /** Styles */
 import Styles from './styles';
@@ -21,6 +22,7 @@ function ModalCep({
 }) {
   const [textCep, setTextCep] = useState(cepValue);
   const [inputRef, setInputRef] = useState(null);
+  const { open: openToast } = useToast();
 
   function handleOnShow() {
     inputRef.focus();
@@ -28,7 +30,12 @@ function ModalCep({
 
   function handleSubmit() {
     if (textCep.length < 9) {
-      Alert.alert('CEP Inválido');
+      openToast({
+        title: 'Localização',
+        message: 'CEP Inválido',
+        type: 'error',
+      });
+
       return;
     }
 

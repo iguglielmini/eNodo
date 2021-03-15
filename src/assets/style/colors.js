@@ -14,3 +14,9 @@ export const BLACK = '#000000';
 export const WHITELIGHT = '#F1F1F1';
 
 export const BORDERGREY = '#A1A6AF';
+
+export const DARKPURPLE = '#1E0F2F';
+
+export const $error = '#D5163F';
+export const $success = '#1CA655';
+export const $warning = '#FBBD08';
