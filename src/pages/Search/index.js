@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import {
-  View, ScrollView, TextInput
+  View, ScrollView, TextInput, SafeAreaView
 } from 'react-native';
+
+/** Icons */
+import SearchIcon from '@assets/svg/searchProduct';
 
 /* Components */
 import Title from '@components/atoms/Title';
 import Section from '@components/atoms/Section';
 import LinkHelp from '@components/atoms/LinkHelp';
-import SearchIcon from '@assets/svg/searchProduct';
+import CardMenusca from '../../components/molecules/CardMenusca';
 import CategoryList from '../../components/molecules/CategoryList';
-/** Icons */
+
 /* Styles */
 import Styles from './styles';
 // Mock
@@ -26,18 +29,25 @@ class Search extends Component {
   render() {
     return (
       <>
-        <View style={Styles.containerSearch}>
+        <SafeAreaView style={Styles.containerSearch}>
           {/* header */}
           <View style={Styles.contentHeader}>
             <SearchIcon color="#ffffff" />
             <TextInput
               style={Styles.inputSearch}
-              placeholder="Buscar"
+              placeholder="Busca"
               placeholderTextColor="#F3F3F3"
             />
           </View>
-          {/* Content Search */}
+          {/* Result Search
+          <View>
+            <CardMenusca />
+          </View> */}
+
           <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
+            {/* Result Search */}
+            {/* <CardMenusca /> */}
+            {/* Content Search */}
             <Section style={{ paddingTop: 64 }} theme="dark">
               <Title
                 title="O que você procura?"
@@ -50,7 +60,7 @@ class Search extends Component {
               <LinkHelp data={LinkHelpMock} theme="light" />
             </Section>
           </ScrollView>
-        </View>
+        </SafeAreaView>
       </>
     );
   }
