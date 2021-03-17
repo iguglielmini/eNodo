@@ -10,23 +10,20 @@ import {
 export default StyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: SPACE_48,
-    paddingHorizontal: SPACE_32
-  },
-  listCardView: {
+    paddingTop: SPACE_32,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    paddingHorizontal: SPACE_32,
   },
   card: {
     paddingTop: 0,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginBottom: SPACE_32
   },
   contentDescription: {
-    width: '100%',
+    width: '98%',
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',

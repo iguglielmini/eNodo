@@ -10,6 +10,9 @@ export default StyleSheet.create({
     backgroundColor: BLACK,
     height: '100%',
   },
+  scroll: {
+    paddingBottom: SPACE_32,
+  },
   //   Header
   contentHeader: {
     width,

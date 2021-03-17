@@ -29,7 +29,6 @@ class Search extends Component {
       bullets: [],
       products: [],
       theme: 'dark',
-      searchFocus: false,
       searchNotFound: false,
     };
   }
@@ -56,11 +55,6 @@ class Search extends Component {
     });
   };
 
-  toggleSearchFocused = () => {
-    const { searchFocus } = this.state;
-    this.setState({ searchFocus: !searchFocus, products: [] });
-  };
-
   handlerSearch = async search => {
     this.setState({ search, searchFocus: true });
 
@@ -76,10 +70,8 @@ class Search extends Component {
     this.setState({
       search: '',
       products: [],
-      searchFocus: false,
       searchNotFound: false,
     });
-    this.toggleSearchFocused();
   };
 
   render() {
@@ -90,7 +82,6 @@ class Search extends Component {
       search,
       bullets,
       products,
-      searchFocus,
       searchNotFound,
     } = this.state;
 
@@ -105,24 +96,28 @@ class Search extends Component {
               placeholder="Busca"
               style={Styles.inputSearch}
               placeholderTextColor="#F3F3F3"
-              onBlur={this.toggleSearchFocused}
-              onFocus={this.toggleSearchFocused}
               onChangeText={this.handlerSearch}
             />
             <CloseIcon color="#ffffff" onPress={this.handlerClear} />
           </View>
 
-          <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
-            {searchFocus &&
+          <ScrollView
+            alwaysBounceVertical
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={Styles.scroll}
+          >
+            {search.length > 0 &&
               products.length > 0 &&
               products.map((item, index) => {
                 const key = index;
-                return <CardMenusca key={key} item={item} />;
+                return (
+                  <CardMenusca key={key} item={item} navigation={navigation} />
+                );
               })}
-            {searchFocus && searchNotFound && (
+            {search.length > 0 && searchNotFound && (
               <Text style={Styles.notFoundText}>Produto não encontrado!</Text>
             )}
-            {!searchFocus && (
+            {!search.length && (
               <>
                 <Section style={{ paddingTop: 64 }} theme="dark">
                   <Title
