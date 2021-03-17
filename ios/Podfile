@@ -28,8 +28,7 @@ abstract_target 'defaults' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  use_native_modules!
-
+  # use_native_modules!
   # Required by RNFirebase
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Firebase/Auth', '~> 6.13.0'

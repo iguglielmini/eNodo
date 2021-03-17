@@ -3,8 +3,6 @@ PODS:
   - Branch (0.29.0):
     - Branch/Core (= 0.29.0)
   - Branch/Core (0.29.0)
-  - BVLinearGradient (2.5.6):
-    - React
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - DoubleConversion (1.1.6)
@@ -97,7 +95,6 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - OneSignal (2.13.1)
   - PromisesObjC (1.2.12)
   - React (0.60.4):
     - React-Core (= 0.60.4)
@@ -145,26 +142,6 @@ PODS:
     - React-cxxreact (= 0.60.4)
     - React-jsi (= 0.60.4)
   - React-jsinspector (0.60.4)
-  - react-native-biometrics (1.7.0):
-    - React
-  - react-native-branch (4.2.1):
-    - Branch (= 0.29.0)
-    - React
-  - react-native-date-picker (3.2.5):
-    - React-Core
-  - react-native-image-picker (1.1.0):
-    - React
-  - react-native-netinfo (4.6.1):
-    - React
-  - react-native-onesignal (3.7.3):
-    - OneSignal (= 2.13.1)
-    - React (< 1.0.0, >= 0.13.0)
-  - react-native-safe-area-context (3.1.9):
-    - React-Core
-  - react-native-splash-screen (3.2.0):
-    - React
-  - react-native-webview (11.2.3):
-    - React-Core
   - React-RCTActionSheet (0.60.4):
     - React-Core (= 0.60.4)
   - React-RCTAnimation (0.60.4):
@@ -189,54 +166,10 @@ PODS:
   - React-RCTWebSocket (0.60.4):
     - React-Core (= 0.60.4)
     - React-fishhook (= 0.60.4)
-  - ReactNativeNavigation (2.26.2):
-    - React
-  - ReactNativePayments (0.7.9):
-    - React
-  - ReactNativePermissions (1.2.0):
-    - React
-  - RNCAsyncStorage (1.6.1):
-    - React
-  - RNCMaskedView (0.1.10):
-    - React
-  - RNCPicker (1.9.8):
-    - React-Core
-  - RNDeviceInfo (5.6.1):
-    - React
-  - RNFBAnalytics (6.7.1):
-    - Firebase/Analytics (~> 6.13.0)
-    - Firebase/Core (~> 6.13.0)
-    - React
-    - RNFBApp
-  - RNFBApp (6.7.1):
-    - Firebase/Core (~> 6.13.0)
-    - React
-  - RNFBAuth (6.7.1):
-    - Firebase/Auth (~> 6.13.0)
-    - Firebase/Core (~> 6.13.0)
-    - React
-    - RNFBApp
-  - RNFBCrashlytics (6.7.1):
-    - Crashlytics (~> 3.14.0)
-    - Fabric (~> 1.10.2)
-    - Firebase/Core (~> 6.13.0)
-    - React
-    - RNFBApp
-  - RNGestureHandler (1.8.0):
-    - React
-  - RNReanimated (1.13.2):
-    - React-Core
-  - RNScreens (2.11.0):
-    - React
-  - RNSVG (9.13.6):
-    - React
-  - RNVectorIcons (7.1.0):
-    - React
   - yoga (0.60.4.React)
 
 DEPENDENCIES:
   - Branch
-  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - Crashlytics
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Firebase/Analytics (~> 6.13.0)
@@ -252,15 +185,6 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-biometrics (from `../node_modules/react-native-biometrics`)
-  - react-native-branch (from `../node_modules/react-native-branch`)
-  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
-  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
-  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
-  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
-  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -271,22 +195,6 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
-  - ReactNativeNavigation (from `../node_modules/react-native-navigation`)
-  - ReactNativePayments (from `../node_modules/react-native-payments-reborn`)
-  - ReactNativePermissions (from `../node_modules/react-native-permissions`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
-  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
-  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
-  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
-  - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
-  - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
-  - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
-  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNReanimated (from `../node_modules/react-native-reanimated`)
-  - RNScreens (from `../node_modules/react-native-screens`)
-  - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -310,12 +218,9 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - nanopb
-    - OneSignal
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  BVLinearGradient:
-    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
@@ -338,24 +243,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-biometrics:
-    :path: "../node_modules/react-native-biometrics"
-  react-native-branch:
-    :path: "../node_modules/react-native-branch"
-  react-native-date-picker:
-    :path: "../node_modules/react-native-date-picker"
-  react-native-image-picker:
-    :path: "../node_modules/react-native-image-picker"
-  react-native-netinfo:
-    :path: "../node_modules/@react-native-community/netinfo"
-  react-native-onesignal:
-    :path: "../node_modules/react-native-onesignal"
-  react-native-safe-area-context:
-    :path: "../node_modules/react-native-safe-area-context"
-  react-native-splash-screen:
-    :path: "../node_modules/react-native-splash-screen"
-  react-native-webview:
-    :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -376,45 +263,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
-  ReactNativeNavigation:
-    :path: "../node_modules/react-native-navigation"
-  ReactNativePayments:
-    :path: "../node_modules/react-native-payments-reborn"
-  ReactNativePermissions:
-    :path: "../node_modules/react-native-permissions"
-  RNCAsyncStorage:
-    :path: "../node_modules/@react-native-community/async-storage"
-  RNCMaskedView:
-    :path: "../node_modules/@react-native-community/masked-view"
-  RNCPicker:
-    :path: "../node_modules/@react-native-picker/picker"
-  RNDeviceInfo:
-    :path: "../node_modules/react-native-device-info"
-  RNFBAnalytics:
-    :path: "../node_modules/@react-native-firebase/analytics"
-  RNFBApp:
-    :path: "../node_modules/@react-native-firebase/app"
-  RNFBAuth:
-    :path: "../node_modules/@react-native-firebase/auth"
-  RNFBCrashlytics:
-    :path: "../node_modules/@react-native-firebase/crashlytics"
-  RNGestureHandler:
-    :path: "../node_modules/react-native-gesture-handler"
-  RNReanimated:
-    :path: "../node_modules/react-native-reanimated"
-  RNScreens:
-    :path: "../node_modules/react-native-screens"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Branch: 6e7421e1f3c0adebdf80008a40a74969b2603cf8
-  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   Crashlytics: 9220f5bc89e7a618df411b4f639389dbfb0e03d2
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Fabric: ea977e3cd9c20425516d3dafd3bf8c941c51223f
@@ -435,7 +289,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  OneSignal: fa98eaa90372bb367b6a4a1c1622ffb9832c7600
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   React: ff7ee2ae5ee1c1d9ae2183b4111045b25294bb01
   React-Core: 8e0ea421cae5609d2562850f98421b15030476fa
@@ -445,15 +298,6 @@ SPEC CHECKSUMS:
   React-jsi: 21d3153b1153fbf6510a92b6b11e33e725cb7432
   React-jsiexecutor: 7549641e48bafae7bfee3f3ea19bf4901639c5de
   React-jsinspector: 73f24a02fa684ed6a2b828ba116874a2191ded88
-  react-native-biometrics: 8b6eca19bba3464832e88f60daa48e9153096cbc
-  react-native-branch: cc611a2d0e7e6c7c4cafebc8e59065b89c38002b
-  react-native-date-picker: 7b03feaea96db983f1de449e9d6d1dea4fa61010
-  react-native-image-picker: 3637d63fef7e32a230141ab4660d3ceb773c824f
-  react-native-netinfo: 16c6408c311572f17f9ffc3fa12614489307b6cf
-  react-native-onesignal: ece470306f7486853454793e954ac00eaa28f2dd
-  react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
-  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
-  react-native-webview: 36561eaf7508e67f72d8c959b713bac841f3652e
   React-RCTActionSheet: 9f71d7ae3e8fb10e08d162cbf14c621349dbfab3
   React-RCTAnimation: 981d8c95b0e30918a9832ccac32af83562a27fae
   React-RCTBlob: 21e73d1020a302a75fed30dbaee9f15287b80baa
@@ -464,24 +308,8 @@ SPEC CHECKSUMS:
   React-RCTText: e0f224898b13af9aa036ea7cb3d438daa68c1044
   React-RCTVibration: 0bea40cd51bd089bd591a8f74c86e91fdf2666c5
   React-RCTWebSocket: 163873f4cdd5f1058a9483443404fc3801581cb6
-  ReactNativeNavigation: 1f2f7267841a11d5098e7fd9fd9f538398531c73
-  ReactNativePayments: 8aa1728a438501a5606d6c476100c805b5be32e4
-  ReactNativePermissions: f0aec11433d43d45953c678b6982921d83ad94c8
-  RNCAsyncStorage: 621bad7a889b5bf1583a52547f2dcd3a4d1ff15e
-  RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
-  RNCPicker: cdeab10edac8f14ed6839fdf922a789f80c72ec1
-  RNDeviceInfo: ab2ab4ca9e7f2bc4f35d62ab6ce2b66f2cbf1e7a
-  RNFBAnalytics: 7d56f7af0a1147e649df33e64372aea8923fdd01
-  RNFBApp: 7b539bb25520fa73d6a240f5c6ea569e27683645
-  RNFBAuth: c292603069a09065a1b4d3336148beff83e4c897
-  RNFBCrashlytics: b34063b906dd0c57a5d286dd743a40c90c8326c7
-  RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: 0e91da98ab26d5d04c7b59a9b6bd694124caf88c
-  RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
-  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: 8b93e5ef7ece7d9d583d0d85e031f6456596630c
+PODFILE CHECKSUM: 85e6adfe06833ac38a2ef14dc79526e9a0f03106
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.0
