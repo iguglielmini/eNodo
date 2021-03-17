@@ -17,8 +17,7 @@ function CardMenusca({ item, navigation }) {
       <TouchableOpacity
         activeOpacity={1}
         style={Styles.card}
-        onPress={() => () =>
-          navigation.navigate('ProductDetails', { slug, id, sku })}
+        onPress={() => navigation.navigate('ProductDetails', { slug, id, sku })}
       >
         <ImageBackground
           resizeMode="cover"
@@ -27,7 +26,7 @@ function CardMenusca({ item, navigation }) {
         >
           <TouchableOpacity
             activeOpacity={1}
-            onPress={() => () => {}}
+            onPress={() => {}}
             style={Styles.favoriteBtn}
           >
             <FavoriteIcon size={18} />
