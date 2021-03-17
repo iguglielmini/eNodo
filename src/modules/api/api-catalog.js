@@ -18,4 +18,14 @@ export default new class CatalogService extends Api {
     */
     return APIRturn(this.get('/catalog/search', { params }));
   }
+
+  getCatalogSearchPreview(search) {
+    return APIRturn(
+      this.get('/catalog/search/preview', {
+        params: {
+          terms: search,
+        },
+      })
+    );
+  }
 }();

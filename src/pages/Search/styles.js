@@ -25,11 +25,17 @@ export default StyleSheet.create({
   inputSearch: {
     ...TitleSmall,
     color: WHITE,
+    width: '90%',
     paddingLeft: SPACE_24,
-    width: '95%'
   },
   //   Filter Page
   titleCatgoryFilter: {
-    paddingHorizontal: SPACE_32
-  }
+    paddingHorizontal: SPACE_32,
+  },
+  notFoundText: {
+    color: WHITE,
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: SPACE_32,
+  },
 });
