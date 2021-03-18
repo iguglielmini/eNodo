@@ -1,6 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import {
+  TransitionPresets,
+  createStackNavigator,
+} from '@react-navigation/stack';
 
 // Pages
 import Cart from '@pages/Cart';
@@ -90,9 +93,17 @@ function Router() {
 }
 
 const RootNavigator = () => (
-  <RootStack.Navigator initialRouteName="Main" mode="modal" headerMode="none">
+  <RootStack.Navigator
+    mode="modal"
+    headerMode="none"
+    initialRouteName="Main"
+  >
     <RootStack.Screen name="Main" component={Router} />
-    <RootStack.Screen name="Filter" component={Filter} options={{ ...TransitionPresets.ModalSlideFromBottomIOS }} />
+    <RootStack.Screen
+      name="Filter"
+      component={Filter}
+      options={{ ...TransitionPresets.ModalSlideFromBottomIOS }}
+    />
   </RootStack.Navigator>
 );
 

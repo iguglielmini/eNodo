@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import { View, ScrollView, TextInput, SafeAreaView, Text } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 
 /** Icons */
 import CloseIcon from '@assets/svg/close';
+import { changeStatusBar } from '@modules/utils';
 import SearchIcon from '@assets/svg/searchProduct';
 
 /* Components */
@@ -16,6 +23,7 @@ import ApiHome from '@modules/api/api-home';
 import ApiCatalog from '@modules/api/api-catalog';
 
 /* Styles */
+import { BLACK } from '@assets/style/colors';
 import Styles from './styles';
 
 class Search extends Component {
@@ -31,6 +39,10 @@ class Search extends Component {
       theme: 'dark',
       searchNotFound: false,
     };
+
+    props.navigation.addListener('focus', () =>
+      changeStatusBar('dark-content', BLACK)
+    );
   }
 
   componentDidMount() {

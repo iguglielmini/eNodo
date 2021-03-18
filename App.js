@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import OneSignal from 'react-native-onesignal';
 import { Provider } from 'react-redux';
-
 import { configureFontWeight } from '@modules/utils';
 import SplashScreen from 'react-native-splash-screen';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -12,8 +11,6 @@ import ToastComponent from '@components/molecules/Toast/Toast';
 import AuthService from '@modules/services/auth';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { Platform, StatusBar } from 'react-native';
-import { PRIMARY, WHITE } from '@assets/style/colors';
 import reduxStore from '@redux';
 import Router from './router';
 
@@ -48,16 +45,17 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loaded && (
-      <NavigationContainer>
-        <Provider store={reduxStore}>
-          <ToastProvider>
-            <StatusBar backgroundColor={Platform.OS === 'ios' ? WHITE : PRIMARY} barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />
-            <Router />
-            <ToastComponent />
-          </ToastProvider>
-        </Provider>
-      </NavigationContainer>
+    return (
+      this.state.loaded && (
+        <NavigationContainer>
+          <Provider store={reduxStore}>
+            <ToastProvider>
+              <Router />
+              <ToastComponent />
+            </ToastProvider>
+          </Provider>
+        </NavigationContainer>
+      )
     );
   }
 }

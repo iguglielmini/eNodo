@@ -1,33 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { changeStatusBar } from '@modules/utils';
+
 import Login from '../Login';
 import ProfileComponent from './profile';
 
-function Profile({ navigation, user }) {
-  const [profileData, setProfileData] = useState(false);
+class Profile extends Component {
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-    changeStatusBar('dark-content');
-  }, []);
+    this.state = {
+      profileData: false,
+    };
 
-  useEffect(() => {
-    setProfileData(user && user.id ? user : false);
-  }, [user]);
+    props.navigation.addListener('focus', () =>
+      changeStatusBar('dark-content')
+    );
+  }
 
-  return (
-    <>
-      {profileData ? (
-        <ProfileComponent navigation={navigation} data={profileData} />
-      ) : (
-        <Login
-          navigation={navigation}
-          hideGoBack
-        />
-      )}
-    </>
-  );
+  componentDidMount() {
+    const { user } = this.props;
+    if (user && user.id) this.setState({ profileData: user });
+  }
+
+  render() {
+    const { navigation } = this.props;
+    const { profileData } = this.state;
+
+    return (
+      <>
+        {profileData ? (
+          <ProfileComponent navigation={navigation} data={profileData} />
+        ) : (
+          <Login navigation={navigation} hideGoBack />
+        )}
+      </>
+    );
+  }
 }
 
 const mapStateToProps = store => ({
@@ -36,5 +46,5 @@ const mapStateToProps = store => ({
 
 export default connect(
   mapStateToProps,
-  null,
+  null
 )(Profile);

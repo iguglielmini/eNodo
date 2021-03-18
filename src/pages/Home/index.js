@@ -37,18 +37,16 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    changeStatusBar('dark-content');
-
     this.state = {
       data: [],
     };
 
     this.updateLengthCart();
 
-    props.navigation.addListener(
-      'focus',
-      () => this.loadData()
-    );
+    props.navigation.addListener('focus', () => {
+      changeStatusBar('dark-content');
+      this.getData();
+    });
   }
 
   componentDidMount() {
@@ -66,11 +64,6 @@ class Home extends Component {
         type: 'warning',
       });
     }
-  };
-
-  loadData = () => {
-    changeStatusBar('dark-content');
-    this.getData();
   };
 
   getData = async () => {
@@ -98,15 +91,11 @@ class Home extends Component {
     }
 
     data.forEach((section, index) => {
-      const {
-        title, theme, widgets, style
-      } = section;
+      const { title, theme, widgets, style } = section;
 
       widgets.forEach((widget, widgetIndex) => {
         const key = widgetIndex + index;
-        const {
-          items, template, highlight, showAll, searchQuery
-        } = widget;
+        const { items, template, highlight, showAll, searchQuery } = widget;
 
         if (!items.length) return;
 
@@ -261,7 +250,8 @@ const mapStateToProps = store => ({
   user: store.user,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,

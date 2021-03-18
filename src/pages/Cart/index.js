@@ -38,6 +38,7 @@ import { convertToPriceText, calcTotalQuantityCart, changeStatusBar } from '@mod
 import { saveLengthCart } from '@redux/actions';
 
 /** Styles */
+import { WHITE } from '@assets/style/colors';
 import DefaultStyles from '@assets/style/default';
 import { SafeAreaView } from 'react-navigation';
 import Styles from './styles';
@@ -49,8 +50,6 @@ class Cart extends Component {
   constructor(props) {
     super(props);
 
-    changeStatusBar('dark-content');
-
     this.state = {
       textCep: '',
       delivery: {},
@@ -61,10 +60,13 @@ class Cart extends Component {
         totalPrice: 0.0,
       },
     };
+
+    props.navigation.addListener('focus', () =>
+      changeStatusBar('dark-content', WHITE)
+    );
   }
 
   async componentDidMount() {
-    changeStatusBar('dark-content');
     this.getDelivery();
 
     try {

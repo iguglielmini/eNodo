@@ -47,8 +47,6 @@ class ProductDetails extends Component {
   constructor(props) {
     super(props);
 
-    changeStatusBar('dark-content');
-
     this.state = {
       textCep: '',
       details: {},
@@ -75,10 +73,13 @@ class ProductDetails extends Component {
       modalDetailsVisible: false,
       daysCep: '7 dia(s) útil(eis)',
     };
+
+    props.navigation.addListener('focus', () =>
+      changeStatusBar('dark-content')
+    );
   }
 
   componentDidMount() {
-    changeStatusBar('dark-content');
     this.getData();
     this.getDelivery();
   }
