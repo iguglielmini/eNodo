@@ -68,8 +68,7 @@ class Search extends Component {
       data: { products },
     } = await ApiCatalog.getCatalogSearchPreview(search);
 
-    if (!products.length) this.setState({ products, searchNotFound: true });
-    else this.setState({ products, searchNotFound: false });
+    this.setState({ products, searchNotFound: !products.length });
   };
 
   handlerClear = () => {
