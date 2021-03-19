@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import { View, Text, TextInput, ScrollView, SafeAreaView } from 'react-native';
 
 /** Icons */
 import CloseIcon from '@assets/svg/close';
@@ -110,7 +104,9 @@ class Search extends Component {
               placeholderTextColor="#F3F3F3"
               onChangeText={this.handlerSearch}
             />
-            <CloseIcon color="#ffffff" onPress={this.handlerClear} />
+            {search.length > 0 && (
+              <CloseIcon color="#ffffff" onPress={this.handlerClear} />
+            )}
           </View>
 
           <ScrollView
