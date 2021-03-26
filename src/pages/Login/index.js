@@ -59,12 +59,12 @@ function Login({ route, navigation, hideGoBack }) {
     await ApiAuth.login({
       password,
       username: email,
-    }).catch(error => {
+    }).catch(({ message }) => {
       setLoading(false);
 
       return openToast({
+        message,
         type: 'error',
-        message: error.message,
         title: 'Acesse sua conta',
       });
     });
@@ -84,9 +84,9 @@ function Login({ route, navigation, hideGoBack }) {
       }
 
       openToast({
+        type: 'success',
         title: 'Acesse sua conta',
         message: 'Login efetuado com sucesso!',
-        type: 'success',
       });
     } catch (error) {
       openToast({
