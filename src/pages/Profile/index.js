@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { changeStatusBar } from '@modules/utils';
@@ -6,25 +6,14 @@ import Login from '../Login';
 import ProfileComponent from './profile';
 
 function Profile({ navigation, user }) {
-  const [profileData, setProfileData] = useState(false);
-
-  useEffect(() => {
-    changeStatusBar('dark-content');
-  }, []);
-
-  useEffect(() => {
-    setProfileData(user && user.id ? user : false);
-  }, [user]);
+  navigation.addListener('focus', () => changeStatusBar('dark-content'));
 
   return (
     <>
-      {profileData ? (
-        <ProfileComponent navigation={navigation} data={profileData} />
+      {user && user.id ? (
+        <ProfileComponent navigation={navigation} data={user} />
       ) : (
-        <Login
-          navigation={navigation}
-          hideGoBack
-        />
+        <Login navigation={navigation} hideGoBack />
       )}
     </>
   );
@@ -36,5 +25,5 @@ const mapStateToProps = store => ({
 
 export default connect(
   mapStateToProps,
-  null,
+  null
 )(Profile);

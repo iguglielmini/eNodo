@@ -52,20 +52,14 @@ export default StyleSheet.create({
     paddingBottom: 18,
   },
   btn: {
-    color: WHITE,
-    ...TitleXSmall,
+    width: 140,
     borderRadius: 4,
     paddingVertical: 17,
     backgroundColor: BLACK,
-    width: 140,
-    textAlign: 'center'
   },
-  btnLoading: {
+  textBtnLogin: {
     color: WHITE,
-    borderRadius: 4,
-    backgroundColor: BLACK,
-    width: 140,
-    height: 53,
+    ...TitleXSmall,
     textAlign: 'center'
   },
   wrapperForgot: {

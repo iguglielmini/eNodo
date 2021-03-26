@@ -1,15 +1,14 @@
-import React, {
-  useState, useEffect
-} from 'react';
+import React, { useState, createRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
+  Text,
   ScrollView,
   TouchableOpacity,
-  Text,
   ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { useForm, Controller } from 'react-hook-form';
 import { bindActionCreators } from 'redux';
 import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
@@ -35,69 +34,48 @@ import { setCep } from '@modules/services/delivery';
 
 /* Styles */
 import DefaultStyles from '@assets/style/default';
-import config from '@/config';
+import { urls } from '@/config';
 import Styles from './styles';
 
-const Login = ({ route, navigation, hideGoBack }) => {
+function Login({ route, navigation, hideGoBack }) {
   const { to, replace, params } = route.params;
-  const [textMail, setTextMail] = useState('');
-  const [textPass, setTextPass] = useState('');
-  const [inputRef, setInputRef] = useState(null);
-  const [loading, setLoading] = useState(false);
+  navigation.addListener('focus', () => changeStatusBar('dark-content'));
 
   const validator = new Validator();
-  const { open: openToast } = useToast();
+  const inputPaswordRef = createRef();
+  const [loading, setLoading] = useState(false);
+  const { control, handleSubmit, errors, setError } = useForm();
 
-  const handleNextInput = () => {
-    inputRef.focus();
-  };
+  function getErrors(error) {
+    if (errors && errors[error]) return errors[error].message;
+  }
 
-  const handleLogin = async () => {
-    const err = [];
-    const isValid = validator.isValidEmail(textMail);
-
-    if (textMail === '') err.push('- Campo e-mail deve ser preenchido.');
-    else if (!isValid) err.push('- E-mail inválido.');
-    if (textPass === '') err.push('- Campo senha deve ser preenchido.');
-
-    if (err.length > 0) {
-      return openToast({
-        title: 'Acesse sua conta',
-        message: err.join('\n'),
-        type: 'error',
-      });
-    }
+  async function onSubmitLogin({ email, password }) {
+    const isValidEmail = validator.isValidEmail(email);
+    if (!isValidEmail) setError('email', { message: 'E-mail inválido.' });
 
     setLoading(true);
 
-    try {
-      await ApiAuth.login({
-        username: textMail,
-        password: textPass
-      });
-    } catch (error) {
+    await ApiAuth.login({
+      username: email,
+      password: password,
+    }).catch(error => {
       setLoading(false);
 
       return openToast({
-        title: 'Acesse sua conta',
-        message: error.message,
         type: 'error',
+        message: error.message,
+        title: 'Acesse sua conta',
       });
-    }
+    });
 
     try {
-      console.log('entrei no try');
-      await Promise.all([
-        async () => {
-          const { data } = await ApiProfile.getProfile();
-          console.log(data, 'entrei na Promise.All');
-          return ApiAuth.saveUser(data);
-        },
-        async () => {
-          const { data: cartData } = await ApiShopping.getBasket();
-          return setCep({ cep: cartData.postalCode });
-        }
-      ]);
+      const { data } = await ApiProfile.getProfile();
+      await ApiAuth.saveUser(data);
+
+      const { data: cartData } = await ApiShopping.getBasket();
+      await setCep({ cep: cartData.postalCode });
+
       if (to) {
         setTimeout(() => {
           const action = replace ? 'replace' : 'navigate';
@@ -113,88 +91,127 @@ const Login = ({ route, navigation, hideGoBack }) => {
     } catch (error) {
       openToast({
         title: 'Acesse sua conta',
-        message: 'Erro ao tentar pegar as informações do seu usuário, por favor tentar novamente mais tarde. Se o problema persisistir entre em contato com o suporte.',
+        message:
+          'Erro ao tentar pegar as informações do seu usuário, por favor tentar novamente mais tarde. Se o problema persisistir entre em contato com o suporte.',
         type: 'error',
       });
 
       setLoading(false);
     }
-
-    return null;
-  };
-
-  useEffect(() => {
-    changeStatusBar('dark-content');
-  }, []);
+  }
 
   return (
     <SafeAreaView style={DefaultStyles.viewGrey}>
       {!hideGoBack && (
-      <View style={Styles.containerHeader}>
-        <TouchableOpacity style={Styles.btnBack} onPress={() => { navigation.goBack(); }}>
-          <ArrowVIcon color="#000" />
-        </TouchableOpacity>
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={Styles.gradientTop}
-          colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
-        />
-      </View>
+        <View style={Styles.containerHeader}>
+          <TouchableOpacity
+            style={Styles.btnBack}
+            onPress={() => navigation.goBack()}
+          >
+            <ArrowVIcon color="#000" />
+          </TouchableOpacity>
+          <LinearGradient
+            end={{ x: 0, y: 1 }}
+            start={{ x: 0, y: 0 }}
+            style={Styles.gradientTop}
+            colors={['#F3F3F3', 'rgba(243, 243, 243, 0)']}
+          />
+        </View>
       )}
       <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
         <View style={Styles.container}>
           <Text style={Styles.title}>Acesse sua conta</Text>
           <View style={Styles.inputWrapper}>
-            <Input
-              textContentType="emailAddress"
-              autoCompleteType="email"
-              placeholder="E-mail"
-              value={textMail}
-              style={[Styles.input, { backgroundColor: loading ? '#e6e6e6' : '#fff' }]}
-              onChangeText={setTextMail}
-              autoCapitalize="none"
-              returnKeyType="next"
-              onSubmitEditing={() => handleNextInput()}
-              editable={!loading}
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                required: 'Campo e-mail deve ser preenchido.',
+              }}
+              render={({ onBlur, onChange, value }) => (
+                <Input
+                  value={value}
+                  onBlur={onBlur}
+                  editable={!loading}
+                  returnKeyType="next"
+                  placeholder="E-mail"
+                  autoCapitalize="none"
+                  onChangeText={onChange}
+                  autoCompleteType="email"
+                  onErrorText={getErrors('email')}
+                  textContentType="emailAddress"
+                  style={[
+                    Styles.input,
+                    { backgroundColor: loading ? '#e6e6e6' : '#fff' },
+                  ]}
+                  onSubmitEditing={() => inputPaswordRef.current.ref.focus()}
+                />
+              )}
             />
           </View>
           <View style={Styles.inputWrapper}>
-            <Input
-              onRef={r => setInputRef(r)}
-              textContentType="password"
-              secureTextEntry
-              placeholder="Senha"
-              value={textPass}
-              onChangeText={setTextPass}
-              style={[Styles.input, { backgroundColor: loading ? '#e6e6e6' : '#fff' }]}
-              editable={!loading}
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                required: 'Campo senha deve ser preenchido.',
+              }}
+              render={({ onBlur, onChange, value }) => (
+                <Input
+                  value={value}
+                  onBlur={onBlur}
+                  secureTextEntry
+                  placeholder="Senha"
+                  editable={!loading}
+                  ref={inputPaswordRef}
+                  onChangeText={onChange}
+                  textContentType="password"
+                  onErrorText={getErrors('password')}
+                  style={[
+                    Styles.input,
+                    { backgroundColor: loading ? '#e6e6e6' : '#fff' },
+                  ]}
+                />
+              )}
             />
           </View>
           <TouchableOpacity
             style={Styles.wrapperForgot}
-            onPress={() => { navigation.navigate('ExternalLink', { source: { url: config.urls.forgot } }); }}
+            onPress={() =>
+              navigation.navigate('ExternalLink', {
+                source: { url: urls.forgot },
+              })
+            }
           >
             <Text style={Styles.forgot}>Esqueceu a senha?</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleLogin}>
+          <TouchableOpacity
+            style={Styles.btn}
+            onPress={handleSubmit(onSubmitLogin)}
+          >
             {loading ? (
-              <ActivityIndicator style={Styles.btnLoading} size="small" color="#ffffff" />
+              <ActivityIndicator size="small" color="#ffffff" />
             ) : (
-              <Text style={Styles.btn}>Acessar</Text>
+              <Text style={Styles.textBtnLogin}>Acessar</Text>
             )}
           </TouchableOpacity>
         </View>
         <View style={Styles.containerBottom}>
           <Text style={Styles.title}>Você é nova por aqui?</Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('ExternalLink', { source: { url: config.urls.signup } }); }}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ExternalLink', {
+                source: { url: urls.signup },
+              })
+            }
+          >
             <Text style={Styles.btn}>Crie sua conta</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 Login.propTypes = {
   route: PropTypes.objectOf(PropTypes.any),
@@ -204,10 +221,11 @@ Login.propTypes = {
 
 Login.defaultProps = {
   route: { params: false },
-  hideGoBack: false
+  hideGoBack: false,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   null,

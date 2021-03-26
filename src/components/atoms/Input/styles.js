@@ -1,16 +1,24 @@
 import { StyleSheet } from 'react-native';
+import { BLACK, $error } from '@assets/style/colors';
 
 export default StyleSheet.create({
   input: {
-    borderBottomWidth: 1,
     fontSize: 22,
+    color: BLACK,
     width: '100%',
     paddingBottom: 4,
-    color: '#000'
+    borderBottomWidth: 1,
+  },
+  inputError: {
+    borderColor: $error,
+  },
+  textError: {
+    marginTop: 8,
+    color: $error,
   },
   CEPinput: {
-    color: '#000',
     fontSize: 18,
+    color: BLACK,
     width: '100%',
   }
 });
