@@ -180,7 +180,7 @@ function Login({ route, navigation, hideGoBack }) {
             style={Styles.wrapperForgot}
             onPress={() =>
               navigation.navigate('ExternalLink', {
-                source: { url: urls.forgot },
+                source: { uri: urls.forgot },
               })
             }
           >
@@ -203,7 +203,7 @@ function Login({ route, navigation, hideGoBack }) {
             style={Styles.btn}
             onPress={() =>
               navigation.navigate('ExternalLink', {
-                source: { url: urls.signup },
+                source: { uri: urls.signup },
               })
             }
           >
