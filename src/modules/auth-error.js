@@ -1,3 +1,5 @@
+import APIErrorHandler from './api/utils/error-handler';
+
 export default class AuthError extends Error {
   constructor(response) {
     super(response);
@@ -6,7 +8,7 @@ export default class AuthError extends Error {
 
     const { message } = response;
 
-    this.message = message;
+    this.message = message || APIErrorHandler.getErrorMessages(response).messages.join('');
     this.statusCode = 401;
   }
 }

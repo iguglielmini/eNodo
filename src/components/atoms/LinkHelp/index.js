@@ -14,7 +14,7 @@ function LinkHelp({ data, theme }) {
   if (!data.length) return null;
   const navigation = useNavigation();
 
-  const onClick = async (item) => {
+  async function onClick(item) {
     const {
       url, auth, callback
     } = item;
@@ -35,9 +35,11 @@ function LinkHelp({ data, theme }) {
         Authorization: `Bearer ${token}`
       };
     }
-
+    if (item.url === 'app://config') {
+      return navigation.navigate('Notification');
+    }
     return navigation.navigate('ExternalLink', { source });
-  };
+  }
 
   return (
     <>

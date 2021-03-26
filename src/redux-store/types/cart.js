@@ -1,0 +1,3 @@
+export const CART_TOKEN = 'CART_TOKEN';
+export const TOTAL_LENGTH_CART = 'TOTAL_LENGTH_CART';
+export const ADD_PRODUCT_CART = 'ADD_PRODUCT_CART';

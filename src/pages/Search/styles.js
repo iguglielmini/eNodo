@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { SPACE_24, SPACE_32 } from '@assets/style/wrapper';
+import { SPACE_24, SPACE_32, SPACE_16 } from '@assets/style/wrapper';
 import { BLACK, BORDERGREY, WHITE } from '@assets/style/colors';
-import { TitleSmall } from '@assets/style/typography';
+import { TitleSmall, TitleXSmall } from '@assets/style/typography';
 
 const { width } = Dimensions.get('window');
 
@@ -41,4 +41,20 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginTop: SPACE_32,
   },
+  // Terms
+  ContentItemTerms: {
+    width,
+    paddingVertical: SPACE_32,
+    paddingHorizontal: SPACE_32,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  itemTerms: {
+    paddingTop: SPACE_16
+  },
+  TitleitemTerms: {
+    ...TitleXSmall,
+    color: WHITE
+  }
 });

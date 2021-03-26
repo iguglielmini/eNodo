@@ -1,8 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { BORDERGREY, WHITE, BLACK } from '@assets/style/colors';
+import { StyleSheet } from 'react-native';
 import {
-  SPACE_16, SPACE_24, SPACE_32, SPACE_48
-} from '@assets/style/wrapper';
+  BORDERGREY, WHITE, BLACK, PRIMARY
+} from '@assets/style/colors';
+import { SPACE_32 } from '@assets/style/wrapper';
 import {
   TitleXSmall,
 } from '@assets/style/typography';
@@ -59,7 +59,7 @@ export default StyleSheet.create({
     ...TitleXSmall,
   },
   priceItem: {
-    color: '#db207f',
+    color: PRIMARY,
   },
   pricelater: {
     marginLeft: 10,

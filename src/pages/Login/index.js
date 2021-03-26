@@ -9,6 +9,8 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -23,10 +25,13 @@ import ArrowVIcon from '@assets/svg/arrowv';
 
 import ApiAuth from '@modules/api/api-auth';
 import ApiProfile from '@modules/api/api-profile';
-import DeviceStorage from '@modules/services/device-storage';
+import ApiShopping from '@modules/api/api-shopping';
 
 import { changeStatusBar } from '@modules/utils';
 import Validator from '@modules/validators/index';
+
+import { saveLengthCart } from '@redux/actions';
+import { setCep } from '@modules/services/delivery';
 
 /* Styles */
 import DefaultStyles from '@assets/style/default';
@@ -81,21 +86,18 @@ const Login = ({ route, navigation, hideGoBack }) => {
     }
 
     try {
-      const resp = await ApiProfile.getProfile();
-
-      const { data: dataProfile } = resp;
-      const { addresses } = dataProfile;
-      const cep = addresses.length > 0 ? addresses[0].postalCode : false;
-      const delivery = await DeviceStorage.getItem('@BelshopApp:delivery');
-
-      if (cep && (!delivery || !delivery.postalCode)) {
-        await DeviceStorage.setItem('@BelshopApp:delivery', {
-          postalCode: cep
-        });
-      }
-
-      await ApiAuth.saveUser(dataProfile);
-
+      console.log('entrei no try');
+      await Promise.all([
+        async () => {
+          const { data } = await ApiProfile.getProfile();
+          console.log(data, 'entrei na Promise.All');
+          return ApiAuth.saveUser(data);
+        },
+        async () => {
+          const { data: cartData } = await ApiShopping.getBasket();
+          return setCep({ cep: cartData.postalCode });
+        }
+      ]);
       if (to) {
         setTimeout(() => {
           const action = replace ? 'replace' : 'navigate';
@@ -205,4 +207,9 @@ Login.defaultProps = {
   hideGoBack: false
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

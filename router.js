@@ -12,6 +12,7 @@ import Filter from '@pages/Filter';
 import Account from '@pages/Account';
 import Category from '@pages/Category';
 import Checkout from '@pages/Checkout';
+import Notification from '@pages/Notification';
 import FilterResult from '@pages/FilterResult';
 import ExternalLink from '@pages/ExternalLink';
 import ProductDetailsPage from '@pages/ProductDetails';
@@ -48,6 +49,13 @@ function Router() {
         <Stack.Screen
           name="FilterResult"
           component={FilterResult}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
           options={{
             headerShown: false,
           }}

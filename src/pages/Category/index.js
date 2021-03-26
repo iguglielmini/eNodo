@@ -22,6 +22,7 @@ import ApiCategory from '@modules/api/api-category';
 import { changeStatusBar } from '@modules/utils';
 
 /** Styles */
+import { BLACK } from '@assets/style/colors';
 import DefaultStyles from '@assets/style/default';
 import Styles from './styles';
 
@@ -47,7 +48,7 @@ class Filter extends Component {
   }
 
   componentDidMount() {
-    changeStatusBar('light-content');
+    changeStatusBar('light-content', BLACK);
     const {
       slug
     } = this.state;

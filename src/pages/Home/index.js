@@ -29,6 +29,7 @@ import { saveLengthCart } from '@redux/actions';
 import { changeStatusBar, queryStringToJSON } from '@modules/utils';
 
 /* Styles */
+import { WHITELIGHT } from '@assets/style/colors';
 import { SafeAreaView } from 'react-navigation';
 import { SPACE_HEADER } from '@assets/style/wrapper';
 import Styles from './styles';
@@ -37,16 +38,18 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
+    changeStatusBar('dark-content');
+
     this.state = {
       data: [],
     };
 
     this.updateLengthCart();
 
-    props.navigation.addListener('focus', () => {
-      changeStatusBar('dark-content');
-      this.getData();
-    });
+    props.navigation.addListener(
+      'focus',
+      () => this.loadData()
+    );
   }
 
   componentDidMount() {
@@ -66,6 +69,12 @@ class Home extends Component {
     }
   };
 
+  loadData = () => {
+    changeStatusBar('dark-content', WHITELIGHT);
+    this.getData();
+  };
+
+
   getData = async () => {
     const { data } = await ApiHome.getHome();
     if (data) this.setState({ data });
@@ -76,6 +85,7 @@ class Home extends Component {
       const { data } = await ApiShopping.getBasket();
       this.props.saveLengthCart(data.basket.totalItems);
     } catch (error) {
+      console.log(error);
       this.props.saveLengthCart(0);
     }
   };
@@ -91,11 +101,15 @@ class Home extends Component {
     }
 
     data.forEach((section, index) => {
-      const { title, theme, widgets, style } = section;
+      const {
+        title, theme, widgets, style
+      } = section;
 
       widgets.forEach((widget, widgetIndex) => {
         const key = widgetIndex + index;
-        const { items, template, highlight, showAll, searchQuery } = widget;
+        const {
+          items, template, highlight, showAll, searchQuery
+        } = widget;
 
         if (!items.length) return;
 
@@ -108,7 +122,7 @@ class Home extends Component {
           });
         }
 
-        if (index === 0) {
+        if (index === 1) {
           tempSections.push(
             <Section
               style={{ ...Styles.section, paddingTop: SPACE_HEADER }}
@@ -250,8 +264,7 @@ const mapStateToProps = store => ({
   user: store.user,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,

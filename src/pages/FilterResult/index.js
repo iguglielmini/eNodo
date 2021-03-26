@@ -22,7 +22,9 @@ import { changeStatusBar, textCapitalize } from '@modules/utils';
 
 /** Styles */
 import DefaultStyles from '@assets/style/default';
+import { BLACK } from '@assets/style/colors';
 import Styles from './styles';
+
 
 class Filter extends Component {
   constructor(props) {
@@ -52,7 +54,7 @@ class Filter extends Component {
   }
 
   loadData=() => {
-    changeStatusBar('light-content');
+    changeStatusBar('light-content', BLACK);
     const { route } = this.props;
     const {
       params,

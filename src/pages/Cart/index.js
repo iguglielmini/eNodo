@@ -30,6 +30,9 @@ import ArrowIcon from '@assets/svg/arrow';
 // API
 import ApiShopping from '@modules/api/api-shopping';
 
+// Services
+import { updateCartDelivery, clearProductDelivery } from '@modules/services/delivery';
+
 // Utils
 import DeviceStorage from '@modules/services/device-storage';
 import { convertToPriceText, calcTotalQuantityCart, changeStatusBar } from '@modules/utils';
@@ -49,10 +52,8 @@ const HEADER_MIN_HEIGHT = 70;
 class Cart extends Component {
   constructor(props) {
     super(props);
-
+    changeStatusBar('dark-content');
     this.state = {
-      textCep: '',
-      delivery: {},
       loading: true,
       scrollY: new Animated.Value(0),
       cart: {
@@ -60,13 +61,10 @@ class Cart extends Component {
         totalPrice: 0.0,
       },
     };
-
-    props.navigation.addListener('focus', () =>
-      changeStatusBar('dark-content', WHITE)
-    );
   }
 
   async componentDidMount() {
+    changeStatusBar('dark-content', WHITE);
     this.getDelivery();
 
     try {
@@ -80,11 +78,6 @@ class Cart extends Component {
       this.setState({ loading: false });
     }
   }
-
-  getDelivery = async () => {
-    const delivery = await DeviceStorage.getItem('@BelshopApp:delivery');
-    if (delivery) this.setState({ delivery });
-  };
 
   getCart = async () => {
     let lengthItens = 0;
@@ -129,28 +122,24 @@ class Cart extends Component {
       .finally(() => this.setState({ loading: false }));
   };
 
-  handleSaveCep = (cep) => {
-    this.setState({ textCep: cep, loading: true }, () => {
-      let { textCep } = this.state;
-      textCep = textCep.replace('-', '');
+  handleSaveCep = async (cep) => {
+    this.setState({ loading: true });
 
-      ApiShopping.basketSetPostalCode({ postalCode: textCep })
-        .then(async ({ data }) => {
-          const { basket } = data;
-          await DeviceStorage.setItem('@BelshopApp:cart', basket);
-          await DeviceStorage.setItem('@BelshopApp:delivery', {
-            postalCode: cep,
-            ...basket.selectedDeliveryOption,
-          });
-          await this.getDelivery();
-          await this.getCart();
-        })
-        .finally(() => this.setState({ loading: false }));
-    });
+    await updateCartDelivery(cep);
+    const { delivery } = this.props;
+    console.log(delivery);
+    await DeviceStorage.setItem('@BelshopApp:cart', delivery.updatedBasket);
+    await this.getCart();
+
+    this.setState({ loading: false });
   };
 
-  handleClearCep = () => {
-    this.setState({ textCep: '' });
+  handleClearCep = async () => {
+    try {
+      await clearProductDelivery();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -159,8 +148,6 @@ class Cart extends Component {
       cart,
       scrollY,
       loading,
-      textCep,
-      delivery,
     } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
@@ -277,8 +264,6 @@ class Cart extends Component {
                   <Section style={Styles.container}>
                     <CardCartProduct
                       cart={cart}
-                      textCep={textCep}
-                      delivery={delivery}
                       handleSaveCep={this.handleSaveCep}
                       handleClearCep={this.handleClearCep}
                       selectQuantity={this.selectQuantity}
@@ -325,9 +310,15 @@ Cart.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
+const mapStateToProps = store => ({
+  delivery: store.delivery,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart,
+}, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Cart);

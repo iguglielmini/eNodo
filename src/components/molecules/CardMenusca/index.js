@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import {
+  View, ImageBackground, Text, TouchableOpacity
+} from 'react-native';
 
 import { convertToPriceText } from '@modules/utils';
 
@@ -10,7 +12,9 @@ import FavoriteIcon from '@assets/svg/favorite';
 import Styles from './styles';
 
 function CardMenusca({ item, navigation }) {
-  const { image, title, price, id, slug, sku } = item;
+  const {
+    image, title, price, id, slug, sku
+  } = item;
 
   return (
     <View style={Styles.container}>

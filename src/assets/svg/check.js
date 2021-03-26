@@ -12,9 +12,9 @@ const Check = ({ size, color }) => (
   >
     <Path
       d="M1 5.30769L4.23077 8L11.2308 1"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       stroke={color}
     />
   </Svg>

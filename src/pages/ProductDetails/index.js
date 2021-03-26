@@ -30,9 +30,11 @@ import FavoriteIcon from '@assets/svg/favorite';
 import ApiProduct from '@modules/api/api-product';
 import ApiShopping from '@modules/api/api-shopping';
 
+// Services
+import { updateProductDelivery, clearProductDelivery, getProductDeliveryOption } from '@modules/services/delivery';
+
 // Redux e Utils
 import { calcTotalQuantityCart, changeStatusBar } from '@modules/utils';
-import DeviceStorage from '@modules/services/device-storage';
 import { saveLengthCart, saveAddProductCart } from '@redux/actions';
 
 // Mocks
@@ -41,16 +43,17 @@ import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 /** Styles */
 import DefaultStyles from '@assets/style/default';
 import { SafeAreaView } from 'react-navigation';
+import { WHITELIGHT } from '@assets/style/colors';
 import Styles from './styles';
 
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
 
+    changeStatusBar('dark-content');
+
     this.state = {
-      textCep: '',
       details: {},
-      delivery: {},
       product: {
         brand: {
           title: '',
@@ -62,6 +65,7 @@ class ProductDetails extends Component {
           previous: 0.0,
         },
       },
+      deliveryCalculating: true,
       loading: true,
       // eslint-disable-next-line react/no-unused-state
       theme: 'light',
@@ -71,17 +75,28 @@ class ProductDetails extends Component {
         clientsBy: [],
       },
       modalDetailsVisible: false,
-      daysCep: '7 dia(s) útil(eis)',
+      deliveryOption: null,
     };
-
-    props.navigation.addListener('focus', () =>
-      changeStatusBar('dark-content')
-    );
   }
 
   componentDidMount() {
+    changeStatusBar('dark-content', WHITELIGHT);
     this.getData();
-    this.getDelivery();
+  }
+
+  getDeliveryData = async () => {
+    const { route, delivery } = this.props;
+    const { id, sku } = route.params;
+
+    this.setState({ deliveryCalculating: true });
+
+    const deliveryOption = getProductDeliveryOption({ product: id, sku });
+
+    if (delivery.cep && deliveryOption.cep !== delivery.cep) {
+      return this.handleSaveCep(delivery.formatedCep);
+    }
+
+    return this.setState({ deliveryOption, deliveryCalculating: false });
   }
 
   getData = async () => {
@@ -98,6 +113,11 @@ class ProductDetails extends Component {
     if (dataProduct) {
       const { theme, widgets } = dataProduct;
       const product = widgets[0].details;
+
+      if (product.available) {
+        this.getDeliveryData();
+      }
+
       // eslint-disable-next-line react/no-unused-state
       this.setState({ product, theme });
     }
@@ -124,11 +144,6 @@ class ProductDetails extends Component {
     }
   };
 
-  getDelivery = async () => {
-    const delivery = await DeviceStorage.getItem('@BelshopApp:delivery');
-    if (delivery) this.setState({ delivery });
-  };
-
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
   setModalDetailsVisible = (modalDetailsVisible) => {
@@ -141,18 +156,18 @@ class ProductDetails extends Component {
   };
 
   addProductToCart = (setLoading, setModalBuyVisible) => {
-    let { textCep } = this.state;
-    const { route } = this.props;
+    const { route, delivery } = this.props;
     const { id, sku } = route.params;
+    const postalCode = delivery.cep;
 
-    textCep = textCep.replace('-', '');
     setLoading(true);
 
     const form = {
       products: [{
-        product: id, sku, quantity: 1, postalCode: textCep
+        product: id, sku, quantity: 1, postalCode,
       }],
     };
+
     ApiShopping.basketAddItem(form)
       .then(({ data }) => {
         setLoading(false);
@@ -171,52 +186,47 @@ class ProductDetails extends Component {
       .catch(() => setLoading(false));
   };
 
-  handleSaveCep = (cep) => {
+  handleClearCep = async () => {
+    try {
+      await clearProductDelivery();
+    } finally {
+      this.setState({ deliveryOption: null });
+    }
+  };
+
+  handleSaveCep = async (cep) => {
     const { route } = this.props;
     const { id, sku } = route.params;
 
-    this.setState({ textCep: cep, loading: true }, () => {
-      let { textCep } = this.state;
-      textCep = textCep.replace('-', '');
+    this.setState({ deliveryCalculating: true });
 
-      ApiShopping.getProductDelivery({
+    try {
+      await updateProductDelivery(cep, {
         sku,
         product: id,
-        postalCode: textCep,
-      })
-        .then(async ({ data }) => {
-          const { deliveryOption } = data;
-          await DeviceStorage.setItem('@BelshopApp:delivery', {
-            ...deliveryOption,
-            postalCode: cep,
-          });
-          await this.getDelivery();
-          this.setState({ daysCep: deliveryOption.estimatedTime });
-        })
-        .finally(() => this.setState({ loading: false }));
-    });
-  };
+      });
+    } finally {
+      const deliveryOption = getProductDeliveryOption({ product: id, sku });
+      this.setState({ deliveryOption });
+    }
 
-  handleClearCep = () => {
-    this.setState({ textCep: '', daysCep: '7 dia(s) útil(eis)' });
+    this.setState({ deliveryCalculating: false });
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, delivery } = this.props;
     const {
       product,
-      textCep,
-      daysCep,
       details,
       loading,
-      delivery,
+      deliveryCalculating,
       modalCepVisible,
       modalDetailsVisible,
       productsAssociations,
+      deliveryOption,
     } = this.state;
 
     const { brand, price } = product;
-    const { estimatedTime, postalCode } = delivery;
 
     return (
       <>
@@ -252,34 +262,52 @@ class ProductDetails extends Component {
                   </View>
                   {/* Details Payment */}
                   <View style={Styles.containerDescription}>
-                    <View style={Styles.detailsProduct}>
-                      <DetailIcon />
-                      <View style={Styles.description}>
-                        <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
-                        <View style={Styles.modalContainer}>
-                          <Text style={Styles.descriptionSubTitle}>
-                          Entrega em até
-                            {' '}
-                            {estimatedTime || daysCep}
-                            {' '}
-                          após a postagem do produto. &nbsp;
-                            <Text
-                              style={Styles.btnModal}
-                              onPress={() => this.setModalCepVisible(true)}
-                            >
-                              {(!postalCode) ? 'Trocar CEP' : `CEP ${postalCode || textCep}`}
-                            </Text>
-                          </Text>
-                          <ModalCep
-                            cepValue={textCep}
-                            visible={modalCepVisible}
-                            handleSave={this.handleSaveCep}
-                            handleClear={this.handleClearCep}
-                            setVisible={this.setModalCepVisible}
-                          />
+                    {product.available && (
+                      <View style={Styles.detailsProduct}>
+                        <DetailIcon />
+                        <View style={Styles.description}>
+                          <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
+                          {deliveryCalculating ? (
+                            <ActivityIndicator size="small" color="#000" />
+                          ) : (
+                            <View style={Styles.modalContainer}>
+                              {delivery.cep && deliveryOption?.estimatedTime ? (
+                                <Text style={Styles.descriptionSubTitle}>
+                                Entrega em até
+                                  {' '}
+                                  {deliveryOption.estimatedTime}
+                                  {' '}
+                                após a postagem do produto. &nbsp;
+                                  <Text
+                                    style={Styles.btnModal}
+                                    onPress={() => this.setModalCepVisible(true)}
+                                  >
+                                    {delivery.formatedCep}
+                                  </Text>
+                                </Text>
+                              ) : (
+                                <Text style={Styles.descriptionSubTitle}>
+                                  Digite seu cep para calcularmos o prazo de entrega. &nbsp;
+                                  <Text
+                                    style={Styles.btnModal}
+                                    onPress={() => this.setModalCepVisible(true)}
+                                  >
+                                    Informar CEP
+                                  </Text>
+                                </Text>
+                              )}
+                              <ModalCep
+                                cepValue={delivery.formatedCep}
+                                visible={modalCepVisible}
+                                handleSave={this.handleSaveCep}
+                                handleClear={this.handleClearCep}
+                                setVisible={this.setModalCepVisible}
+                              />
+                            </View>
+                          )}
                         </View>
                       </View>
-                    </View>
+                    )}
 
                     <View style={Styles.detailsProduct}>
                       <LogoIcon />
@@ -359,6 +387,10 @@ ProductDetails.propTypes = {
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
+const mapStateToProps = store => ({
+  delivery: store.delivery,
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     saveLengthCart,
@@ -368,6 +400,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ProductDetails);

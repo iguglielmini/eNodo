@@ -4,18 +4,18 @@ import Svg, { Line, Circle } from 'react-native-svg';
 
 const Search = ({ size, color }) => (
   <Svg
-    fill="none"
+    fill={color}
     width={size}
     height={size}
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <Circle cx="5.5" cy="8.5" r="4.75" stroke={color} strokeWidth="1.5" />
+    <Circle cx="5.5" cy="8.5" r="5.5" stroke={color} strokeWidth="1.5" />
     <Line
       x1="8.88848"
-      y1="12.2277"
+      y1="12.2278"
       x2="13.2304"
-      y2="16.5696"
+      y2="16.5697"
       stroke={color}
       strokeWidth="1.5"
     />

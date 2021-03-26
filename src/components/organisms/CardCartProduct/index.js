@@ -17,21 +17,17 @@ import Styles from './styles';
 
 function CardCartProduct({
   cart,
-  textCep,
-  delivery,
   removeProduct,
   handleSaveCep,
   handleClearCep,
   selectQuantity,
 }) {
-  const { items, selectedDeliveryOption } = cart;
+  const { items, selectedDeliveryOption: delivery } = cart;
   const [modalCepVisible, setModalCepVisible] = useState(false);
 
-  const cep = !delivery ? selectedDeliveryOption : delivery;
+  console.log(delivery);
 
-  let deliveryText = `${cep.estimatedTime} via`;
-  deliveryText += ` ${cep.name} - `;
-  deliveryText += `${convertToPriceText(cep.amount)}\n`;
+  const getDeliveryCaption = () => (`${delivery.estimatedTime} via ${delivery.name} - ${convertToPriceText(delivery.amount)}\n`);
 
   return (
     <>
@@ -82,21 +78,19 @@ function CardCartProduct({
               title="Pedidos feito hoje são entregues"
             />
             <Text style={Styles.subTitleLocation}>
-              {Object.keys(cep).length > 0
-                ? deliveryText
-                : '7 dia(s) útil(eis) após a postagen \ndos produtos.'}
+              {getDeliveryCaption()}
               <Text
-                style={Styles.textCep}
+                style={Styles.cep}
                 onPress={() => setModalCepVisible(true)}
               >
-                {!cep.postalCode
-                  ? 'Trocar CEP'
-                  : `CEP ${cep.postalCode || textCep}`}
+                {!delivery.postalCode
+                  ? 'Informar CEP'
+                  : `CEP ${delivery.postalCode}`}
               </Text>
             </Text>
             {/* Cep */}
             <ModalCep
-              cepValue={textCep}
+              cepValue={delivery.postalCode}
               visible={modalCepVisible}
               handleSave={handleSaveCep}
               handleClear={handleClearCep}

@@ -1,7 +1,7 @@
 import {
   SAVE_MY_CAMPAIGN_DATA,
   SAVE_SHARE_CAMPAIGN_DATA
-} from '../actions/actionTypes';
+} from '../types/campaign';
 
 const initialState = {
   myCampaign: {},

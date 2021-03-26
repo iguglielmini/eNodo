@@ -1,6 +1,6 @@
 import {
   SAVE_NEW_FLAGS
-} from '../actions/actionTypes';
+} from '../types/flags';
 
 const initialState = [];
 

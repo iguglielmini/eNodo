@@ -65,7 +65,7 @@ export default StyleSheet.create({
     ...TitleXSmall,
     color: BORDERGREY,
   },
-  textCep: {
+  cep: {
     color: BLACK,
     paddingTop: SPACE_16,
     textDecorationColor: BLACK,

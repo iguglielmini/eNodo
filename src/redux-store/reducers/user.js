@@ -1,6 +1,7 @@
 import {
-  USER_SAVE, USER_CLEAR,
-} from '../actions/actionTypes';
+  USER_SAVE,
+  USER_CLEAR,
+} from '../types/user';
 
 const initialState = {
   addresses: null,
@@ -24,7 +25,7 @@ export default function userReducer(state = initialState, action) {
     case USER_CLEAR:
       return {
         ...initialState,
-        ...action.payload
+        ...action.payload,
       };
     default:
       return state;

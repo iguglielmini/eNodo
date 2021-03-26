@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import OneSignal from 'react-native-onesignal';
+import OneSignal from 'react-native-onesignal';
 import { Provider } from 'react-redux';
 import { configureFontWeight } from '@modules/utils';
 import SplashScreen from 'react-native-splash-screen';
@@ -9,10 +9,12 @@ import { ToastProvider } from '@components/molecules/Toast';
 import ToastComponent from '@components/molecules/Toast/Toast';
 
 import AuthService from '@modules/services/auth';
+import { start as deliveryStart } from '@modules/services/delivery';
 
 import { NavigationContainer } from '@react-navigation/native';
 import reduxStore from '@redux';
 import Router from './router';
+import config from '@/config';
 
 export const Notification = React.createRef();
 
@@ -23,6 +25,12 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    // configure onesignal
+    OneSignal.init(config.oneSignalKey, {
+      kOSSettingsKeyAutoPrompt: false,
+      kOSSettingsKeyInFocusDisplayOption: 2
+    });
+    OneSignal.inFocusDisplaying(2);
     // global events
     GlobalEvent();
 
@@ -35,13 +43,18 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    await AuthService.start();
+    try {
+      await Promise.all([
+        AuthService.start(),
+        deliveryStart(),
+      ]);
+    } finally {
+      setTimeout(() => SplashScreen.hide(), 500);
 
-    setTimeout(() => SplashScreen.hide(), 500);
-
-    this.setState({
-      loaded: true,
-    });
+      this.setState({
+        loaded: true,
+      });
+    }
   }
 
   render() {

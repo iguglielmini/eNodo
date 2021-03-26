@@ -6,14 +6,23 @@ import SearchIcon from '@assets/svg/search';
 import ProductIcon from '@assets/svg/product';
 import ProfileIcon from '@assets/svg/profile';
 import ScheduleIcon from '@assets/svg/schedule';
+import SearchOutlineIcon from '@assets/svg/searchOutline';
+import ProductOutlineIcon from '@assets/svg/productOutline';
+import ProfileOutlineIcon from '@assets/svg/profileOutline';
+import ScheduleOutlineIcon from '@assets/svg/scheduleOutline';
 
 /* Routes */
 import Home from './Home';
 import Search from './Search';
-import Product from './Product';
 import Profile from './Profile';
+import Calendar from './Calendar';
 
 const Tab = createBottomTabNavigator();
+
+function focusedTab(Icon, IconOutline, focused) {
+  if (focused) return <Icon />;
+  return <IconOutline />;
+}
 
 const Routes = () => (
   <Tab.Navigator
@@ -37,7 +46,7 @@ const Routes = () => (
       component={Home}
       options={{
         title: '',
-        tabBarIcon: ProductIcon,
+        tabBarIcon: ({ focused }) => focusedTab(ProductIcon, ProductOutlineIcon, focused),
       }}
     />
     <Tab.Screen
@@ -45,15 +54,15 @@ const Routes = () => (
       component={Search}
       options={{
         title: '',
-        tabBarIcon: SearchIcon,
+        tabBarIcon: ({ focused }) => focusedTab(SearchIcon, SearchOutlineIcon, focused),
       }}
     />
     <Tab.Screen
-      name="Product"
-      component={Product}
+      name="Calendar"
+      component={Calendar}
       options={{
         title: '',
-        tabBarIcon: ScheduleIcon,
+        tabBarIcon: ({ focused }) => focusedTab(ScheduleIcon, ScheduleOutlineIcon, focused),
       }}
     />
     <Tab.Screen
@@ -61,7 +70,7 @@ const Routes = () => (
       component={Profile}
       options={{
         title: '',
-        tabBarIcon: ProfileIcon,
+        tabBarIcon: ({ focused }) => focusedTab(ProfileIcon, ProfileOutlineIcon, focused),
       }}
     />
   </Tab.Navigator>

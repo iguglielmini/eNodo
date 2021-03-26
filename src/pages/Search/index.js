@@ -1,5 +1,13 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
-import { View, Text, TextInput, ScrollView, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 
 /** Icons */
 import CloseIcon from '@assets/svg/close';
@@ -10,22 +18,22 @@ import SearchIcon from '@assets/svg/searchProduct';
 import Title from '@components/atoms/Title';
 import Section from '@components/atoms/Section';
 import LinkHelp from '@components/atoms/LinkHelp';
-import CardMenusca from '../../components/molecules/CardMenusca';
-import CategoryList from '../../components/molecules/CategoryList';
 
 import ApiHome from '@modules/api/api-home';
 import ApiCatalog from '@modules/api/api-catalog';
 
 /* Styles */
 import { BLACK } from '@assets/style/colors';
+import CategoryList from '../../components/molecules/CategoryList';
+import CardMenusca from '../../components/molecules/CardMenusca';
 import Styles from './styles';
 
 class Search extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       links: [],
+      terms: [],
       title: '',
       search: '',
       bullets: [],
@@ -34,8 +42,9 @@ class Search extends Component {
       searchNotFound: false,
     };
 
-    props.navigation.addListener('focus', () =>
-      changeStatusBar('dark-content', BLACK)
+    props.navigation.addListener(
+      'focus',
+      () => changeStatusBar('dark-content', BLACK)
     );
   }
 
@@ -48,33 +57,36 @@ class Search extends Component {
 
     if (!data || !data.length) return;
 
-    data.forEach(section => {
+    data.forEach((section) => {
       const { title, theme, widgets } = section;
 
-      widgets.forEach(widget => {
+      widgets.forEach((widget) => {
         const { items, template } = widget;
 
-        if (template === 'links') this.setState({ links: items, theme });
-        if (template === 'bullets')
+        if (template === 'links') {
+          this.setState({ links: items, theme });
+        }
+        if (template === 'bullets') {
           this.setState({ bullets: items, title, theme });
+        }
       });
     });
   };
 
-  handlerSearch = async search => {
-    this.setState({ search, searchFocus: true });
+  handlerSearch = async (search) => {
+    this.setState({ search });
 
     const {
-      data: { products },
+      data: { products, terms },
     } = await ApiCatalog.getCatalogSearchPreview(search);
 
-    if (!products.length) this.setState({ products, searchNotFound: true });
-    else this.setState({ products, searchNotFound: false });
+    this.setState({ products, terms, searchNotFound: !products.length });
   };
 
   handlerClear = () => {
     this.setState({
       search: '',
+      terms: [],
       products: [],
       searchNotFound: false,
     });
@@ -85,6 +97,7 @@ class Search extends Component {
     const {
       links,
       title,
+      terms,
       search,
       bullets,
       products,
@@ -99,7 +112,7 @@ class Search extends Component {
             <SearchIcon color="#ffffff" />
             <TextInput
               value={search}
-              placeholder="Busca"
+              placeholder="Buscar"
               style={Styles.inputSearch}
               placeholderTextColor="#F3F3F3"
               onChangeText={this.handlerSearch}
@@ -114,9 +127,25 @@ class Search extends Component {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={Styles.scroll}
           >
-            {search.length > 0 &&
-              products.length > 0 &&
-              products.map((item, index) => {
+            {terms.length > 0 && (
+              <View style={Styles.ContentItemTerms}>
+                {terms.map((item, index) => {
+                  const key = index;
+                  return (
+                    <TouchableOpacity
+                      key={key}
+                      style={Styles.itemTerms}
+                      onPress={() => this.handlerSearch(item)}
+                    >
+                      <Text style={Styles.TitleitemTerms}>{item}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
+            {search.length > 0
+              && products.length > 0
+              && products.map((item, index) => {
                 const key = index;
                 return (
                   <CardMenusca key={key} item={item} navigation={navigation} />
