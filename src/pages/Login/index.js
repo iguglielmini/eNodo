@@ -34,10 +34,11 @@ import { setCep } from '@modules/services/delivery';
 
 /* Styles */
 import DefaultStyles from '@assets/style/default';
-import { urls } from '@/config';
+import config from '@/config';
 import Styles from './styles';
 
 function Login({ route, navigation, hideGoBack }) {
+  const { urls } = config;
   const { to, replace, params } = route.params;
   navigation.addListener('focus', () => changeStatusBar('dark-content'));
 
@@ -192,20 +193,21 @@ function Login({ route, navigation, hideGoBack }) {
             {loading ? (
               <ActivityIndicator size="small" color="#ffffff" />
             ) : (
-              <Text style={Styles.textBtnLogin}>Acessar</Text>
+              <Text style={Styles.textBtn}>Acessar</Text>
             )}
           </TouchableOpacity>
         </View>
         <View style={Styles.containerBottom}>
           <Text style={Styles.title}>Você é nova por aqui?</Text>
           <TouchableOpacity
+            style={Styles.btn}
             onPress={() =>
               navigation.navigate('ExternalLink', {
                 source: { url: urls.signup },
               })
             }
           >
-            <Text style={Styles.btn}>Crie sua conta</Text>
+            <Text style={Styles.textBtn}>Crie sua conta</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

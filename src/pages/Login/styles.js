@@ -57,7 +57,7 @@ export default StyleSheet.create({
     paddingVertical: 17,
     backgroundColor: BLACK,
   },
-  textBtnLogin: {
+  textBtn: {
     color: WHITE,
     ...TitleXSmall,
     textAlign: 'center'
