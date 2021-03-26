@@ -57,8 +57,8 @@ function Login({ route, navigation, hideGoBack }) {
     setLoading(true);
 
     await ApiAuth.login({
+      password,
       username: email,
-      password: password,
     }).catch(error => {
       setLoading(false);
 
