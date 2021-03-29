@@ -24,8 +24,10 @@ import imageKiss from '@assets/images/kiss.png';
 
 // Redux, Storage, Utils e API
 import ApiHome from '@modules/api/api-home';
+import ApiProfile from '@modules/api/api-profile';
 import ApiShopping from '@modules/api/api-shopping';
-import { saveLengthCart } from '@redux/actions';
+import DeviceStorage from '@modules/services/device-storage';
+import { saveLengthCart, favoritesUser } from '@redux/actions';
 import { changeStatusBar, queryStringToJSON } from '@modules/utils';
 
 /* Styles */
@@ -46,10 +48,7 @@ class Home extends Component {
 
     this.updateLengthCart();
 
-    props.navigation.addListener(
-      'focus',
-      () => this.loadData()
-    );
+    props.navigation.addListener('focus', () => this.loadData());
   }
 
   componentDidMount() {
@@ -58,6 +57,13 @@ class Home extends Component {
       this.checkSessionExpired();
     }, 1000);
   }
+
+  getFavorites = async () => {
+    await ApiProfile.getFavorites().then(({ data }) => {
+      DeviceStorage.setItem('@BelshopApp:favorites', data.items);
+      this.props.favoritesUser(data.items);
+    });
+  };
 
   checkSessionExpired = () => {
     if (this.props.user.expired) {
@@ -72,22 +78,23 @@ class Home extends Component {
   loadData = () => {
     changeStatusBar('dark-content', WHITELIGHT);
     this.getData();
+    this.getFavorites();
   };
-
 
   getData = async () => {
     const { data } = await ApiHome.getHome();
     if (data) this.setState({ data });
   };
 
-  updateLengthCart = async () => {
-    try {
-      const { data } = await ApiShopping.getBasket();
-      this.props.saveLengthCart(data.basket.totalItems);
-    } catch (error) {
-      console.log(error);
-      this.props.saveLengthCart(0);
-    }
+  updateLengthCart = () => {
+    ApiShopping.getBasket()
+      .then(({ data }) => {
+        const { basket } = data;
+        this.props.saveLengthCart(basket.totalItems);
+      })
+      .catch(() => {
+        this.props.saveLengthCart(0);
+      });
   };
 
   generateSections = (navigation, lengthCart) => {
@@ -97,19 +104,15 @@ class Home extends Component {
     if (!data.length) return null;
 
     function handleGoFilterResult(params) {
-      navigation.navigate('FilterResult', { params, hideFilterButton: true });
+      navigation.navigate('FilterResult', { ...params, hideFilterButton: true });
     }
 
     data.forEach((section, index) => {
-      const {
-        title, theme, widgets, style
-      } = section;
+      const { title, theme, widgets, style } = section;
 
       widgets.forEach((widget, widgetIndex) => {
         const key = widgetIndex + index;
-        const {
-          items, template, highlight, showAll, searchQuery
-        } = widget;
+        const { items, template, highlight, showAll, searchQuery } = widget;
 
         if (!items.length) return;
 
@@ -117,7 +120,7 @@ class Home extends Component {
           const params = queryStringToJSON(searchQuery);
 
           navigation.navigate('FilterResult', {
-            params,
+            ...params,
             hideFilterButton: true,
           });
         }
@@ -264,7 +267,8 @@ const mapStateToProps = store => ({
   user: store.user,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ saveLengthCart, favoritesUser }, dispatch);
 
 export default connect(
   mapStateToProps,

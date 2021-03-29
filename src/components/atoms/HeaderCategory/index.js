@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Badge from '@components/atoms/Badge';
 import { View, TouchableOpacity } from 'react-native';
 
@@ -9,9 +10,17 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 import Styles from './styles';
 
-function HeaderCategory({
-  handleGoBack, navigation, lengthCart, theme
-}) {
+function HeaderCategory({ handleGoBack, navigation, lengthCart, theme, user }) {
+  function handlerFavorite() {
+    if (user.id)
+      return navigation.navigate('FilterResult', {
+        hideFilterButton: true,
+        title: 'Favoritos',
+        isFavorite: true,
+      });
+    navigation.navigate('Login');
+  }
+
   function handleShowCart() {
     navigation.navigate('Cart');
   }
@@ -23,7 +32,10 @@ function HeaderCategory({
           <ArrowVIcon color="#ffffff" />
         </TouchableOpacity>
         <View style={Styles.headerButtons}>
-          <TouchableOpacity onPress={() => {}} style={Styles.buttonFavorite}>
+          <TouchableOpacity
+            onPress={handlerFavorite}
+            style={Styles.buttonFavorite}
+          >
             <FavoriteIcon color="#ffffff" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShowCart} style={Styles.buttonBag}>
@@ -47,4 +59,11 @@ HeaderCategory.defaultProps = {
   theme: 'dark',
 };
 
-export default HeaderCategory;
+const mapStateToProps = store => ({
+  user: store.user,
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(HeaderCategory);

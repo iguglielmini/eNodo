@@ -25,47 +25,29 @@ import DefaultStyles from '@assets/style/default';
 import { BLACK } from '@assets/style/colors';
 import Styles from './styles';
 
-
 class Filter extends Component {
   constructor(props) {
     super(props);
 
     changeStatusBar('light-content');
 
-    const { route, navigation } = this.props;
-    const {
-      params,
-      hideFilterButton
-    } = route.params;
-
     this.state = {
-      navigation,
-      params,
-      hideFilterButton,
       filters: {},
+      loading: true,
       filtersQuery: [],
       filterProducts: [],
     };
 
-    props.navigation.addListener(
-      'focus',
-      () => this.loadData()
-    );
+    props.navigation.addListener('focus', () => this.loadData());
   }
 
-  loadData=() => {
+  loadData = () => {
     changeStatusBar('light-content', BLACK);
-    const { route } = this.props;
-    const {
-      params,
-      hideFilterButton
-    } = route.params;
-
+    const { route: { params } } = this.props;
     this.getFilterData(params);
-    this.setState({ hideFilterButton });
-  }
+  };
 
-  getFilterData = (params) => {
+  getFilterData = params => {
     this.setState({ loading: true });
 
     ApiCatalogy.getCatalogSearch(params)
@@ -82,46 +64,43 @@ class Filter extends Component {
           return;
         }
 
-        if (current) {
-          const filtersQuery = current.facets;
-          this.setState({ filtersQuery });
-        }
+        if (current) this.setState({ filtersQuery: current.facets });
 
-        this.setState({ filters });
-        this.setState({ filterProducts: products });
+        this.setState({ filters, filterProducts: products });
       })
       .finally(() => this.setState({ loading: false }));
   };
 
-  handleRemoveOneFilter = (value) => {
-    const { filtersQuery, params } = this.state;
+  handleRemoveOneFilter = value => {
+    const { route } = this.props;
+
+    const { filtersQuery } = this.state;
     const findIndex = filtersQuery.findIndex(item => item.value === value);
     filtersQuery.splice(findIndex, 1);
     this.setState({ filtersQuery });
-
     const list = filtersQuery.map(item => item.value);
-    const newParams = params;
 
-    newParams.facets = list;
-    this.getFilterData(newParams);
+    const { params } = route.params;
+    console.log('PASIFAS ', params);
+    params.facets = list;
+    this.getFilterData(params);
   };
 
   handleShowModalFilter = () => {
-    const { filters, navigation } = this.state;
+    const { filters } = this.state;
+    const { navigation } = this.props;
     navigation.navigate('Filter', { filters });
-  }
+  };
 
   render() {
     const {
-      params,
-      hideFilterButton,
       loading,
       filtersQuery,
       filterProducts,
     } = this.state;
 
-    const { navigation, lengthCart } = this.props;
-    const { title } = params;
+    const { navigation, lengthCart, route } = this.props;
+    const { title, hideFilterButton } = route.params;
 
     return (
       <SafeAreaView style={DefaultStyles.viewBlack}>
@@ -130,12 +109,16 @@ class Filter extends Component {
           <HeaderCategory
             lengthCart={lengthCart}
             navigation={navigation}
-            handleGoBack={() => { navigation.goBack(); }}
+            handleGoBack={() => {
+              navigation.goBack();
+            }}
           />
           {/* Section title category */}
           <View style={Styles.containerPage}>
             {loading && (
-              <View style={{ ...DefaultStyles.loading, backgroundColor: '#F3F3F3' }}>
+              <View
+                style={{ ...DefaultStyles.loading, backgroundColor: '#F3F3F3' }}
+              >
                 <ActivityIndicator size="large" color="#000" />
               </View>
             )}
@@ -145,37 +128,35 @@ class Filter extends Component {
             >
               <View style={Styles.content}>
                 <View style={Styles.containerTitle}>
-                  <View
-                    style={Styles.wrapperTitle}
-                  >
-                    <Text style={Styles.title}>
-                      {textCapitalize(title)}
-                    </Text>
+                  <View style={Styles.wrapperTitle}>
+                    {!loading && (
+                      <Text style={Styles.title}>{textCapitalize(title)}</Text>
+                    )}
                   </View>
                   {!hideFilterButton && (
-                    <TouchableOpacity onPress={this.handleShowModalFilter} style={Styles.btnFilter}>
+                    <TouchableOpacity
+                      onPress={this.handleShowModalFilter}
+                      style={Styles.btnFilter}
+                    >
                       <Text>Filtrar</Text>
                     </TouchableOpacity>
                   )}
                 </View>
                 {filtersQuery.length > 0 && (
-                <ScrollView
-                  horizontal
-                  contentContainerStyle={Styles.scrollSelectFilter}
-                >
-                  <SelectFilterOutline
-                    isSelected
-                    data={filtersQuery}
-                    onSelect={this.handleRemoveOneFilter}
-                  />
-                </ScrollView>
+                  <ScrollView
+                    horizontal
+                    contentContainerStyle={Styles.scrollSelectFilter}
+                  >
+                    <SelectFilterOutline
+                      isSelected
+                      data={filtersQuery}
+                      onSelect={this.handleRemoveOneFilter}
+                    />
+                  </ScrollView>
                 )}
                 <Section style={Styles.section}>
                   <View style={Styles.ProductCard}>
-                    <ListCard
-                      data={filterProducts}
-                      navigation={navigation}
-                    />
+                    <ListCard data={filterProducts} navigation={navigation} />
                   </View>
                 </Section>
               </View>

@@ -1,7 +1,4 @@
-import {
-  USER_SAVE,
-  USER_CLEAR,
-} from '../types/user';
+import { USER_SAVE, USER_CLEAR, USER_FAVORITES } from '../types/user';
 
 const initialState = {
   addresses: null,
@@ -26,6 +23,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...initialState,
         ...action.payload,
+      };
+    case USER_FAVORITES:
+      return {
+        ...state,
+        favorites: action.payload,
       };
     default:
       return state;

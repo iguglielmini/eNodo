@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native';
 
 /* Components */
@@ -11,13 +12,21 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 import Styles from './styles';
 
-function HeaderHome({
-  title, theme, lengthCart, navigation
-}) {
+function HeaderHome({ title, theme, lengthCart, navigation, user }) {
+  function handlerFavorite() {
+    if (user.id)
+      return navigation.navigate('FilterResult', {
+        hideFilterButton: true,
+        title: 'Favoritos',
+        isFavorite: true,
+      });
+    navigation.navigate('Login');
+  }
+
   return (
     <Title title={title} theme={theme} styleFont={Styles.title}>
-      <TouchableOpacity onPress={() => {}}>
-        <FavoriteIcon size={24} theme={theme} name="Favorite" />
+      <TouchableOpacity onPress={handlerFavorite}>
+        <FavoriteIcon size={24} theme={theme} />
       </TouchableOpacity>
       <TouchableOpacity
         style={Styles.bagIcon}
@@ -40,4 +49,11 @@ HeaderHome.defaultProps = {
   title: '',
 };
 
-export default HeaderHome;
+const mapStateToProps = store => ({
+  user: store.user,
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(HeaderHome);

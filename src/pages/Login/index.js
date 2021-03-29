@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { useForm, Controller } from 'react-hook-form';
 import { bindActionCreators } from 'redux';
 import { SafeAreaView } from 'react-navigation';
+import { useForm, Controller } from 'react-hook-form';
 import LinearGradient from 'react-native-linear-gradient';
 
 /* Components */
@@ -25,12 +25,13 @@ import ArrowVIcon from '@assets/svg/arrowv';
 import ApiAuth from '@modules/api/api-auth';
 import ApiProfile from '@modules/api/api-profile';
 import ApiShopping from '@modules/api/api-shopping';
+import DeviceStorage from '@modules/services/device-storage';
 
 import { changeStatusBar } from '@modules/utils';
 import Validator from '@modules/validators/index';
 
-import { saveLengthCart } from '@redux/actions';
 import { setCep } from '@modules/services/delivery';
+import { saveLengthCart, favoritesUser } from '@redux/actions';
 
 /* Styles */
 import DefaultStyles from '@assets/style/default';
@@ -39,11 +40,11 @@ import Styles from './styles';
 
 function Login({ route, navigation, hideGoBack }) {
   const { urls } = config;
-  const { to, replace, params } = route.params;
   navigation.addListener('focus', () => changeStatusBar('dark-content'));
 
   const validator = new Validator();
   const inputPaswordRef = createRef();
+  const { open: openToast } = useToast();
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit, errors, setError } = useForm();
 
@@ -60,45 +61,46 @@ function Login({ route, navigation, hideGoBack }) {
     await ApiAuth.login({
       password,
       username: email,
-    }).catch(({ message }) => {
-      setLoading(false);
+    })
+      .then(async () => {
+        openToast({
+          type: 'success',
+          title: 'Acesse sua conta',
+          message: 'Login efetuado com sucesso!',
+        });
 
-      return openToast({
-        message,
-        type: 'error',
-        title: 'Acesse sua conta',
+        Promise.all([ApiProfile.getProfile(), ApiShopping.getBasket()]).then(
+          response => {
+            const profile = response[0].data;
+            const { basket } = response[1].data;
+
+            if (basket.postalCode) setCep({ cep: basket.postalCode });
+            ApiAuth.saveUser(profile);
+          }
+        );
+
+        if (route.params) {
+          const { to, replace, params } = route.params;
+          setTimeout(() => {
+            const action = replace ? 'replace' : 'navigate';
+            navigation[action](to, params);
+          }, 500);
+        }
+      })
+      .catch(({ message }) => {
+        setLoading(false);
+
+        openToast({
+          message,
+          type: 'error',
+          title: 'Acesse sua conta',
+        });
       });
+
+    ApiProfile.getFavorites().then(({ data }) => {
+      DeviceStorage.setItem('@BelshopApp:favorites', data.items);
+      this.props.favoritesUser(data.items);
     });
-
-    try {
-      const { data } = await ApiProfile.getProfile();
-      await ApiAuth.saveUser(data);
-
-      const { data: cartData } = await ApiShopping.getBasket();
-      await setCep({ cep: cartData.postalCode });
-
-      if (to) {
-        setTimeout(() => {
-          const action = replace ? 'replace' : 'navigate';
-          navigation[action](to, params);
-        }, 500);
-      }
-
-      openToast({
-        type: 'success',
-        title: 'Acesse sua conta',
-        message: 'Login efetuado com sucesso!',
-      });
-    } catch (error) {
-      openToast({
-        title: 'Acesse sua conta',
-        message:
-          'Erro ao tentar pegar as informações do seu usuário, por favor tentar novamente mais tarde. Se o problema persisistir entre em contato com o suporte.',
-        type: 'error',
-      });
-
-      setLoading(false);
-    }
   }
 
   return (
@@ -188,6 +190,7 @@ function Login({ route, navigation, hideGoBack }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={Styles.btn}
+            disabled={loading}
             onPress={handleSubmit(onSubmitLogin)}
           >
             {loading ? (
@@ -227,7 +230,7 @@ Login.defaultProps = {
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart }, dispatch);
+  bindActionCreators({ saveLengthCart, favoritesUser }, dispatch);
 
 export default connect(
   null,

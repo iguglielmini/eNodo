@@ -139,6 +139,18 @@ export default new class ProfileService extends Api {
     return APIRturn(this.get(`/profile/email/${email}`));
   }
 
+  async getFavorites() {
+    return APIRturn(this.get('/profile/favorites'));
+  }
+
+  async addFavorites(product, sku) {
+    return APIRturn(this.put('/profile/favorites', { product, sku }));
+  }
+
+  async deleteFavorites(product, sku) {
+    return APIRturn(this.delete('/profile/favorites', { product, sku }));
+  }
+
   async getProfile() {
     return APIRturn(this.get('/profile'));
   }

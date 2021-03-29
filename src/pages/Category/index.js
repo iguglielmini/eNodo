@@ -75,7 +75,7 @@ class Filter extends Component {
 
   handleGoFilterResult = (params) => {
     const { navigation } = this.state;
-    navigation.navigate('FilterResult', { params });
+    navigation.navigate('FilterResult', params);
   };
 
   render() {

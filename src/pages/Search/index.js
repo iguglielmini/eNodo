@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 /** Icons */
 import CloseIcon from '@assets/svg/close';
@@ -20,7 +22,9 @@ import Section from '@components/atoms/Section';
 import LinkHelp from '@components/atoms/LinkHelp';
 
 import ApiHome from '@modules/api/api-home';
+import { favoritesUser } from '@redux/actions';
 import ApiCatalog from '@modules/api/api-catalog';
+import DeviceStorage from '@modules/services/device-storage';
 
 /* Styles */
 import { BLACK } from '@assets/style/colors';
@@ -50,7 +54,15 @@ class Search extends Component {
 
   componentDidMount() {
     this.getData();
+    this.getFavorites();
   }
+
+  getFavorites = async () => {
+    await ApiProfile.getFavorites().then(({ data }) => {
+      DeviceStorage.setItem('@BelshopApp:favorites', data.items);
+      this.props.favoritesUser(data.items);
+    });
+  };
 
   getData = async () => {
     const { data } = await ApiHome.getHome();
@@ -180,4 +192,7 @@ class Search extends Component {
   }
 }
 
-export default Search;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ favoritesUser }, dispatch);
+
+export default connect(null, mapDispatchToProps)(Search);

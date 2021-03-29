@@ -1,6 +1,7 @@
 import {
   USER_SAVE,
   USER_CLEAR,
+  USER_FAVORITES,
 } from '../types/user';
 
 export function saveUser(payload) {
@@ -17,4 +18,11 @@ export function clearUser(expired) {
     type: USER_CLEAR,
     payload
   };
+}
+
+export function favoritesUser(payload) {
+  return {
+    type: USER_FAVORITES,
+    payload,
+  }
 }

@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import OneSignal from 'react-native-onesignal';
 import { Provider } from 'react-redux';
+import OneSignal from 'react-native-onesignal';
 import { configureFontWeight } from '@modules/utils';
 import SplashScreen from 'react-native-splash-screen';
-import crashlytics from '@react-native-firebase/crashlytics';
 import GlobalEvent from '@modules/services/global-events';
 import { ToastProvider } from '@components/molecules/Toast';
+import crashlytics from '@react-native-firebase/crashlytics';
 import ToastComponent from '@components/molecules/Toast/Toast';
 
+import { capitalize } from '@modules/utils';
 import AuthService from '@modules/services/auth';
 import { start as deliveryStart } from '@modules/services/delivery';
+import { navigationRef, navigate } from '@modules/helpers/root-navigation';
 
 import { NavigationContainer } from '@react-navigation/native';
 import reduxStore from '@redux';
@@ -28,7 +30,7 @@ class App extends Component {
     // configure onesignal
     OneSignal.init(config.oneSignalKey, {
       kOSSettingsKeyAutoPrompt: false,
-      kOSSettingsKeyInFocusDisplayOption: 2
+      kOSSettingsKeyInFocusDisplayOption: 2,
     });
     OneSignal.inFocusDisplaying(2);
     // global events
@@ -43,32 +45,34 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    try {
-      await Promise.all([
-        AuthService.start(),
-        deliveryStart(),
-      ]);
-    } finally {
-      setTimeout(() => SplashScreen.hide(), 500);
+    OneSignal.addEventListener('received', this.onReceived);
 
-      this.setState({
-        loaded: true,
-      });
-    }
+    await Promise.all([AuthService.start(), deliveryStart()]);
+    setTimeout(() => SplashScreen.hide(), 500);
+
+    this.setState({ loaded: true });
   }
 
+  onReceived = ({ payload }) => {
+    const { additionalData } = payload;
+    const pagePush = capitalize(additionalData.pagePush);
+    navigate(pagePush);
+  };
+
   render() {
+    const { loaded } = this.state;
+
+    if (!loaded) return null;
+
     return (
-      this.state.loaded && (
-        <NavigationContainer>
-          <Provider store={reduxStore}>
-            <ToastProvider>
-              <Router />
-              <ToastComponent />
-            </ToastProvider>
-          </Provider>
-        </NavigationContainer>
-      )
+      <NavigationContainer ref={navigationRef}>
+        <Provider store={reduxStore}>
+          <ToastProvider>
+            <Router />
+            <ToastComponent />
+          </ToastProvider>
+        </Provider>
+      </NavigationContainer>
     );
   }
 }

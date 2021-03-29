@@ -3,12 +3,18 @@ import DeviceStorage from '@modules/services/device-storage';
 import config from '@/config';
 import APIRturn from './utils/return';
 
-import store from '../../redux-store';
-import { saveUser, clearUser, saveLengthCart } from '../../redux-store/actions';
+import store from '@redux';
+import {
+  saveUser,
+  clearUser,
+  saveLengthCart,
+  favoritesUser,
+} from '@redux/actions';
 
 export default class Api {
   constructor() {
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    axios.defaults.headers.post['Content-Type'] =
+      'application/x-www-form-urlencoded';
     axios.defaults.headers.common['x-api-key'] = config.apiKey;
 
     this.setHost();
@@ -16,7 +22,7 @@ export default class Api {
   }
 
   async setAuthIntercept() {
-    axios.interceptors.response.use(undefined, async (error) => {
+    axios.interceptors.response.use(undefined, async error => {
       if (error.response.status === 401 && error.response.data.message) {
         const unauthorized = error.response.data.message.find(
           message => message.constraints && message.constraints.UNAUTHORIZED
@@ -94,15 +100,19 @@ export default class Api {
     store.dispatch(saveUser(user));
 
     await DeviceStorage.setItem('@BelshopApp:user', {
-      ...user
+      ...user,
     });
   }
 
   async clearUser(expired) {
     store.dispatch(clearUser(expired));
     store.dispatch(saveLengthCart(0));
+    store.dispatch(favoritesUser(null));
 
-    await DeviceStorage.multiRemove(['@BelshopApp:user']);
+    await DeviceStorage.multiRemove([
+      '@BelshopApp:user',
+      '@BelshopApp:favorites',
+    ]);
     return true;
   }
 
@@ -115,23 +125,23 @@ export default class Api {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 
-  async get(path, options) {
-    return axios.get(path, options);
+  async get(url, options) {
+    return axios.get(url, options);
   }
 
-  async put(path, data, options) {
-    return axios.put(path, data, options);
+  async put(url, data, options) {
+    return axios.put(url, data, options);
   }
 
-  async post(path, data, options) {
-    return axios.post(path, data, options);
+  async post(url, data, options) {
+    return axios.post(url, data, options);
   }
 
-  async delete(path, options) {
-    return axios.delete(path, options);
+  async delete(url, data, options) {
+    return axios.request({ method: 'DELETE', url, data, ...options });
   }
 
-  async patch(path, data, options) {
-    return axios.patch(path, data, options);
+  async patch(url, data, options) {
+    return axios.patch(url, data, options);
   }
 }

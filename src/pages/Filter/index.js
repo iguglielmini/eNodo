@@ -95,7 +95,7 @@ class Filter extends Component {
     if (seletedItems.length > 0) params.facets = seletedItems;
     if (category) params.category = category.value;
 
-    navigation.navigate('FilterResult', { params });
+    navigation.navigate('FilterResult', { ...params });
   }
 
   render() {
