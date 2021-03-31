@@ -23,26 +23,33 @@ function SelectFilter({ data, selected, onSelect }) {
       <>
         <View style={Styles.container}>
           {firstItems.map((item, index) => (
-            <TouchableOpacity key={`List_${index.toString()}`} onPress={() => onSelect(item.value)}>
+            <TouchableOpacity
+              key={`List_${index.toString()}`}
+              onPress={() => onSelect(item.value)}
+            >
               <View
                 style={
-                    selected.includes(item.value)
-                      ? Styles.btnActive
-                      : Styles.btnInactive
-                  }
+                  selected.includes(item.value)
+                    ? Styles.btnActive
+                    : Styles.btnInactive
+                }
               >
                 <Text>{item.label}</Text>
                 {selected.includes(item.value) && (
-                <View style={Styles.iconSpace}>
-                  <IconClose />
-                </View>
+                  <View style={Styles.iconSpace}>
+                    <IconClose onPress={() => onSelect(item.value)} />
+                  </View>
                 )}
               </View>
             </TouchableOpacity>
           ))}
         </View>
         {showMore && (
-          <TouchableOpacity onPress={() => { setShowMore(false); }}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowMore(false);
+            }}
+          >
             <View style={Styles.buttonWrapper}>
               <Text style={Styles.textButton}>Ver Todos</Text>
               <ArrowIcon color="#000000" />
@@ -52,19 +59,22 @@ function SelectFilter({ data, selected, onSelect }) {
         {!showMore && (
           <View style={Styles.container}>
             {lastItems.map((item, index) => (
-              <TouchableOpacity key={`List_${index.toString()}`} onPress={() => onSelect(item.value)}>
+              <TouchableOpacity
+                key={`List_${index.toString()}`}
+                onPress={() => onSelect(item.value)}
+              >
                 <View
                   style={
-                      selected.includes(item.value)
-                        ? Styles.btnActive
-                        : Styles.btnInactive
-                    }
+                    selected.includes(item.value)
+                      ? Styles.btnActive
+                      : Styles.btnInactive
+                  }
                 >
                   <Text>{item.label}</Text>
                   {selected.includes(item.value) && (
-                  <View style={Styles.iconSpace}>
-                    <IconClose />
-                  </View>
+                    <View style={Styles.iconSpace}>
+                      <IconClose />
+                    </View>
                   )}
                 </View>
               </TouchableOpacity>
@@ -81,16 +91,16 @@ function SelectFilter({ data, selected, onSelect }) {
       <TouchableOpacity key={key} onPress={() => onSelect(item.value)}>
         <View
           style={
-              selected.includes(item.value)
-                ? Styles.btnActive
-                : Styles.btnInactive
-            }
+            selected.includes(item.value)
+              ? Styles.btnActive
+              : Styles.btnInactive
+          }
         >
           <Text>{item.label}</Text>
           {selected.includes(item.value) && (
-          <View style={Styles.iconSpace}>
-            <IconClose />
-          </View>
+            <View style={Styles.iconSpace}>
+              <IconClose onPress={() => onSelect(item.value)} />
+            </View>
           )}
         </View>
       </TouchableOpacity>

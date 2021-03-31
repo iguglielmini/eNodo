@@ -6,8 +6,8 @@ import {
   Text,
   Platform,
   ScrollView,
+  SafeAreaView,
   TouchableOpacity,
-  SafeAreaView
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -28,36 +28,56 @@ class Filter extends Component {
 
     changeStatusBar('dark-content');
 
-    const { route, navigation } = this.props;
-    const {
-      filters
-    } = route.params;
-
-    const sortSelected = filters.sort.options.filter(item => item.selected);
-    const { facets } = filters;
-    const seletedItems = [];
-
-    facets.map((item) => {
-      item.options.map((opt) => {
-        if (opt.selected) seletedItems.push(opt.value);
-        return opt;
-      });
-      return item;
-    });
-
     this.state = {
-      filters,
-      seletedItems,
-      navigation,
-      dropSelected: sortSelected.length > 0 ? sortSelected[0] : null
+      filters: {
+        sort: {
+          label: '',
+          options: [],
+        },
+        facets: [],
+      },
+      seletedItems: [],
+      dropSelected: null,
     };
   }
 
-  handleDropSelect = (selected) => {
-    this.setState({ dropSelected: selected });
+  componentDidMount() {
+    this.getFilters();
   }
 
-  handlerFilterSelect = (value) => {
+  getFilters = () => {
+    const seletedItems = [];
+    const { route } = this.props;
+    const { filters } = route.params;
+    const {
+      facets,
+      sort: { options },
+    } = filters;
+
+    const sortSelected = options.filter(item => item.selected);
+
+    facets.map(item => {
+      const { options } = item;
+
+      options.map(opt => {
+        if (opt.selected) seletedItems.push(opt.value);
+        return opt;
+      });
+
+      return item;
+    });
+
+    if (sortSelected.length > 0)
+      this.setState({ dropSelected: sortSelected[0] });
+
+    this.setState({ filters });
+  };
+
+  handleDropSelect = selected => {
+    this.setState({ dropSelected: selected });
+  };
+
+  handlerFilterSelect = value => {
     const { seletedItems } = this.state;
 
     if (seletedItems.includes(value)) {
@@ -67,41 +87,40 @@ class Filter extends Component {
     }
 
     this.setState({ seletedItems });
-  }
+  };
 
   clearFilter = () => {
     this.setState({
       seletedItems: [],
     });
-  }
+  };
 
   applyFilter = () => {
-    const {
-      seletedItems, dropSelected, filters, navigation
-    } = this.state;
+    const { navigation } = this.props;
+    const { seletedItems, dropSelected, filters } = this.state;
 
     const {
-      title,
       category,
       // brand,
       // datasource
     } = filters;
 
     const params = {
-      title,
-      sort: dropSelected.value
+      title: '',
+      searchTerms: null,
+      sort: dropSelected.value,
+      hideOptionsButtons: false,
     };
 
     if (seletedItems.length > 0) params.facets = seletedItems;
     if (category) params.category = category.value;
 
-    navigation.navigate('FilterResult', { ...params });
-  }
+    navigation.navigate('FilterResult', params);
+  };
 
   render() {
-    const {
-      filters, navigation, dropSelected, seletedItems
-    } = this.state;
+    const { navigation } = this.props;
+    const { filters, dropSelected, seletedItems } = this.state;
     const { facets, sort } = filters;
 
     return (
@@ -109,9 +128,7 @@ class Filter extends Component {
         <View style={Styles.wrapper}>
           <View style={Styles.containerTitle}>
             <Text style={Styles.Title}>Filtrar por</Text>
-            <TouchableOpacity onPress={() => { navigation.goBack(); }}>
-              <CloseIcon />
-            </TouchableOpacity>
+            <CloseIcon onPress={() => navigation.goBack()} />
             <LinearGradient
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
@@ -132,11 +149,13 @@ class Filter extends Component {
             >
               <Text style={Styles.subTitle}>{sort.label}</Text>
               <View>
-                <DropDownSelect
-                  data={sort.options}
-                  selected={dropSelected}
-                  onSelect={this.handleDropSelect}
-                />
+                {sort.options.length > 0 && (
+                  <DropDownSelect
+                    data={sort.options}
+                    selected={dropSelected}
+                    onSelect={this.handleDropSelect}
+                  />
+                )}
               </View>
             </View>
             {facets.map((item, index) => {
@@ -181,7 +200,6 @@ Filter.propTypes = {
   route: PropTypes.objectOf(PropTypes.any).isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
 
 const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,

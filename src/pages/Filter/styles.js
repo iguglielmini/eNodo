@@ -25,12 +25,12 @@ export default StyleSheet.create({
     flex: 1,
   },
   containerTitle: {
+    zIndex: 9999,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: SPACE_24,
     paddingTop: SPACE_24,
-    zIndex: 5,
+    paddingBottom: SPACE_24,
+    justifyContent: 'space-between',
   },
   Title: {
     ...TitleMediumBold,

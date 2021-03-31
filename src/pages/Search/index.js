@@ -95,6 +95,17 @@ class Search extends Component {
     this.setState({ products, terms, searchNotFound: !products.length });
   };
 
+  handlerTermSearch = async(search) => {
+    const { navigation } = this.props;
+    const { data } = await ApiCatalog.getCatalogSearch({ terms: search });
+
+    navigation.navigate('FilterResult', {
+      searchTerms: data,
+      hideOptionsButtons: true,
+      title: `${data.products.length} resultados`,
+    });
+  }
+
   handlerClear = () => {
     this.setState({
       search: '',
@@ -147,7 +158,7 @@ class Search extends Component {
                     <TouchableOpacity
                       key={key}
                       style={Styles.itemTerms}
-                      onPress={() => this.handlerSearch(item)}
+                      onPress={() => this.handlerTermSearch(item)}
                     >
                       <Text style={Styles.TitleitemTerms}>{item}</Text>
                     </TouchableOpacity>

@@ -10,7 +10,14 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 import Styles from './styles';
 
-function HeaderCategory({ handleGoBack, navigation, lengthCart, theme, user }) {
+function HeaderCategory({
+  user,
+  theme,
+  navigation,
+  lengthCart,
+  handleGoBack,
+  hideOptionsButtons,
+}) {
   function handlerFavorite() {
     if (user.id)
       return navigation.navigate('FilterResult', {
@@ -31,17 +38,19 @@ function HeaderCategory({ handleGoBack, navigation, lengthCart, theme, user }) {
         <TouchableOpacity onPress={handleGoBack}>
           <ArrowVIcon color="#ffffff" />
         </TouchableOpacity>
-        <View style={Styles.headerButtons}>
-          <TouchableOpacity
-            onPress={handlerFavorite}
-            style={Styles.buttonFavorite}
-          >
-            <FavoriteIcon color="#ffffff" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleShowCart} style={Styles.buttonBag}>
-            <Badge count={lengthCart} theme={theme} />
-          </TouchableOpacity>
-        </View>
+        {!hideOptionsButtons && (
+          <View style={Styles.headerButtons}>
+            <TouchableOpacity
+              onPress={handlerFavorite}
+              style={Styles.buttonFavorite}
+            >
+              <FavoriteIcon color="#ffffff" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleShowCart} style={Styles.buttonBag}>
+              <Badge count={lengthCart} theme={theme} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </>
   );
@@ -50,6 +59,7 @@ function HeaderCategory({ handleGoBack, navigation, lengthCart, theme, user }) {
 HeaderCategory.propTypes = {
   theme: PropTypes.string,
   lengthCart: PropTypes.number,
+  hideOptionsButtons: PropTypes.bool,
   handleGoBack: PropTypes.func.isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
@@ -57,6 +67,7 @@ HeaderCategory.propTypes = {
 HeaderCategory.defaultProps = {
   lengthCart: 0,
   theme: 'dark',
+  hideOptionsButtons: false,
 };
 
 const mapStateToProps = store => ({

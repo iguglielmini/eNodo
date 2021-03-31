@@ -29,22 +29,36 @@ class Filter extends Component {
   constructor(props) {
     super(props);
 
-    changeStatusBar('light-content');
-
     this.state = {
       filters: {},
-      loading: true,
+      loading: false,
       filtersQuery: [],
       filterProducts: [],
     };
 
-    props.navigation.addListener('focus', () => this.loadData());
+    props.navigation.addListener('focus', () => changeStatusBar('light-content', BLACK));
   }
 
-  loadData = () => {
-    changeStatusBar('light-content', BLACK);
+  componentDidMount() {
     const { route: { params } } = this.props;
-    this.getFilterData(params);
+    this.loadData(params);
+  }
+
+  UNSAFE_componentWillReceiveProps({ route }) {
+    const { params } = route;
+    console.log('PICA ', route);
+    this.loadData(params);
+  }
+
+  loadData = (params) => {
+    if(!params.searchTerms) this.getFilterData(params);
+    else {
+      const { searchTerms } = params;
+      const { products, current, filters } = searchTerms;
+
+      if (current) this.setState({ filtersQuery: current.facets });
+      this.setState({ filters, filterProducts: products });
+    }
   };
 
   getFilterData = params => {
@@ -77,18 +91,19 @@ class Filter extends Component {
     const { filtersQuery } = this.state;
     const findIndex = filtersQuery.findIndex(item => item.value === value);
     filtersQuery.splice(findIndex, 1);
-    this.setState({ filtersQuery });
-    const list = filtersQuery.map(item => item.value);
 
+    const list = filtersQuery.map(item => item.value);
     const { params } = route.params;
-    console.log('PASIFAS ', params);
+
     params.facets = list;
     this.getFilterData(params);
+    this.setState({ filtersQuery });
   };
 
   handleShowModalFilter = () => {
     const { filters } = this.state;
-    const { navigation } = this.props;
+    const { navigation, route } = this.props;
+
     navigation.navigate('Filter', { filters });
   };
 
@@ -100,7 +115,7 @@ class Filter extends Component {
     } = this.state;
 
     const { navigation, lengthCart, route } = this.props;
-    const { title, hideFilterButton } = route.params;
+    const { title, hideFilterButton, hideOptionsButtons } = route.params;
 
     return (
       <SafeAreaView style={DefaultStyles.viewBlack}>
@@ -109,9 +124,8 @@ class Filter extends Component {
           <HeaderCategory
             lengthCart={lengthCart}
             navigation={navigation}
-            handleGoBack={() => {
-              navigation.goBack();
-            }}
+            hideOptionsButtons={hideOptionsButtons}
+            handleGoBack={() => navigation.goBack()}
           />
           {/* Section title category */}
           <View style={Styles.containerPage}>
@@ -130,13 +144,13 @@ class Filter extends Component {
                 <View style={Styles.containerTitle}>
                   <View style={Styles.wrapperTitle}>
                     {!loading && (
-                      <Text style={Styles.title}>{textCapitalize(title)}</Text>
+                      <Text style={Styles.title}>{textCapitalize(!title ? `${filterProducts.length} resultados` : title)}</Text>
                     )}
                   </View>
                   {!hideFilterButton && (
                     <TouchableOpacity
-                      onPress={this.handleShowModalFilter}
                       style={Styles.btnFilter}
+                      onPress={this.handleShowModalFilter}
                     >
                       <Text>Filtrar</Text>
                     </TouchableOpacity>
