@@ -1,20 +1,19 @@
 import axios from 'axios';
 import DeviceStorage from '@modules/services/device-storage';
-import config from '@/config';
-import APIRturn from './utils/return';
-
-import store from '@redux';
 import {
   saveUser,
   clearUser,
   saveLengthCart,
   favoritesUser,
 } from '@redux/actions';
+import config from '@/config';
+import APIRturn from './utils/return';
+
+import store from '@redux';
 
 export default class Api {
   constructor() {
-    axios.defaults.headers.post['Content-Type'] =
-      'application/x-www-form-urlencoded';
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     axios.defaults.headers.common['x-api-key'] = config.apiKey;
 
     this.setHost();
@@ -22,7 +21,7 @@ export default class Api {
   }
 
   async setAuthIntercept() {
-    axios.interceptors.response.use(undefined, async error => {
+    axios.interceptors.response.use(undefined, async (error) => {
       if (error.response.status === 401 && error.response.data.message) {
         const unauthorized = error.response.data.message.find(
           message => message.constraints && message.constraints.UNAUTHORIZED
@@ -138,7 +137,9 @@ export default class Api {
   }
 
   async delete(url, data, options) {
-    return axios.request({ method: 'DELETE', url, data, ...options });
+    return axios.request({
+      method: 'DELETE', url, data, ...options
+    });
   }
 
   async patch(url, data, options) {

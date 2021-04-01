@@ -9,6 +9,10 @@ import ArrowVIcon from '@assets/svg/arrowv';
 import Styles from './styles';
 
 function HeaderCart({ navigation }) {
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   return (
     <>
       <LinearGradient
@@ -20,7 +24,7 @@ function HeaderCart({ navigation }) {
       >
         <View style={Styles.headerButtons}>
           {/* Btn Go back */}
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={handleGoBack}>
             <View style={Styles.btnImageIcon}>
               <ArrowVIcon />
             </View>

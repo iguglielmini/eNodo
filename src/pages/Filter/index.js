@@ -51,15 +51,15 @@ class Filter extends Component {
     const { filters } = route.params;
     const {
       facets,
-      sort: { options },
+      sort,
     } = filters;
 
-    const sortSelected = options.filter(item => item.selected);
+    const sortSelected = sort.options.filter(item => item.selected);
 
-    facets.map(item => {
+    facets.map((item) => {
       const { options } = item;
 
-      options.map(opt => {
+      options.map((opt) => {
         if (opt.selected) seletedItems.push(opt.value);
         return opt;
       });
@@ -67,17 +67,16 @@ class Filter extends Component {
       return item;
     });
 
-    if (sortSelected.length > 0)
-      this.setState({ dropSelected: sortSelected[0] });
+    if (sortSelected.length > 0) { this.setState({ dropSelected: sortSelected[0] }); }
 
     this.setState({ filters });
   };
 
-  handleDropSelect = selected => {
+  handleDropSelect = (selected) => {
     this.setState({ dropSelected: selected });
   };
 
-  handlerFilterSelect = value => {
+  handlerFilterSelect = (value) => {
     const { seletedItems } = this.state;
 
     if (seletedItems.includes(value)) {

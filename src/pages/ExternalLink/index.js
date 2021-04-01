@@ -22,7 +22,7 @@ const ExternalLink = ({ route, navigation }) => {
       return true;
     }
 
-    if (request.url.match(URL_LOGIN)) {
+    if (request.uri.match(URL_LOGIN)) {
       try {
         const token = await ApiAuth.getToken();
         const data = {

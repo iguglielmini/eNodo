@@ -7,9 +7,9 @@ export default StyleSheet.create({
     marginLeft: 5,
   },
   dark: {
-    color: '#ffffff',
+    color: '#000000',
   },
   light: {
-    color: '#000000',
+    color: '#ffffff',
   },
 });

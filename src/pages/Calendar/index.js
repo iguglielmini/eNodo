@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-navigation';
 import {
   View, Text, ScrollView, TouchableOpacity, Image, Platform
 } from 'react-native';
-import { changeStatusBar } from '@modules/utils';
 
 // Image
 import AndroidImage from '@assets/images/android_donwload.png';
@@ -17,11 +16,6 @@ class Calendar extends Component {
     super(props);
 
     this.state = {};
-
-    props.navigation.addListener(
-      'focus',
-      () => changeStatusBar('dark-content')
-    );
   }
 
 

@@ -24,6 +24,7 @@ import LinkHelp from '@components/atoms/LinkHelp';
 import ApiHome from '@modules/api/api-home';
 import { favoritesUser } from '@redux/actions';
 import ApiCatalog from '@modules/api/api-catalog';
+import ApiProfile from '@modules/api/api-profile';
 import DeviceStorage from '@modules/services/device-storage';
 
 /* Styles */
@@ -95,7 +96,7 @@ class Search extends Component {
     this.setState({ products, terms, searchNotFound: !products.length });
   };
 
-  handlerTermSearch = async(search) => {
+  handlerTermSearch = async (search) => {
     const { navigation } = this.props;
     const { data } = await ApiCatalog.getCatalogSearch({ terms: search });
 
@@ -204,7 +205,6 @@ class Search extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ favoritesUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ favoritesUser }, dispatch);
 
 export default connect(null, mapDispatchToProps)(Search);

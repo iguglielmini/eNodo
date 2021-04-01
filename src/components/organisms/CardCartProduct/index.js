@@ -11,6 +11,7 @@ import DetailIcon from '@assets/svg/detail';
 
 // Utils
 import { convertToPriceText } from '@modules/utils';
+import formatCep from '@/utils/format-cep';
 
 // Styles
 import Styles from './styles';
@@ -25,7 +26,7 @@ function CardCartProduct({
   const { items, selectedDeliveryOption: delivery } = cart;
   const [modalCepVisible, setModalCepVisible] = useState(false);
 
-  console.log(delivery);
+  const formatedCep = cart ? formatCep(cart.postalCode) : null;
 
   const getDeliveryCaption = () => (`${delivery.estimatedTime} via ${delivery.name} - ${convertToPriceText(delivery.amount)}\n`);
 
@@ -72,25 +73,37 @@ function CardCartProduct({
         <View style={Styles.containerLocation}>
           <DetailIcon />
           <View style={Styles.containerTextLocation}>
-            <Title
-              style={Styles.AlignItems}
-              styleFont={Styles.titleLocation}
-              title="Pedidos feito hoje são entregues"
-            />
-            <Text style={Styles.subTitleLocation}>
-              {getDeliveryCaption()}
-              <Text
-                style={Styles.cep}
-                onPress={() => setModalCepVisible(true)}
-              >
-                {!delivery.postalCode
-                  ? 'Informar CEP'
-                  : `CEP ${delivery.postalCode}`}
+            {formatedCep && delivery?.estimatedTime ? (
+              <>
+                <Title
+                  style={Styles.AlignItems}
+                  styleFont={Styles.titleLocation}
+                  title="Pedidos feito hoje são entregues em"
+                />
+                <Text style={Styles.subTitleLocation}>
+                  {getDeliveryCaption()}
+                  <Text
+                    style={Styles.cep}
+                    onPress={() => setModalCepVisible(true)}
+                  >
+                    {`CEP ${formatedCep}`}
+                  </Text>
+                </Text>
+              </>
+            ) : (
+              <Text style={Styles.descriptionSubTitle}>
+                Digite seu cep para calcularmos o prazo de entrega. &nbsp;
+                <Text
+                  style={Styles.cep}
+                  onPress={() => setModalCepVisible(true)}
+                >
+                  Informar CEP
+                </Text>
               </Text>
-            </Text>
+            )}
             {/* Cep */}
             <ModalCep
-              cepValue={delivery.postalCode}
+              cepValue={formatedCep}
               visible={modalCepVisible}
               handleSave={handleSaveCep}
               handleClear={handleClearCep}
