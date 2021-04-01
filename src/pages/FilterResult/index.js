@@ -62,7 +62,7 @@ class Filter extends Component {
     if (!params.searchTerms && params.isFavorite) this.getFavorites();
   };
 
-  getFilterData = (params) => {
+  getFilterData = params => {
     this.setState({ loading: true });
 
     ApiCatalogy.getCatalogSearch(params)
@@ -131,7 +131,12 @@ class Filter extends Component {
     const { loading, filtersQuery, filterProducts } = this.state;
 
     const { navigation, lengthCart, route } = this.props;
-    const { title, hideFilterButton, hideOptionsButtons, isFavorite } = route.params;
+    const {
+      title,
+      hideFilterButton,
+      hideOptionsButtons,
+      isFavorite,
+    } = route.params;
 
     return (
       <SafeAreaView style={DefaultStyles.viewBlack}>
@@ -191,6 +196,11 @@ class Filter extends Component {
                 <Section style={Styles.section}>
                   <View style={Styles.ProductCard}>
                     <ListCard data={filterProducts} navigation={navigation} />
+                    {isFavorite && !filterProducts.length && (
+                      <Text style={Styles.textNotFound}>
+                        Não há produtos favoritados.
+                      </Text>
+                    )}
                   </View>
                 </Section>
               </View>

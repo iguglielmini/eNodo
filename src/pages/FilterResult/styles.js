@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { BLACK, WHITE } from '@assets/style/colors';
+import { BLACK, WHITE, TEXTGREYLIGHT } from '@assets/style/colors';
 import { TitleSmall, TitleLarge } from '@assets/style/typography';
 import {
   SPACE_16, SPACE_32, SPACE_36, SPACE_48, SPACE_HEADER
@@ -66,4 +66,10 @@ export default StyleSheet.create({
     paddingTop: SPACE_36,
     paddingLeft: SPACE_32,
   },
+  textNotFound: {
+    ...TitleSmall,
+    textAlign: 'center',
+    marginTop: SPACE_48,
+    color: TEXTGREYLIGHT,
+  }
 });
