@@ -9,6 +9,11 @@ import {
 } from '@assets/style/wrapper';
 
 export default StyleSheet.create({
+  hero: {
+    padding: 0,
+    margin: 0,
+    position: 'relative',
+  },
   section: {
     paddingHorizontal: SPACE_16,
   },

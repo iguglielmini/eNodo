@@ -44,11 +44,11 @@ export default function Profile({ data, navigation }) {
 
         if (template === 'links') {
           const links = [{
-            url: `${config.urls.api}/profile/orders`,
+            uri: `${config.urls.api}/profile/orders`,
             title: 'Meus Pedidos',
             auth: true,
           }, {
-            url: `${config.urls.api}/profile/wishlist/edit`,
+            uri: `${config.urls.api}/profile/wishlist/edit`,
             title: 'Favoritos',
             auth: true,
           }];

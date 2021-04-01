@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useToast } from '@components/molecules/Toast';
-import { View, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import {
+  View, ImageBackground, Text, TouchableOpacity
+} from 'react-native';
 
 import { favoritesUser } from '@redux/actions';
 import ApiProfile from '@modules/api/api-profile';
@@ -17,13 +19,16 @@ import { BLACK } from '@assets/style/colors';
 import Styles from './styles';
 
 function CardMenusca(props) {
-  const { item, navigation, user, favorites } = props;
-  const { image, title, price, id, slug, sku } = item;
+  const {
+    item, navigation, user, favorites
+  } = props;
+  const {
+    image, title, price, id, slug, sku
+  } = item;
 
   const { open: openToast } = useToast();
 
-  const findFavorited =
-    favorites && favorites.find(productItem => productItem.product === id);
+  const findFavorited = favorites && favorites.find(productItem => productItem.product === id);
   const [isFavorited, setFavorited] = useState(findFavorited || false);
 
 
@@ -32,6 +37,8 @@ function CardMenusca(props) {
 
     if (!isFavorited) addFavorite();
     else removeFavorite();
+
+    return null;
   }
 
   function addFavorite() {
@@ -120,8 +127,7 @@ const mapStateToProps = store => ({
   favorites: store.user.favorites,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ favoritesUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ favoritesUser }, dispatch);
 
 export default connect(
   mapStateToProps,

@@ -19,13 +19,14 @@ function HeaderCategory({
   hideOptionsButtons,
 }) {
   function handlerFavorite() {
-    if (user.id)
+    if (user.id) {
       return navigation.navigate('FilterResult', {
         hideFilterButton: true,
         title: 'Favoritos',
         isFavorite: true,
       });
-    navigation.navigate('Login');
+    }
+    return navigation.navigate('Login');
   }
 
   function handleShowCart() {

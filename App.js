@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import OneSignal from 'react-native-onesignal';
-import { configureFontWeight } from '@modules/utils';
+import { configureFontWeight, capitalize } from '@modules/utils';
 import SplashScreen from 'react-native-splash-screen';
 import GlobalEvent from '@modules/services/global-events';
 import { ToastProvider } from '@components/molecules/Toast';
 import crashlytics from '@react-native-firebase/crashlytics';
 import ToastComponent from '@components/molecules/Toast/Toast';
 
-import { capitalize } from '@modules/utils';
+
 import AuthService from '@modules/services/auth';
 import { start as deliveryStart } from '@modules/services/delivery';
 import { navigationRef, navigate } from '@modules/helpers/root-navigation';

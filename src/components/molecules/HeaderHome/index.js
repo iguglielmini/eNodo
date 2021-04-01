@@ -12,15 +12,18 @@ import FavoriteIcon from '@assets/svg/favorite';
 
 import Styles from './styles';
 
-function HeaderHome({ title, theme, lengthCart, navigation, user }) {
+function HeaderHome({
+  title, theme, lengthCart, navigation, user
+}) {
   function handlerFavorite() {
-    if (user.id)
+    if (user.id) {
       return navigation.navigate('FilterResult', {
         hideFilterButton: true,
         title: 'Favoritos',
         isFavorite: true,
       });
-    navigation.navigate('Login');
+    }
+    return navigation.navigate('Login');
   }
 
   return (

@@ -5,7 +5,8 @@ import { TitleXXSmall } from '@assets/style/typography';
 
 export default StyleSheet.create({
   container: {
-    padding: 21,
+    // Removed default padding for See More button
+    // padding: 21,
     marginTop: SPACE_16,
     alignItems: 'center',
     flexDirection: 'row',

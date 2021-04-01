@@ -65,7 +65,6 @@ class Cart extends Component {
 
   async componentDidMount() {
     changeStatusBar('dark-content', WHITE);
-    this.getDelivery();
 
     try {
       const { data } = await ApiShopping.getBasket();
@@ -125,13 +124,14 @@ class Cart extends Component {
   handleSaveCep = async (cep) => {
     this.setState({ loading: true });
 
-    await updateCartDelivery(cep);
-    const { delivery } = this.props;
-    console.log(delivery);
-    await DeviceStorage.setItem('@BelshopApp:cart', delivery.updatedBasket);
-    await this.getCart();
-
-    this.setState({ loading: false });
+    try {
+      await updateCartDelivery(cep);
+      const { delivery } = this.props;
+      await DeviceStorage.setItem('@BelshopApp:cart', delivery.basket);
+      await this.getCart();
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   handleClearCep = async () => {

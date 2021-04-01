@@ -46,10 +46,13 @@ function Login({ route, navigation, hideGoBack }) {
   const inputPaswordRef = createRef();
   const { open: openToast } = useToast();
   const [loading, setLoading] = useState(false);
-  const { control, handleSubmit, errors, setError } = useForm();
+  const {
+    control, handleSubmit, errors, setError
+  } = useForm();
 
   function getErrors(error) {
     if (errors && errors[error]) return errors[error].message;
+    return null;
   }
 
   async function onSubmitLogin({ email, password }) {
@@ -70,7 +73,7 @@ function Login({ route, navigation, hideGoBack }) {
         });
 
         Promise.all([ApiProfile.getProfile(), ApiShopping.getBasket()]).then(
-          response => {
+          (response) => {
             const profile = response[0].data;
             const { basket } = response[1].data;
 
@@ -180,10 +183,9 @@ function Login({ route, navigation, hideGoBack }) {
           </View>
           <TouchableOpacity
             style={Styles.wrapperForgot}
-            onPress={() =>
-              navigation.navigate('ExternalLink', {
-                source: { uri: urls.forgot },
-              })
+            onPress={() => navigation.navigate('ExternalLink', {
+              source: { uri: urls.forgot },
+            })
             }
           >
             <Text style={Styles.forgot}>Esqueceu a senha?</Text>
@@ -204,10 +206,9 @@ function Login({ route, navigation, hideGoBack }) {
           <Text style={Styles.title}>Você é nova por aqui?</Text>
           <TouchableOpacity
             style={Styles.btn}
-            onPress={() =>
-              navigation.navigate('ExternalLink', {
-                source: { uri: urls.signup },
-              })
+            onPress={() => navigation.navigate('ExternalLink', {
+              source: { uri: urls.signup },
+            })
             }
           >
             <Text style={Styles.textBtn}>Crie sua conta</Text>
@@ -229,8 +230,9 @@ Login.defaultProps = {
   hideGoBack: false,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart, favoritesUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart, favoritesUser
+}, dispatch);
 
 export default connect(
   null,

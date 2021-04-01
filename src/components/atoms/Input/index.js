@@ -1,50 +1,47 @@
 import React, { Component } from 'react';
-import { TextInput, Text } from 'react-native';
+import { TextInput } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import Styles from './styles';
 
 class Input extends Component {
   componentDidMount() {
-    const { onRef } = this.props;
-    if (onRef) onRef(this.ref);
+    if (this.props.onRef) this.props.onRef(this.ref);
+  }
+
+  onChange = (value) => {
+    if (!this.props.onChangeText) return;
+    this.props.onChangeText(value);
   }
 
   render() {
-    const { typeInput, onChangeText, onErrorText, style } = this.props;
+    const {
+      typeInput
+    } = this.props;
+
+    let textInput = (
+      <TextInput
+        style={[Styles.input]}
+        ref={(ref) => { this.ref = ref; }}
+        {...this.props}
+      />
+    );
 
     if (typeInput === 'cep') {
-      return (
+      textInput = (
         <TextInputMask
           {...this.props}
+          style={[Styles.CEPinput]}
           type="zip-code"
-          style={[Styles.CEPinput, style]}
           options={{
-            mask: '99999-999',
+            mask: '99999-999'
           }}
-          onChangeText={onChangeText}
-          ref={ref => {
-            this.ref = ref;
-          }}
+          onChangeText={this.onChange}
+          ref={(ref) => { this.ref = ref; }}
         />
       );
     }
 
-    return (
-      <>
-        <TextInput
-          {...this.props}
-          style={[
-            Styles.input,
-            style,
-            onErrorText && Styles.inputError,
-          ]}
-          ref={ref => {
-            this.ref = ref;
-          }}
-        />
-        {onErrorText && <Text style={Styles.textError}>{onErrorText}</Text>}
-      </>
-    );
+    return textInput;
   }
 }
 

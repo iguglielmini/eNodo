@@ -15,14 +15,14 @@ const Schedule = ({ size, color }) => (
       fill="white"
     >
       <Path
-        fillRule="evenodd"
-        clipRule="evenodd"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
         d="M5.30189 23H18.6981C21.074 23 22 22.0639 22 19.6757V11.5H2V19.6757C2 22.0639 2.92602 23 5.30189 23ZM2 10V7.32432L2.00002 3H22V7.32432V10H2Z"
       />
     </Mask>
     <Path
-      fillRule="evenodd"
-      clipRule="evenodd"
+      fill-rule="evenodd"
+      clip-rule="evenodd"
       d="M5.30189 23H18.6981C21.074 23 22 22.0639 22 19.6757V11.5H2V19.6757C2 22.0639 2.92602 23 5.30189 23ZM2 10V7.32432L2.00002 3H22V7.32432V10H2Z"
       fill={color}
     />
@@ -32,8 +32,8 @@ const Schedule = ({ size, color }) => (
       mask="url(#path-1-inside-1)"
     />
     <Path
-      fillRule="evenodd"
-      clipRule="evenodd"
+      fill-rule="evenodd"
+      clip-rule="evenodd"
       d="M7 1H8.5V7H7V1ZM17 1H15.5V7H17V1Z"
       fill={color}
     />

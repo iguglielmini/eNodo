@@ -22,10 +22,9 @@ import ApiCategory from '@modules/api/api-category';
 import { changeStatusBar } from '@modules/utils';
 
 /** Styles */
-import { BLACK } from '@assets/style/colors';
+import { BLACK, BGGREY } from '@assets/style/colors';
 import DefaultStyles from '@assets/style/default';
 import Styles from './styles';
-
 
 class Filter extends Component {
   constructor(props) {
@@ -34,9 +33,7 @@ class Filter extends Component {
     changeStatusBar('light-content');
 
     const { route, navigation } = this.props;
-    const {
-      slug, title
-    } = route.params;
+    const { slug, title } = route.params;
 
     this.state = {
       navigation,
@@ -49,9 +46,7 @@ class Filter extends Component {
 
   componentDidMount() {
     changeStatusBar('light-content', BLACK);
-    const {
-      slug
-    } = this.state;
+    const { slug } = this.state;
 
     this.getData(slug);
   }
@@ -79,11 +74,7 @@ class Filter extends Component {
   };
 
   render() {
-    const {
-      title,
-      loading,
-      widgets
-    } = this.state;
+    const { title, loading, widgets } = this.state;
     const { navigation, lengthCart } = this.props;
 
     return (
@@ -91,15 +82,23 @@ class Filter extends Component {
         <View style={Styles.container}>
           {/* Header */}
           <HeaderCategory
+            theme="dark"
             lengthCart={lengthCart}
             navigation={navigation}
-            handleGoBack={() => { navigation.goBack(); }}
+            handleGoBack={() => {
+              navigation.goBack();
+            }}
           />
           {/* Section title category */}
           <View style={Styles.containerPage}>
             {loading && (
-              <View style={{ ...DefaultStyles.loading, backgroundColor: '#F3F3F3' }}>
-                <ActivityIndicator size="large" color="#000" />
+              <View
+                style={{
+                  ...DefaultStyles.loading,
+                  backgroundColor: BGGREY,
+                }}
+              >
+                <ActivityIndicator size="large" color={BLACK} />
               </View>
             )}
             <ScrollView
@@ -109,13 +108,19 @@ class Filter extends Component {
               {widgets.map((widget, index) => {
                 const key = index;
                 const {
-                  title: widgetTitle, template, items, filters
+                  title: widgetTitle,
+                  template,
+                  items,
+                  filters,
                 } = widget;
 
                 // section 1
                 if (!widgetTitle && template === 'swiper') {
                   return (
-                    <View style={Styles.content} key={`View_${template}_${key.toString()}`}>
+                    <View
+                      style={Styles.content}
+                      key={`View_${template}_${key.toString()}`}
+                    >
                       <Title
                         title={title}
                         style={{
@@ -138,7 +143,10 @@ class Filter extends Component {
                 // section 2
                 if (widgetTitle && template === 'swiper') {
                   return (
-                    <Section style={Styles.section} key={`Section_${template}_${key.toString()}`}>
+                    <Section
+                      style={Styles.section}
+                      key={`Section_${template}_${key.toString()}`}
+                    >
                       <CarouselBranding
                         key={`CarouselBranding_${template}_${key.toString()}`}
                         data={items}
@@ -155,7 +163,10 @@ class Filter extends Component {
                 //  section 3
                 if (widgetTitle && template === 'grid') {
                   return (
-                    <Section style={Styles.section} key={`Section_${template}_${key.toString()}`}>
+                    <Section
+                      style={Styles.section}
+                      key={`Section_${template}_${key.toString()}`}
+                    >
                       <Fragment key={`Frag_${template}_${key.toString()}`}>
                         <View style={Styles.containerSubtitle}>
                           <Title
@@ -164,7 +175,9 @@ class Filter extends Component {
                             styleFont={Styles.subTitle}
                           />
                           <TouchableOpacity
-                            onPress={() => { this.handleGoFilter(filters, widgetTitle); }}
+                            onPress={() => {
+                              this.handleGoFilter(filters, widgetTitle);
+                            }}
                           >
                             <View style={Styles.btnFilter}>
                               <Text>Filtrar</Text>

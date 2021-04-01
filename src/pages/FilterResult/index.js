@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -44,14 +45,14 @@ class Filter extends Component {
     this.loadData(params);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps({ route }) {
     const { params } = route;
-    console.log('PICA ', route);
     this.loadData(params);
   }
 
   loadData = (params) => {
-    if(!params.searchTerms) this.getFilterData(params);
+    if (!params.searchTerms) this.getFilterData(params);
     else {
       const { searchTerms } = params;
       const { products, current, filters } = searchTerms;
@@ -61,7 +62,7 @@ class Filter extends Component {
     }
   };
 
-  getFilterData = params => {
+  getFilterData = (params) => {
     this.setState({ loading: true });
 
     ApiCatalogy.getCatalogSearch(params)
@@ -85,7 +86,7 @@ class Filter extends Component {
       .finally(() => this.setState({ loading: false }));
   };
 
-  handleRemoveOneFilter = value => {
+  handleRemoveOneFilter = (value) => {
     const { route } = this.props;
 
     const { filtersQuery } = this.state;
@@ -102,7 +103,7 @@ class Filter extends Component {
 
   handleShowModalFilter = () => {
     const { filters } = this.state;
-    const { navigation, route } = this.props;
+    const { navigation } = this.props;
 
     navigation.navigate('Filter', { filters });
   };

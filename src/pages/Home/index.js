@@ -10,7 +10,6 @@ import Section from '@components/atoms/Section';
 import LinkHelp from '@components/atoms/LinkHelp';
 import ListCard from '@components/molecules/ListCard';
 import IntroCard from '@components/molecules/IntroCard';
-import HeaderHome from '@components/molecules/HeaderHome';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 import CategoryList from '@components/molecules/CategoryList';
 import ImageIntroCard from '@components/molecules/ImageIntroCard';
@@ -31,10 +30,12 @@ import { saveLengthCart, favoritesUser } from '@redux/actions';
 import { changeStatusBar, queryStringToJSON } from '@modules/utils';
 
 /* Styles */
-import { WHITELIGHT } from '@assets/style/colors';
+import { WHITELIGHT, BLACK, WHITE } from '@assets/style/colors';
 import { SafeAreaView } from 'react-navigation';
 import { SPACE_HEADER } from '@assets/style/wrapper';
 import Styles from './styles';
+import HeroBanner from '../../components/molecules/HeroBanner';
+import HeaderHome from '../../components/molecules/HeaderHome';
 
 class Home extends Component {
   constructor(props) {
@@ -78,7 +79,6 @@ class Home extends Component {
   loadData = () => {
     changeStatusBar('dark-content', WHITELIGHT);
     this.getData();
-    this.getFavorites();
   };
 
   getData = async () => {
@@ -86,15 +86,14 @@ class Home extends Component {
     if (data) this.setState({ data });
   };
 
-  updateLengthCart = () => {
-    ApiShopping.getBasket()
-      .then(({ data }) => {
-        const { basket } = data;
-        this.props.saveLengthCart(basket.totalItems);
-      })
-      .catch(() => {
-        this.props.saveLengthCart(0);
-      });
+  updateLengthCart = async () => {
+    try {
+      const { data } = await ApiShopping.getBasket();
+      this.props.saveLengthCart(data.basket.totalItems);
+    } catch (error) {
+      console.log(error);
+      this.props.saveLengthCart(0);
+    }
   };
 
   generateSections = (navigation, lengthCart) => {
@@ -104,47 +103,84 @@ class Home extends Component {
     if (!data.length) return null;
 
     function handleGoFilterResult(params) {
-      navigation.navigate('FilterResult', { ...params, hideFilterButton: true });
+      navigation.navigate('FilterResult', {
+        ...params,
+        hideFilterButton: true,
+      });
     }
 
+    // Uncomment the following lines to test Home without Hero Banner
+    // const hero = data.findIndex(item => item.title === 'Hero');
+
+    // data.splice(hero, 1);
+
     data.forEach((section, index) => {
-      const { title, theme, widgets, style } = section;
+      const {
+        title, theme, widgets, style
+      } = section;
 
       widgets.forEach((widget, widgetIndex) => {
         const key = widgetIndex + index;
-        const { items, template, highlight, showAll, searchQuery } = widget;
+        const {
+          items, template, highlight, showAll, searchQuery
+        } = widget;
 
         if (!items.length) return;
 
-        function showMore() {
-          const params = queryStringToJSON(searchQuery);
+        function showMore(targetType, target) {
+          let params;
+
+          if (target && targetType) {
+            params = queryStringToJSON(target);
+
+            switch (targetType) {
+              case 'search':
+                navigation.navigate('FilterResult', {
+                  params,
+                  hideFilterButton: true,
+                });
+                break;
+              case 'product':
+                navigation.navigate('ProductDetails', {
+                  params,
+                });
+                break;
+              case 'category':
+                navigation.navigate('Category', {
+                  params,
+                });
+                break;
+              default:
+                break;
+            }
+
+            return;
+          }
+
+          params = queryStringToJSON(searchQuery);
 
           navigation.navigate('FilterResult', {
-            ...params,
+            params,
             hideFilterButton: true,
           });
         }
 
-        if (index === 1) {
-          tempSections.push(
-            <Section
-              style={{ ...Styles.section, paddingTop: SPACE_HEADER }}
-              key={key}
-            >
-              <HeaderHome
-                title={title}
-                theme={theme}
-                lengthCart={lengthCart}
-                navigation={navigation}
-              />
-              <ListCard data={items} navigation={navigation} theme={theme} />
-              {showAll && <ButtonSeeAll theme={theme} onPress={showMore} />}
-            </Section>
-          );
-        }
-
         // eslint-disable-next-line default-case
         switch (template) {
+          case 'hero':
+            tempSections.push(
+              <Section key={key}>
+                <HeroBanner
+                  gallery={items}
+                  navigation={navigation}
+                  lengthCart={lengthCart}
+                  theme={theme}
+                  action={showMore}
+                />
+              </Section>
+            );
+            break;
+
           case 'swiper':
             tempSections.push(
               <Section style={{ paddingTop: 16 }} key={key}>
@@ -152,7 +188,7 @@ class Home extends Component {
                   showFooter
                   data={items}
                   theme={theme}
-                  title="Marcas"
+                  title={title}
                   showTitle={false}
                   navigation={navigation}
                   onPress={handleGoFilterResult}
@@ -194,6 +230,40 @@ class Home extends Component {
                   </Section>
                 );
               }
+            }
+
+            if (style === 'promos') {
+              tempSections.push(
+                <Section
+                  style={{
+                    ...Styles.section,
+                    paddingTop: SPACE_HEADER,
+                  }}
+                  key={key}
+                >
+                  {index === 0 ? (
+                    <>
+                      <HeaderHome
+                        title={'Promos \nda Semana'}
+                        color={theme === 'light' ? BLACK : WHITE}
+                        section={title}
+                      />
+                    </>
+                  ) : (
+                    <Title
+                      title={'Promos \nda Semana'}
+                      style={Styles.belTitle}
+                    />
+                  )}
+
+                  <ListCard
+                    data={items}
+                    navigation={navigation}
+                    theme={theme}
+                  />
+                  {showAll && <ButtonSeeAll theme={theme} onPress={showMore} />}
+                </Section>
+              );
             }
 
             if (style === 'default' && theme === 'dark') {
@@ -267,8 +337,9 @@ const mapStateToProps = store => ({
   user: store.user,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveLengthCart, favoritesUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart, favoritesUser
+}, dispatch);
 
 export default connect(
   mapStateToProps,

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { BLACK, WHITE } from '@assets/style/colors';
-import { SPACE_48 } from '@assets/style/wrapper';
+// import { SPACE_48 } from '@assets/style/wrapper';
 
 export default StyleSheet.create({
   dark: {
@@ -13,6 +13,6 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
   container: {
-    paddingVertical: SPACE_48,
+    paddingVertical: 0,
   },
 });

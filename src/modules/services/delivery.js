@@ -27,7 +27,7 @@ function handleChange() {
 
 export function setCep(data) {
   if (!data || (!data.formatedCep && !data.cep)) {
-    throw new Error('Invalid set cep data');
+    return false;
   }
 
   const cep = data.cep || cleanCep(data.formatedCep);

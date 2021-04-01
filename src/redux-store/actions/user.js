@@ -24,5 +24,5 @@ export function favoritesUser(payload) {
   return {
     type: USER_FAVORITES,
     payload,
-  }
+  };
 }
