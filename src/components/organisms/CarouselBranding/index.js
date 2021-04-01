@@ -31,7 +31,10 @@ const Card = ({ data, showTitle, onPress }) => (
           key={key}
           activeOpacity={1}
           onPress={() => {
-            const params = queryStringToJSON(searchQuery);
+            const params = Object.assign({
+              searchTerms: null,
+              isFavorite: false,
+            }, queryStringToJSON(searchQuery));
             onPress(params);
           }}
         >

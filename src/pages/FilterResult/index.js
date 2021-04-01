@@ -10,12 +10,13 @@ import {
   Text,
   Alert,
   ScrollView,
+  SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
-  SafeAreaView,
 } from 'react-native';
 
 // APIS
+import ApiProfile from '@modules/api/api-profile';
 import ApiCatalogy from '@modules/api/api-catalog';
 
 import { changeStatusBar, textCapitalize } from '@modules/utils';
@@ -36,11 +37,15 @@ class Filter extends Component {
       filterProducts: [],
     };
 
-    props.navigation.addListener('focus', () => changeStatusBar('light-content', BLACK));
+    props.navigation.addListener('focus', () =>
+      changeStatusBar('light-content', BLACK)
+    );
   }
 
   componentDidMount() {
-    const { route: { params } } = this.props;
+    const {
+      route: { params },
+    } = this.props;
     this.loadData(params);
   }
 
@@ -50,15 +55,10 @@ class Filter extends Component {
     this.loadData(params);
   }
 
-  loadData = (params) => {
-    if(!params.searchTerms) this.getFilterData(params);
-    else {
-      const { searchTerms } = params;
-      const { products, current, filters } = searchTerms;
-
-      if (current) this.setState({ filtersQuery: current.facets });
-      this.setState({ filters, filterProducts: products });
-    }
+  loadData = params => {
+    if (!params.searchTerms && !params.isFavorite) this.getFilterData(params);
+    if (params.searchTerms && !params.isFavorite) this.getFilterTerms(params);
+    if (!params.searchTerms && params.isFavorite) this.getFavorites();
   };
 
   getFilterData = params => {
@@ -81,6 +81,25 @@ class Filter extends Component {
         if (current) this.setState({ filtersQuery: current.facets });
 
         this.setState({ filters, filterProducts: products });
+      })
+      .finally(() => this.setState({ loading: false }));
+  };
+
+  getFilterTerms = params => {
+    const { searchTerms } = params;
+    const { products, current, filters } = searchTerms;
+
+    if (current) this.setState({ filtersQuery: current.facets });
+    this.setState({ filters, filterProducts: products });
+  };
+
+  getFavorites = () => {
+    this.setState({ loading: true });
+
+    ApiProfile.getFavoritesDetails()
+      .then(({ data }) => {
+        const { items } = data;
+        this.setState({ filterProducts: items });
       })
       .finally(() => this.setState({ loading: false }));
   };
@@ -108,14 +127,10 @@ class Filter extends Component {
   };
 
   render() {
-    const {
-      loading,
-      filtersQuery,
-      filterProducts,
-    } = this.state;
+    const { loading, filtersQuery, filterProducts } = this.state;
 
     const { navigation, lengthCart, route } = this.props;
-    const { title, hideFilterButton, hideOptionsButtons } = route.params;
+    const { title, hideFilterButton, hideOptionsButtons, isFavorite } = route.params;
 
     return (
       <SafeAreaView style={DefaultStyles.viewBlack}>
@@ -124,8 +139,8 @@ class Filter extends Component {
           <HeaderCategory
             lengthCart={lengthCart}
             navigation={navigation}
-            hideOptionsButtons={hideOptionsButtons}
             handleGoBack={() => navigation.goBack()}
+            hideOptionsButtons={hideOptionsButtons || isFavorite}
           />
           {/* Section title category */}
           <View style={Styles.containerPage}>
@@ -144,7 +159,11 @@ class Filter extends Component {
                 <View style={Styles.containerTitle}>
                   <View style={Styles.wrapperTitle}>
                     {!loading && (
-                      <Text style={Styles.title}>{textCapitalize(!title ? `${filterProducts.length} resultados` : title)}</Text>
+                      <Text style={Styles.title}>
+                        {textCapitalize(
+                          !title ? `${filterProducts.length} resultados` : title
+                        )}
+                      </Text>
                     )}
                   </View>
                   {!hideFilterButton && (

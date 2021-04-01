@@ -107,6 +107,7 @@ class Filter extends Component {
 
     const params = {
       title: '',
+      isFavorite: false,
       searchTerms: null,
       sort: dropSelected.value,
       hideOptionsButtons: false,

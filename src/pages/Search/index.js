@@ -101,6 +101,7 @@ class Search extends Component {
 
     navigation.navigate('FilterResult', {
       searchTerms: data,
+      isFavorite: false,
       hideOptionsButtons: true,
       title: `${data.products.length} resultados`,
     });
