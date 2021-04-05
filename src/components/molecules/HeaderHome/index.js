@@ -43,13 +43,14 @@ function HeaderHome({
 
 HeaderHome.propTypes = {
   title: PropTypes.string,
-  theme: PropTypes.string.isRequired,
+  theme: PropTypes.string,
   lengthCart: PropTypes.number.isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 HeaderHome.defaultProps = {
   title: '',
+  theme: 'dark',
 };
 
 const mapStateToProps = store => ({

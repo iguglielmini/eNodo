@@ -8,8 +8,8 @@ import { ToastProvider } from '@components/molecules/Toast';
 import crashlytics from '@react-native-firebase/crashlytics';
 import ToastComponent from '@components/molecules/Toast/Toast';
 
-
 import AuthService from '@modules/services/auth';
+import ApiProduct from '@modules/api/api-product';
 import { start as deliveryStart } from '@modules/services/delivery';
 import { navigationRef, navigate } from '@modules/helpers/root-navigation';
 
@@ -54,9 +54,13 @@ class App extends Component {
   }
 
   onReceived = ({ payload }) => {
-    const { additionalData } = payload;
-    const pagePush = capitalize(additionalData.pagePush);
-    navigate(pagePush);
+    const { launchURL } = payload;
+
+    ApiProduct.redirectNotification(launchURL).then(({ data }) => {
+      const { type, target } = data;
+
+      if (type === 'product') navigate('ProductDetails', { slug: target });
+    });
   };
 
   render() {
