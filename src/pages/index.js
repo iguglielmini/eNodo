@@ -28,7 +28,7 @@ const Routes = () => (
   <Tab.Navigator
     lazy
     detachInactiveScreens
-    initialRouteName="Profile"
+    initialRouteName="Home"
     tabBarOptions={{
       tabStyle: {
         height: 50,

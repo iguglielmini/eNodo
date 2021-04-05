@@ -1,13 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { TitleLarge, TitleSmall } from '@assets/style/typography';
 import { BORDERGREY, TEXTBLACK, WHITE } from '@assets/style/colors';
-import {
-  SPACE_16, SPACE_32, SPACE_40, SPACE_48
-} from '@assets/style/wrapper';
-import {
-  TitleLarge, TitleSmall
-} from '@assets/style/typography';
-
-const { width } = Dimensions.get('window');
+import {  SPACE_16, SPACE_32, SPACE_40, SPACE_48 } from '@assets/style/wrapper';
 
 export default StyleSheet.create({
   contentFavorites: {
@@ -28,34 +22,17 @@ export default StyleSheet.create({
   btnContent: {
     paddingBottom: 60,
   },
-  // Card Carousel
   cardContainer: {
-    backgroundColor: 'red',
-    width: 150,
-    minHeight: 180,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'flex-start',
-    flex: 1
+    height: 180,
+    borderRadius: 5,
+    backgroundColor: WHITE,
+    marginRight: SPACE_16 / 2,
   },
-  imageCard: {
-    width: 120,
-    height: 104,
-    borderRadius: 4,
-    overflow: 'hidden',
-    resizeMode: 'cover',
-    alignItems: 'center',
-    backgroundColor: TEXTBLACK,
-    justifyContent: 'center',
+  cardImage: {
+    width: '100%',
+    height: '100%',
   },
-  // Container Carousel
-  container: {
-    width,
-    paddingLeft: SPACE_32,
-  },
-  // Pagination carousel
-  paginationContainer: { marginLeft: 'auto', },
+  paginationContainer: { marginLeft: 'auto' },
   Themecolor: { color: '#0D0D0D' },
   paginationDot: {
     width: 6,
@@ -75,7 +52,6 @@ export default StyleSheet.create({
   paginationDotPreviewLast: {
     transform: [{ scale: 0.8 }],
   },
-  // button see all
   buttonSeeAll: {
     bottom: 30,
     position: 'absolute',
