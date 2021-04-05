@@ -27,7 +27,8 @@ function focusedTab(Icon, IconOutline, focused) {
 const Routes = () => (
   <Tab.Navigator
     lazy
-    initialRouteName="Home"
+    detachInactiveScreens
+    initialRouteName="Profile"
     tabBarOptions={{
       tabStyle: {
         height: 50,

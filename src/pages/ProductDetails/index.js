@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -26,29 +31,19 @@ import ApiProduct from '@modules/api/api-product';
 import ApiShopping from '@modules/api/api-shopping';
 
 // Services
-import ApiProfile from '@modules/api/api-profile';
-import {
-  updateProductDelivery,
-  clearProductDelivery,
-  getProductDeliveryOption,
-} from '@modules/services/delivery';
+import { updateProductDelivery, clearProductDelivery, getProductDeliveryOption } from '@modules/services/delivery';
 
 // Redux e Utils
-import DeviceStorage from '@modules/services/device-storage';
 import { calcTotalQuantityCart, changeStatusBar } from '@modules/utils';
-import {
-  saveLengthCart,
-  saveAddProductCart,
-  favoritesUser,
-} from '@redux/actions';
+import { saveLengthCart, saveAddProductCart } from '@redux/actions';
 
 // Mocks
 import CardBuyTogetherMock from '@mock/CardBuyTogetherMock';
 
 /** Styles */
-import { SafeAreaView } from 'react-navigation';
 import DefaultStyles from '@assets/style/default';
-import { WHITELIGHT, BLACK } from '@assets/style/colors';
+import { SafeAreaView } from 'react-navigation';
+import { WHITELIGHT } from '@assets/style/colors';
 import Styles from './styles';
 
 class ProductDetails extends Component {
@@ -102,7 +97,7 @@ class ProductDetails extends Component {
     }
 
     return this.setState({ deliveryOption, deliveryCalculating: false });
-  };
+  }
 
   getData = async () => {
     const { route } = this.props;
@@ -130,10 +125,10 @@ class ProductDetails extends Component {
     if (dataProductAssociations.length) {
       const { productsAssociations } = this.state;
 
-      dataProductAssociations.forEach(section => {
+      dataProductAssociations.forEach((section) => {
         const { widgets } = section;
 
-        widgets.forEach(widget => {
+        widgets.forEach((widget) => {
           const { items } = widget;
 
           if (widget.alias === 'quem-comprou-comprou-tambem') {
@@ -151,11 +146,11 @@ class ProductDetails extends Component {
 
   setModalCepVisible = modalCepVisible => this.setState({ modalCepVisible });
 
-  setModalDetailsVisible = modalDetailsVisible => {
+  setModalDetailsVisible = (modalDetailsVisible) => {
     this.setState({ modalDetailsVisible });
   };
 
-  showModalDetails = details => {
+  showModalDetails = (details) => {
     const { modalDetailsVisible } = this.state;
     this.setState({ modalDetailsVisible: !modalDetailsVisible, details });
   };
@@ -168,14 +163,9 @@ class ProductDetails extends Component {
     setLoading(true);
 
     const form = {
-      products: [
-        {
-          product: id,
-          sku,
-          quantity: 1,
-          postalCode,
-        },
-      ],
+      products: [{
+        product: id, sku, quantity: 1, postalCode,
+      }],
     };
 
     ApiShopping.basketAddItem(form)
@@ -204,7 +194,7 @@ class ProductDetails extends Component {
     }
   };
 
-  handleSaveCep = async cep => {
+  handleSaveCep = async (cep) => {
     const { route } = this.props;
     const { id, sku } = route.params;
 
@@ -223,55 +213,31 @@ class ProductDetails extends Component {
     this.setState({ deliveryCalculating: false });
   };
 
-  handlerOnFavorite = (id, sku, isFavorited) => {
-    const { user, navigation, favoritesUser } = this.props;
-
-    if (!user.id) return navigation.navigate('Login');
-
-    let saveOrDelete = ApiProfile.addFavorites(id, sku);
-    if (isFavorited) {
-      saveOrDelete = ApiProfile.deleteFavorites(id, sku);
-    }
-
-    return saveOrDelete.then(({ data }) => {
-      DeviceStorage.setItem('@BelshopApp:favorites', data.items);
-      favoritesUser(data.items);
-    });
-  };
-
   render() {
-    const { navigation, delivery, favorites } = this.props;
+    const { navigation, delivery } = this.props;
     const {
       product,
       details,
       loading,
-      deliveryOption,
-      modalCepVisible,
       deliveryCalculating,
+      modalCepVisible,
       modalDetailsVisible,
       productsAssociations,
+      deliveryOption,
     } = this.state;
 
-    const { brand, price, id, sku } = product;
-    const findFavorited =
-      favorites && favorites.find(productItem => productItem.product === id);
+    const { brand, price } = product;
 
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: '#fff' }} />
         <SafeAreaView style={DefaultStyles.viewGrey}>
           <SafeAreaView style={Styles.saveAreaHeader}>
-            <TouchableOpacity
-              style={Styles.btnImageIcon}
-              onPress={() => navigation.goBack()}
-            >
+            <TouchableOpacity onPress={() => navigation.goBack()} style={Styles.btnImageIcon}>
               <ArrowVIcon />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={Styles.btnImageIcon}
-              onPress={() => this.handlerOnFavorite(id, sku, findFavorited)}
-            >
-              <FavoriteIcon fill={findFavorited ? BLACK : 'none'} />
+            <TouchableOpacity onPress={() => {}} style={Styles.btnImageIcon}>
+              <FavoriteIcon />
             </TouchableOpacity>
           </SafeAreaView>
           {loading && (
@@ -283,7 +249,7 @@ class ProductDetails extends Component {
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-              paddingBottom: product && product.available ? 50 : 0,
+              paddingBottom: product && product.available ? 50 : 0
             }}
           >
             {!loading && (
@@ -300,35 +266,31 @@ class ProductDetails extends Component {
                       <View style={Styles.detailsProduct}>
                         <DetailIcon />
                         <View style={Styles.description}>
-                          <Text style={Styles.descriptionTitle}>
-                            Frete Grátis
-                          </Text>
+                          <Text style={Styles.descriptionTitle}>Frete Grátis</Text>
                           {deliveryCalculating ? (
                             <ActivityIndicator size="small" color="#000" />
                           ) : (
                             <View style={Styles.modalContainer}>
                               {delivery.cep && deliveryOption?.estimatedTime ? (
                                 <Text style={Styles.descriptionSubTitle}>
-                                  Entrega em até {deliveryOption.estimatedTime}{' '}
-                                  após a postagem do produto. &nbsp;
+                                Entrega em até
+                                  {' '}
+                                  {deliveryOption.estimatedTime}
+                                  {' '}
+                                após a postagem do produto. &nbsp;
                                   <Text
                                     style={Styles.btnModal}
-                                    onPress={() =>
-                                      this.setModalCepVisible(true)
-                                    }
+                                    onPress={() => this.setModalCepVisible(true)}
                                   >
                                     {delivery.formatedCep}
                                   </Text>
                                 </Text>
                               ) : (
                                 <Text style={Styles.descriptionSubTitle}>
-                                  Digite seu cep para calcularmos o prazo de
-                                  entrega. &nbsp;
+                                  Digite seu cep para calcularmos o prazo de entrega. &nbsp;
                                   <Text
                                     style={Styles.btnModal}
-                                    onPress={() =>
-                                      this.setModalCepVisible(true)
-                                    }
+                                    onPress={() => this.setModalCepVisible(true)}
                                   >
                                     Informar CEP
                                   </Text>
@@ -350,14 +312,11 @@ class ProductDetails extends Component {
                     <View style={Styles.detailsProduct}>
                       <LogoIcon />
                       <View style={Styles.description}>
-                        <Text style={Styles.descriptionTitle}>
-                          Loja com estoque
-                        </Text>
+                        <Text style={Styles.descriptionTitle}>Loja com estoque</Text>
                         <Text style={Styles.descriptionSubTitle}>
-                          Av. Wenceslau Escobar. 2801 Tristeza, Porto Alegre-RS
-                          &nbsp;
+                        Av. Wenceslau Escobar. 2801 Tristeza, Porto Alegre-RS &nbsp;
                           <Text style={Styles.btnModal} onPress={() => {}}>
-                            Outras lojas
+                          Outras lojas
                           </Text>
                         </Text>
                       </View>
@@ -385,39 +344,37 @@ class ProductDetails extends Component {
 
                   {/* Clientes Tambem Compraram Area */}
                   {productsAssociations.clientsBy.length > 0 && (
-                    <View style={Styles.ContainerClientPay}>
-                      <Text style={Styles.ClientPayTitle}>
-                        Clientes também compraram
-                      </Text>
-                      <ListCard
-                        data={productsAssociations.clientsBy}
-                        navigation={navigation}
-                      />
-                    </View>
+                  <View style={Styles.ContainerClientPay}>
+                    <Text style={Styles.ClientPayTitle}>
+                      Clientes também compraram
+                    </Text>
+                    <ListCard
+                      data={productsAssociations.clientsBy}
+                      navigation={navigation}
+                    />
+                  </View>
                   )}
 
                   {/* Produtos semelhantes */}
                   {productsAssociations.similar.length > 0 && (
-                    <View style={Styles.ContainerProductSimilar}>
-                      <Text style={Styles.ClientPayTitle}>
-                        Produtos semelhantes
-                      </Text>
-                      <ListCard
-                        data={productsAssociations.similar}
-                        navigation={navigation}
-                      />
-                    </View>
+                  <View style={Styles.ContainerProductSimilar}>
+                    <Text style={Styles.ClientPayTitle}>Produtos semelhantes</Text>
+                    <ListCard
+                      data={productsAssociations.similar}
+                      navigation={navigation}
+                    />
+                  </View>
                   )}
                 </View>
               </>
             )}
           </ScrollView>
           {product && product.available && (
-            <FloatButtonBuy
-              price={price}
-              navigation={navigation}
-              addProductToCart={this.addProductToCart}
-            />
+          <FloatButtonBuy
+            price={price}
+            navigation={navigation}
+            addProductToCart={this.addProductToCart}
+          />
           )}
         </SafeAreaView>
       </>
@@ -431,20 +388,16 @@ ProductDetails.propTypes = {
 };
 
 const mapStateToProps = store => ({
-  user: store.user,
   delivery: store.delivery,
-  favorites: store.user.favorites,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      favoritesUser,
-      saveLengthCart,
-      saveAddProductCart,
-    },
-    dispatch
-  );
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+    saveAddProductCart,
+  },
+  dispatch
+);
 
 export default connect(
   mapStateToProps,
