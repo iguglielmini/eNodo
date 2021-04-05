@@ -9,7 +9,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 /* component */
 import ListCard from '@components/molecules/ListCard';
 import ModalCep from '@components/organisms/ModalCep';
-import { useToast } from '@components/molecules/Toast';
 import Accordion from '@components/organisms/Accordion';
 import FloatButtonBuy from '@components/atoms/FloatButtonBuy';
 import ModalDetails from '@components/organisms/ModalDetails';
