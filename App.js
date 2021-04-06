@@ -28,7 +28,6 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // global events
     GlobalEvent();
 
     this.state = {
