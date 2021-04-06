@@ -13,9 +13,8 @@ import Account from '@pages/Account';
 import Category from '@pages/Category';
 import Checkout from '@pages/Checkout';
 import FilterResult from '@pages/FilterResult';
-import Notification from '@pages/Notification';
-import ExternalLink from '@pages/ExternalLink';
 import ForgotPassword from '@pages/ForgotPassword';
+import ExternalLink from '@pages/ExternalLink';
 import ProductDetailsPage from '@pages/ProductDetails';
 
 // Initial Page
@@ -50,13 +49,6 @@ function Router() {
         <Stack.Screen
           name="FilterResult"
           component={FilterResult}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Notification"
-          component={Notification}
           options={{
             headerShown: false,
           }}
@@ -109,7 +101,11 @@ function Router() {
 }
 
 const RootNavigator = () => (
-  <RootStack.Navigator mode="modal" headerMode="none" initialRouteName="Main">
+  <RootStack.Navigator
+    mode="modal"
+    headerMode="none"
+    initialRouteName="Main"
+  >
     <RootStack.Screen name="Main" component={Router} />
     <RootStack.Screen
       name="Filter"

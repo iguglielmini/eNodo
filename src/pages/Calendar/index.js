@@ -5,10 +5,12 @@ import {
 } from 'react-native';
 
 // Image
+import bgCalendar from '@assets/images/bgCalendar.png';
 import AndroidImage from '@assets/images/android_donwload.png';
 import IosImage from '@assets/images/ios_donwload.png';
 
 /* Styles */
+import { WHITE } from '@assets/style/colors';
 import Styles from './styles';
 
 class Calendar extends Component {
@@ -21,16 +23,14 @@ class Calendar extends Component {
 
   render() {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{ backgroundColor: WHITE }}>
         <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
           <View style={Styles.content}>
-            <View style={Styles.titlePageContent}>
-              <Text style={Styles.titlePage}>Salão da Bel</Text>
-            </View>
-            {/* image not defined */}
-            <View style={Styles.contentImage}>
-              <View style={Styles.Image} />
-            </View>
+            <Image
+              style={Styles.imageBg}
+              source={bgCalendar}
+            />
+            <Text style={Styles.titlePage}>Salão da Bel</Text>
             {/* Title */}
             <View style={Styles.contentTitle}>
               <Text style={Styles.titleCalendar}>

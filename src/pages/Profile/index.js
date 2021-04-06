@@ -14,7 +14,7 @@ function Profile({ navigation, user }) {
   return (
     <>
       {user && user.id ? (
-        <ProfileComponent navigation={navigation} data={user} />
+        <ProfileComponent navigation={navigation} user={user} />
       ) : (
         <Login
           navigation={navigation}

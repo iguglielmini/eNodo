@@ -38,9 +38,7 @@ class Filter extends Component {
       filterProducts: [],
     };
 
-    props.navigation.addListener('focus', () =>
-      changeStatusBar('light-content', BLACK)
-    );
+    props.navigation.addListener('focus', () => changeStatusBar('light-content', BLACK));
   }
 
   componentDidMount() {
@@ -56,13 +54,13 @@ class Filter extends Component {
     this.loadData(params);
   }
 
-  loadData = params => {
+  loadData = (params) => {
     if (!params.searchTerms && !params.isFavorite) this.getFilterData(params);
     if (params.searchTerms && !params.isFavorite) this.getFilterTerms(params);
     if (!params.searchTerms && params.isFavorite) this.getFavorites();
   };
 
-  getFilterData = params => {
+  getFilterData = (params) => {
     this.setState({ loading: true });
 
     ApiCatalogy.getCatalogSearch(params)
@@ -86,7 +84,7 @@ class Filter extends Component {
       .finally(() => this.setState({ loading: false }));
   };
 
-  getFilterTerms = params => {
+  getFilterTerms = (params) => {
     const { searchTerms } = params;
     const { products, current, filters } = searchTerms;
 
@@ -105,7 +103,7 @@ class Filter extends Component {
       .finally(() => this.setState({ loading: false }));
   };
 
-  handleRemoveOneFilter = value => {
+  handleRemoveOneFilter = (value) => {
     const { route } = this.props;
 
     const { filtersQuery } = this.state;
