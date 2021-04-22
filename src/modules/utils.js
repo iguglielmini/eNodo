@@ -223,6 +223,6 @@ export const textCapitalize = (str) => {
 };
 
 export const changeStatusBar = (theme, color = WHITELIGHT) => {
-  if (Platform.OS === 'ios') StatusBar.setBarStyle(theme);
+  StatusBar.setBarStyle(theme);
   StatusBar.setBackgroundColor(color);
 };

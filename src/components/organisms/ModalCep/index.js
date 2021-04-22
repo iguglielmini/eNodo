@@ -8,7 +8,6 @@ import {
 
 // Icons
 import CloseIcon from '@assets/svg/close';
-import { useToast } from '@components/molecules/Toast';
 
 /** Styles */
 import Styles from './styles';
@@ -22,31 +21,39 @@ function ModalCep({
 }) {
   const [textCep, setTextCep] = useState(cepValue);
   const [inputRef, setInputRef] = useState(null);
-  const { open: openToast } = useToast();
+  const [errorCep, setErrorCep] = useState(null);
 
   function handleOnShow() {
     inputRef.focus();
   }
 
+  function onChangeCep(data) {
+    if (data?.length > 0) {
+      setErrorCep(null);
+    }
+
+    return setTextCep(data);
+  }
+
   function handleSubmit() {
     if (textCep.length < 9) {
-      openToast({
-        title: 'Localização',
-        message: 'CEP Inválido',
-        type: 'error',
-      });
-
+      setErrorCep(textCep.length === 0 ? 'O campo de cep é obrigatório' : 'Por favor, digite um cep válido');
       return;
     }
 
+    setErrorCep(null);
     setVisible(false);
     handleSave(textCep);
   }
 
   function handleClearCep() {
-    handleClear();
     setTextCep('');
-    setVisible(false);
+    setErrorCep(null);
+
+    if (handleClear) {
+      handleClear();
+      setVisible(false);
+    }
   }
 
   return (
@@ -72,9 +79,10 @@ function ModalCep({
           <Input
             typeInput="cep"
             value={textCep}
-            onChangeText={setTextCep}
+            onChangeText={onChangeCep}
             refInput={r => setInputRef(r)}
           />
+          {errorCep && <Text style={Styles.errorMessage}>{errorCep}</Text>}
         </View>
         <View style={Styles.footerModal}>
           <TouchableOpacity onPress={handleSubmit}>

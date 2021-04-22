@@ -72,8 +72,8 @@ export default StyleSheet.create({
     height: 36
   },
   buttonSeeAll: {
-    bottom: 50,
+    bottom: 24,
     position: 'absolute',
-    marginLeft: SPACE_16,
+    marginLeft: SPACE_32,
   },
 });

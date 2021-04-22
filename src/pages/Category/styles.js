@@ -17,7 +17,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 10,
     backgroundColor: '#F3F3F3',
     overflow: 'hidden',
-    minHeight: '100%'
+    minHeight: '100%',
   },
   content: {
     paddingTop: SPACE_48,
@@ -43,12 +43,14 @@ export default StyleSheet.create({
     width,
     alignItems: 'center',
     flexDirection: 'row',
+    paddingTop: 83,
     marginBottom: SPACE_32,
     paddingHorizontal: SPACE_16,
     justifyContent: 'space-between',
   },
   ProductCard: {
     paddingHorizontal: SPACE_16,
+    paddingBottom: 52
   },
   btnFilter: {
     borderRadius: 4,

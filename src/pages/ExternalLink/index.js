@@ -17,32 +17,27 @@ const URL_LOGIN = `${config.urls.base}/login`;
 const ExternalLink = ({ route, navigation }) => {
   const { source } = route.params;
 
-  const onShouldStartLoadWithRequest = async (request) => {
+  async function onShouldStartLoadWithRequest(request) {
     if (!source.headers || !source.headers.Authorization) {
       return true;
     }
 
     if (request.uri.match(URL_LOGIN)) {
-      try {
-        const token = await ApiAuth.getToken();
-        const data = {
-          ...source,
-          headers: {
-            ...source.headers,
-            Authorization: `Bearer ${token}`,
-          }
-        };
+      const token = await ApiAuth.getToken();
+      const data = {
+        ...source,
+        headers: {
+          ...source.headers,
+          Authorization: `Bearer ${token}`,
+        }
+      };
 
-        navigation.replace('Login', { to: 'ExternalLink', replace: true, params: { source: data } });
-      } catch (error) {
-        console.log(error);
-      }
-
+      navigation.replace('Login', { to: 'ExternalLink', replace: true, params: { source: data } });
       return false;
     }
 
     return true;
-  };
+  }
 
   return (
     <SafeAreaView style={DefaultStyles.viewWhite}>

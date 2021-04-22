@@ -11,33 +11,38 @@ import config from '@/config';
 import Styles from './styles';
 
 function LinkHelp({ data, theme }) {
-  if (!data.length) return null;
+  const { urls, apiKey } = config;
   const navigation = useNavigation();
 
-  const onClick = async (item) => {
+  if (!data.length) return null;
+
+  async function onClick(item) {
     const {
-      url, auth, callback
+      url, auth, isInternal, callback
     } = item;
 
-    if (callback) {
-      return callback();
-    }
+    if (callback) return callback();
 
-    const source = {
-      uri: url.match(/^https/) ? url : `${config.urls.base}${url}`,
-    };
+    const urlIsMatch = url.match(/^https/);
+    const source = { uri: !urlIsMatch ? `${urls.api}${url}` : url };
 
     if (auth) {
       const token = await ApiAuth.getToken();
-
       source.headers = {
-        'x-api-key': config.apiKey,
-        Authorization: `Bearer ${token}`
+        'x-api-key': apiKey,
+        Authorization: `Bearer ${token}`,
       };
+
+      return navigation.navigate('ExternalLink', { source });
+    }
+
+    if (isInternal && !auth) return navigation.navigate(url);
+    if (item.url === 'app://config') {
+      return navigation.navigate('Notification');
     }
 
     return navigation.navigate('ExternalLink', { source });
-  };
+  }
 
   return (
     <>
@@ -46,8 +51,15 @@ function LinkHelp({ data, theme }) {
           const key = index;
           return (
             <TouchableOpacity key={key} onPress={() => onClick(item)}>
-              <View style={[Styles.btnHelp, (key === data.length - 1) && Styles.borderNone]}>
-                <Text style={[Styles.titleHelp, Styles[theme]]}>{item.title}</Text>
+              <View
+                style={[
+                  Styles.btnHelp,
+                  key === data.length - 1 && Styles.borderNone,
+                ]}
+              >
+                <Text style={[Styles.titleHelp, Styles[theme]]}>
+                  {item.title}
+                </Text>
                 <ArrowV color={Styles[theme].color} />
               </View>
             </TouchableOpacity>

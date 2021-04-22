@@ -1,7 +1,9 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { TitleXSmall } from '@assets/style/typography';
 import {
-  BLACK, WHITE,
+  $error,
+  BLACK,
+  WHITE,
 } from '../../../assets/style/colors';
 // Dimension Responsive layout
 const { width } = Dimensions.get('window');
@@ -43,6 +45,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    position: 'relative',
   },
   label: {
     fontSize: 18,
@@ -65,6 +68,12 @@ export default StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 18,
     backgroundColor: BLACK,
+  },
+  errorMessage: {
+    position: 'absolute',
+    top: 30,
+    left: 0,
+    color: $error
   },
   btnClear: {
     ...TitleXSmall,

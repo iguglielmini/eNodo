@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput } from 'react-native';
+import { TextInput, Text } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import Styles from './styles';
 
@@ -15,15 +15,20 @@ class Input extends Component {
 
   render() {
     const {
-      typeInput
+      typeInput, errorText,
     } = this.props;
 
     let textInput = (
-      <TextInput
-        style={[Styles.input]}
-        ref={(ref) => { this.ref = ref; }}
-        {...this.props}
-      />
+      <>
+        <TextInput
+          style={[Styles.input]}
+          ref={(ref) => { this.ref = ref; }}
+          {...this.props}
+        />
+        {errorText && (
+          <Text style={[Styles.inputErrorMessage]}>{errorText}</Text>
+        )}
+      </>
     );
 
     if (typeInput === 'cep') {

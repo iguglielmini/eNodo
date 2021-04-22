@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import { View, ImageBackground } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import Slick from 'react-native-slick';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import HeaderHome from '@components/molecules/HeaderHome';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 
 // Styles
+import CachedImage from 'react-native-image-cache-wrapper';
 import Styles from './styles';
 
-const dotSize = 6;
+const { width } = Dimensions.get('window');
 
 function HeroBanner({
   gallery = [], navigation, lengthCart, action
 }) {
-  const [dotColor, setDotColor] = useState(gallery[0]?.textColor);
-
   if (!gallery.length) return null;
+
+  const [dotColor, setDotColor] = useState(gallery[0]?.textColor);
+  const [indexDot, setDotIndex] = useState(0);
 
   const handleActiveImgChange = (index) => {
     const color = gallery[index].textColor;
     setDotColor(color);
+    setDotIndex(index);
   };
 
   return (
@@ -30,53 +33,64 @@ function HeroBanner({
           lengthCart={lengthCart}
           navigation={navigation}
         />
+        <Pagination
+          inactiveDotScale={1}
+          inactiveDotOpacity={0.2}
+          inactiveDotColor={dotColor}
+          activeDotIndex={indexDot}
+          dotsLength={gallery.length}
+          dotColor={dotColor}
+          // dotStyle={Styles.paginationDot}
+          containerStyle={{ ...Styles.pagination }}
+          dotContainerStyle={{ marginHorizontal: 4 }}
+        />
       </View>
-      <Slick
+
+      <Carousel
+        loop
         autoplay
-        autoplayTimeout={3}
-        style={Styles.container}
-        dotStyle={{
-          backgroundColor: dotColor,
-          opacity: 0.2,
-          width: dotSize,
-          height: dotSize,
-        }}
-        activeDotStyle={{ width: dotSize, height: dotSize }}
-        activeDotColor={dotColor}
-        paginationStyle={{ ...Styles.dot, ...Styles.bannerHeader }}
-        onIndexChanged={index => handleActiveImgChange(index)}
-      >
-        {gallery.map((item, index) => {
-          const key = index;
+        data={gallery}
+        inactiveSlideScale={1}
+        inactiveSlideOpacity={1}
+        renderItem={({ item }) => {
           const { targetType, target } = item;
           const { height, url } = item.image;
 
           return (
             <View
               style={{
+                width,
                 height,
                 flex: 1,
                 flexDirection: 'column',
               }}
-              key={key}
+              key={url}
             >
-              <ImageBackground style={Styles.cardImage} source={{ uri: url }}>
-                {targetType !== 'none' && (
-                  <View style={Styles.buttonContainer}>
-                    <ButtonSeeAll
-                      showArrow={false}
-                      theme="light"
-                      title="Veja mais"
-                      onPress={() => action(targetType, target)}
-                      style={Styles.buttonSeeMore}
-                    />
-                  </View>
-                )}
-              </ImageBackground>
+              <View style={Styles.cardImageWrapper}>
+                <CachedImage style={Styles.cardImage} source={{ uri: url }}>
+                  {targetType !== 'none' && (
+                    <View style={Styles.buttonContainer}>
+                      <ButtonSeeAll
+                        showArrow={false}
+                        theme="light"
+                        title="Veja mais"
+                        onPress={() => action(targetType, target)}
+                        style={Styles.buttonSeeMore}
+                      />
+                    </View>
+                  )}
+                </CachedImage>
+              </View>
             </View>
           );
-        })}
-      </Slick>
+        }}
+        itemWidth={width}
+        sliderWidth={width}
+        onSnapToItem={handleActiveImgChange}
+        activeSlideAlignment="start"
+        containerCustomStyle={Styles.container}
+        slideStyle={{ flex: 1 }}
+      />
     </>
   );
 }

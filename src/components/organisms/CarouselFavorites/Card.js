@@ -13,7 +13,6 @@ function CardFavorites({ item, navigation }) {
       onPress={() => navigation.navigate('ProductDetails', { slug })}
     >
       <Image
-        resizeMode="contain"
         style={Styles.cardImage}
         source={{ uri: image.url, ...image }}
       />

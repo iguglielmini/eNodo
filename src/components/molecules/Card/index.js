@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -30,9 +31,20 @@ function Card(props) {
     item, style, theme, onClick, user, favorites
   } = props;
   const {
-    id, slug, sku, title, price, image
+    id, slug, sku, title, price, image, available
   } = item;
+
   const { discount, current, previous } = price;
+
+  const itemDetails = {
+    slug,
+    id,
+    sku,
+    title,
+    price,
+    image,
+    available,
+  };
 
   const navigation = useNavigation();
   const { open: openToast } = useToast();
@@ -41,7 +53,13 @@ function Card(props) {
   const [isFavorited, setFavorited] = useState(findFavorited || false);
 
   function handlerOnFavorite() {
-    if (!user.id) return navigation.navigate('Login');
+    if (!user.id) {
+      return navigation.navigate('Login', {
+        replace: true,
+        to: 'Favorites',
+        title: 'Favoritos',
+      });
+    }
 
     if (!isFavorited) addFavorite();
     else removeFavorite();
@@ -98,7 +116,7 @@ function Card(props) {
       <TouchableOpacity
         activeOpacity={1}
         style={[Styles.card, style]}
-        onPress={() => onClick(slug, id, sku)}
+        onPress={() => onClick(itemDetails)}
       >
         <ImageBackground
           resizeMode="cover"
@@ -124,15 +142,27 @@ function Card(props) {
             <BadgeIcon size={48} />
             <Text style={Styles.discountText}>
               {convertDiscount(discount)}
-%
+              %
             </Text>
           </View>
         )}
         <Text style={[Styles[theme], Styles.description]}>{title}</Text>
         <View style={Styles.priceContainer}>
-          <Text style={[Styles.priceText, Styles.priceItem]}>
-            {convertToPriceText(current)}
-          </Text>
+          {available ? (
+            <Text style={[Styles.priceText, Styles.priceItem]}>
+              {convertToPriceText(current)}
+            </Text>
+          ) : (
+            <Text
+              style={
+                theme === 'dark'
+                  ? [Styles.unavailableItem, Styles.darkUnavailable]
+                  : [Styles.unavailableItem, Styles.lightUnavailable]
+              }
+            >
+              Produto indisponível
+            </Text>
+          )}
           {previous && (
             <Text style={[Styles.priceText, Styles.pricelater]}>
               {convertToPriceText(previous)}

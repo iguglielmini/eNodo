@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View, Text, Dimensions, SafeAreaView
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 // Component
-import Card from './Card';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
+import Card from './Card';
 
 // Utils
 // import { queryStringToJSON } from '@modules/utils';
@@ -19,11 +21,7 @@ const CarouselFavorites = ({ data, navigation }) => {
   const [indexDot, setDotIndex] = useState(0);
 
   function handlerFavorite() {
-    return navigation.navigate('FilterResult', {
-      hideFilterButton: true,
-      title: 'Favoritos',
-      isFavorite: true,
-    });
+    return navigation.navigate('Favorites');
   }
 
   return (
@@ -33,7 +31,7 @@ const CarouselFavorites = ({ data, navigation }) => {
       {!data.length && (
         <View style={Styles.containerFavoritesEmpty}>
           <Text style={Styles.subTitleFavorites}>
-            Você ainda adicionou nenhum produto aos favoritos
+            Você ainda não adicionou nenhum produto aos favoritos.
           </Text>
           <View style={Styles.btnContent}>
             <ButtonSeeAll
@@ -62,21 +60,22 @@ const CarouselFavorites = ({ data, navigation }) => {
             sliderWidth={width}
             onSnapToItem={setDotIndex}
             activeSlideAlignment="start"
-            slideStyle={Styles.cardContainer}
+            slideStyle={{ flex: 1 }}
             containerCustomStyle={Styles.container}
           />
-          <Pagination
-            inactiveDotScale={1}
-            inactiveDotOpacity={0.2}
-            dotsLength={data.length}
-            activeDotIndex={indexDot}
-            dotColor={Styles.Themecolor}
-            dotStyle={Styles.paginationDot}
-            containerStyle={Styles.paginationContainer}
-            dotContainerStyle={{ marginHorizontal: 0 }}
-          />
-          <View style={Styles.buttonSeeAll}>
+          <View style={Styles.contentFooter}>
             <ButtonSeeAll theme="light" title="Ver todos" onPress={handlerFavorite} />
+            <Pagination
+              inactiveDotScale={1}
+              inactiveDotOpacity={0.2}
+              dotsLength={data.length}
+              activeDotIndex={indexDot}
+              dotColor={Styles.Themecolor}
+              dotStyle={Styles.paginationDot}
+              dotContainerStyle={{ marginHorizontal: 0 }}
+            />
+
+
           </View>
         </>
       )}

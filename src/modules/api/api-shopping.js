@@ -91,4 +91,8 @@ export default new class ShoppingService extends Api {
   async getProductDelivery(data) {
     return APIRturn(this.post('/shopping/product/delivery', data));
   }
+
+  async getUserOrders() {
+    return APIRturn(this.get('/shopping/orders'));
+  }
 }();

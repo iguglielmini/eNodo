@@ -39,7 +39,7 @@ class ForgotPassword extends Component {
             {/* Subtitle */}
             <View style={Styles.contentSubTitle}>
               <Text style={Styles.subTitleForgot}>
-              Digite seu endereço de e-mail para poder redefinir sua senha.
+                Digite seu endereço de e-mail para poder redefinir sua senha.
               </Text>
             </View>
             {/* Input */}
@@ -52,14 +52,11 @@ class ForgotPassword extends Component {
                 returnKeyType="next"
               />
               <TouchableOpacity onPress={() => {}} style={Styles.btnSend}>
-                <Text style={Styles.btnText}>
-                  Enviar
-                </Text>
+                <Text style={Styles.btnText}>Enviar</Text>
               </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
-
       </SafeAreaView>
     );
   }

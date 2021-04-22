@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { SafeAreaView } from 'react-navigation';
 import {
-  View, Text, ScrollView, TouchableOpacity, Image, Platform
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Platform,
 } from 'react-native';
+import { changeStatusBar } from '@modules/utils';
 
 // Image
 import bgCalendar from '@assets/images/bgCalendar.png';
@@ -18,37 +24,33 @@ class Calendar extends Component {
     super(props);
 
     this.state = {};
-  }
 
+    props.navigation.addListener('focus', () => changeStatusBar('dark-content'));
+  }
 
   render() {
     return (
       <SafeAreaView style={{ backgroundColor: WHITE }}>
         <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
           <View style={Styles.content}>
-            <Image
-              style={Styles.imageBg}
-              source={bgCalendar}
-            />
+            <Image style={Styles.imageBg} source={bgCalendar} />
             <Text style={Styles.titlePage}>Salão da Bel</Text>
             {/* Title */}
             <View style={Styles.contentTitle}>
               <Text style={Styles.titleCalendar}>
-              Agende seu horário em um de nossos Salões da Bel
+                Agende seu horário em um de nossos Salões da Bel
               </Text>
             </View>
             {/* Sub Title */}
             <View style={Styles.contentSubTitle}>
               <Text style={Styles.subTitleCalendar}>
-              Baixe agora o app e agende um horário na Belshop mais próxima de você.
+                Baixe agora o app e agende um horário na Belshop mais próxima de
+                você.
               </Text>
             </View>
             {/* Image about plataform ios or Android */}
             <View style={Styles.contentSubTitle}>
-              <TouchableOpacity
-                onPress={() => {}}
-                activeOpacity={1}
-              >
+              <TouchableOpacity onPress={() => {}} activeOpacity={1}>
                 <Image
                   style={Styles.imagePlataform}
                   source={Platform.OS === 'android' ? AndroidImage : IosImage}

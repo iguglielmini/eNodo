@@ -2,8 +2,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// Component
+
 import Section from '@components/atoms/Section';
 import ListCard from '@components/molecules/ListCard';
+import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 import HeaderCategory from '@components/atoms/HeaderCategory';
 import SelectFilterOutline from '@components/atoms/SelectFilterOutline';
 import {
@@ -15,6 +18,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+
+// icons
+import ArrowIcon from '@assets/svg/arrow';
 
 // APIS
 import ApiProfile from '@modules/api/api-profile';
@@ -33,12 +39,16 @@ class Filter extends Component {
 
     this.state = {
       filters: {},
+      pageCount: 1,
+      pageNumber: 1,
       loading: false,
       filtersQuery: [],
       filterProducts: [],
     };
 
-    props.navigation.addListener('focus', () => changeStatusBar('light-content', BLACK));
+    props.navigation.addListener('focus', () =>
+      changeStatusBar('light-content', BLACK)
+    );
   }
 
   componentDidMount() {
@@ -54,18 +64,19 @@ class Filter extends Component {
     this.loadData(params);
   }
 
-  loadData = (params) => {
+  loadData = params => {
     if (!params.searchTerms && !params.isFavorite) this.getFilterData(params);
     if (params.searchTerms && !params.isFavorite) this.getFilterTerms(params);
     if (!params.searchTerms && params.isFavorite) this.getFavorites();
   };
 
-  getFilterData = (params) => {
+  getFilterData = params => {
+    const { filterProducts } = this.state;
     this.setState({ loading: true });
 
     ApiCatalogy.getCatalogSearch(params)
       .then(({ data }) => {
-        const { products, current, filters } = data;
+        const { products, current, filters, pagination } = data;
 
         if (!products.length) {
           Alert.alert('Ooops!', 'Produto(s) não disponível(eis).', [
@@ -77,19 +88,27 @@ class Filter extends Component {
           return;
         }
 
+        products.map(item => {
+          filterProducts.push(item);
+        });
         if (current) this.setState({ filtersQuery: current.facets });
 
-        this.setState({ filters, filterProducts: products });
+        this.setState({ filters, filterProducts, ...pagination });
       })
       .finally(() => this.setState({ loading: false }));
   };
 
-  getFilterTerms = (params) => {
+  getFilterTerms = params => {
     const { searchTerms } = params;
-    const { products, current, filters } = searchTerms;
+    const { products, current, filters, pagination } = searchTerms;
+    const { filterProducts } = this.state;
+
+    products.map(item => {
+      filterProducts.push(item);
+    });
 
     if (current) this.setState({ filtersQuery: current.facets });
-    this.setState({ filters, filterProducts: products });
+    this.setState({ filters, filterProducts, ...pagination });
   };
 
   getFavorites = () => {
@@ -103,37 +122,51 @@ class Filter extends Component {
       .finally(() => this.setState({ loading: false }));
   };
 
-  handleRemoveOneFilter = (value) => {
+  handleRemoveOneFilter = value => {
     const { route } = this.props;
-
+    const { params } = route;
     const { filtersQuery } = this.state;
     const findIndex = filtersQuery.findIndex(item => item.value === value);
     filtersQuery.splice(findIndex, 1);
 
     const list = filtersQuery.map(item => item.value);
-    const { params } = route.params;
-
     params.facets = list;
     this.getFilterData(params);
     this.setState({ filtersQuery });
   };
 
-  handleShowModalFilter = () => {
+  handleShowModalFilter = params => {
+    const { terms } = params;
     const { filters } = this.state;
     const { navigation } = this.props;
+    navigation.navigate('Filter', { filters: { ...filters, terms } });
+  };
 
-    navigation.navigate('Filter', { filters });
+  showMore = () => {
+    let { pageNumber, pageCount } = this.state;
+    pageNumber += 1;
+    const {
+      route: { params },
+    } = this.props;
+
+    params.pageNumber = pageNumber;
+    if (pageNumber > pageCount) {
+      params.pageNumber = pageCount;
+    }
+
+    this.loadData(params);
   };
 
   render() {
-    const { loading, filtersQuery, filterProducts } = this.state;
+    const { loading, filtersQuery, filterProducts, pageCount } = this.state;
 
     const { navigation, lengthCart, route } = this.props;
     const {
       title,
+      terms,
+      isFavorite,
       hideFilterButton,
       hideOptionsButtons,
-      isFavorite,
     } = route.params;
 
     return (
@@ -141,6 +174,7 @@ class Filter extends Component {
         <View style={Styles.container}>
           {/* Header */}
           <HeaderCategory
+            theme="light"
             lengthCart={lengthCart}
             navigation={navigation}
             handleGoBack={() => navigation.goBack()}
@@ -157,6 +191,7 @@ class Filter extends Component {
             )}
             <ScrollView
               alwaysBounceVertical
+              style={Styles.scroll}
               showsVerticalScrollIndicator={false}
             >
               <View style={Styles.content}>
@@ -165,7 +200,7 @@ class Filter extends Component {
                     {!loading && (
                       <Text style={Styles.title}>
                         {textCapitalize(
-                          !title ? `${filterProducts.length} resultados` : title
+                          !title ? `${filterProducts.length} Resultados` : title
                         )}
                       </Text>
                     )}
@@ -173,7 +208,7 @@ class Filter extends Component {
                   {!hideFilterButton && (
                     <TouchableOpacity
                       style={Styles.btnFilter}
-                      onPress={this.handleShowModalFilter}
+                      onPress={() => this.handleShowModalFilter({ terms })}
                     >
                       <Text>Filtrar</Text>
                     </TouchableOpacity>
@@ -182,6 +217,7 @@ class Filter extends Component {
                 {filtersQuery.length > 0 && (
                   <ScrollView
                     horizontal
+                    showsHorizontalScrollIndicator={false}
                     contentContainerStyle={Styles.scrollSelectFilter}
                   >
                     <SelectFilterOutline
@@ -194,10 +230,32 @@ class Filter extends Component {
                 <Section style={Styles.section}>
                   <View style={Styles.ProductCard}>
                     <ListCard data={filterProducts} navigation={navigation} />
+                    {/* Pagination */}
+                    {pageCount > 1 && (
+                      <View style={{ paddingTop: 32 }}>
+                        <ButtonSeeAll
+                          theme="light"
+                          title="Ver mais"
+                          onPress={this.showMore}
+                        />
+                      </View>
+                    )}
                     {isFavorite && !filterProducts.length && (
-                      <Text style={Styles.textNotFound}>
-                        Não há produtos favoritados.
-                      </Text>
+                      <>
+                        <View style={Styles.contentFavoritesNotFound}>
+                          <Text style={Styles.textNotFound}>
+                            Você ainda não adicionou produtos em seus favoritos.
+                          </Text>
+                          <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <View style={Styles.btnNotFound}>
+                              <Text style={{ marginRight: 8 }}>
+                                Continue comprando
+                              </Text>
+                              <ArrowIcon />
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      </>
                     )}
                   </View>
                 </Section>
@@ -217,6 +275,7 @@ Filter.propTypes = {
 
 const mapStateToProps = store => ({
   lengthCart: store.cart.lengthCart,
+  favorites: store.user.favorites,
 });
 
 export default connect(

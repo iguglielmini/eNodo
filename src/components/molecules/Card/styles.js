@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { SPACE_16, SPACE_24 } from '@assets/style/wrapper';
-import { WHITE, BLACK, BORDERGREY } from '@assets/style/colors';
+import {
+  WHITE, BLACK, BORDERGREY, TEXTGREYLIGHT
+} from '@assets/style/colors';
 import {
   TitleXSmall,
   FONT_FAMILY,
@@ -75,5 +77,15 @@ export default StyleSheet.create({
     position: 'absolute',
     fontFamily: FONT_FAMILY,
     fontWeight: FONT_WEIGHT_MEDIUM,
+  },
+  unavailableItem: {
+    ...TitleXSmall,
+    opacity: 0.5,
+  },
+  darkUnavailable: {
+    color: '#DB207F',
+  },
+  lightUnavailable: {
+    color: TEXTGREYLIGHT,
   },
 });

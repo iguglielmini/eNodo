@@ -1,7 +1,14 @@
 import { StyleSheet } from 'react-native';
 import {
-  SECONDARY, BLACK, WHITE, TEXTBLACK, WHITELIGHT, TEXTGREYLIGHT, TEXTPINK,
-  BORDERGREY, BGGREY
+  SECONDARY,
+  BLACK,
+  WHITE,
+  TEXTBLACK,
+  WHITELIGHT,
+  TEXTGREYLIGHT,
+  TEXTPINK,
+  BORDERGREY,
+  BGGREY,
 } from '@assets/style/colors';
 import { SPACE_HEADER } from '../../assets/style/wrapper';
 
@@ -44,7 +51,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   wrapperPage: {
-    backgroundColor: BGGREY
+    backgroundColor: BGGREY,
   },
   containerDescription: {
     paddingBottom: 20,
@@ -168,5 +175,9 @@ export default StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4.65,
     elevation: 8,
+  },
+  unavailableText: {
+    color: TEXTGREYLIGHT,
+    opacity: 0.5
   },
 });

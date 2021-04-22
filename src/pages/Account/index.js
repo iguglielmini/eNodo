@@ -20,6 +20,7 @@ import config from '@/config';
 import Styles from './styles';
 
 export default function Profile({ navigation }) {
+  const { urls } = config;
   const [loding, setLogin] = useState(false);
   const { open: openToast } = useToast();
   const logout = async () => {
@@ -27,7 +28,7 @@ export default function Profile({ navigation }) {
 
     try {
       await ApiAuth.logout();
-      await ApiAuth.clearUser();
+      await ApiAuth.clearUser(false, true);
       setLogin(false);
 
       navigation.navigate('Profile');
@@ -50,19 +51,22 @@ export default function Profile({ navigation }) {
 
   const links = [
     {
-      url: `${config.urls.api}/profile/edit`,
+      auth: true,
+      isInternal: true,
       title: 'Dados cadastrais',
-      auth: true,
+      url: `${urls.api}/profile/edit`,
     },
     {
-      url: `${config.urls.api}/profile/address/edit`,
+      auth: true,
+      isInternal: true,
       title: 'Endereços',
-      auth: true,
+      url: `${urls.api}/profile/address/edit`,
     },
     {
-      url: `${config.urls.api}/profile/password/edit`,
-      title: 'Alterar senha',
       auth: true,
+      isInternal: true,
+      title: 'Alterar senha',
+      url: `${urls.api}/profile/password/edit`,
     },
     {
       callback: logout,

@@ -6,18 +6,18 @@ const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
-    height: 520,
+    height: 450,
     backgroundColor: WHITE,
   },
   cardContainer: {
     width,
-    height: 520,
+    height: 450,
     justifyContent: 'center',
     alignItems: 'center',
   },
   cardImage: {
     maxWidth: '100%',
-    maxHeight: 520,
+    maxHeight: 350,
     resizeMode: 'cover',
   },
   dot: {

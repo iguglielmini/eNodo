@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { BLACK, WHITE } from '@assets/style/colors';
-import { SPACE_16 } from '@assets/style/wrapper';
+// import { SPACE_16 } from '@assets/style/wrapper';
 import { TitleXXSmall } from '@assets/style/typography';
 
 export default StyleSheet.create({
   container: {
     // Removed default padding for See More button
     // padding: 21,
-    marginTop: SPACE_16,
+    // marginTop: SPACE_16,
     alignItems: 'center',
     flexDirection: 'row',
   },

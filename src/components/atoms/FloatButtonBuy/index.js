@@ -13,7 +13,9 @@ import Styles from './styles';
 function FloatButtonBuy({ navigation, addProductToCart, price }) {
   const [loading, setLoading] = useState(false);
   const [modalBuyVisible, setModalBuyVisible] = useState(false);
-  const { current, previous } = price;
+  const {
+    current, previous, installmentPrice, installments,
+  } = price;
 
   return (
     <>
@@ -33,9 +35,11 @@ function FloatButtonBuy({ navigation, addProductToCart, price }) {
               </Text>
             )}
           </View>
-          <View style={Styles.HowPayment}>
-            <Text>10x de R$ 30,52</Text>
-          </View>
+          {installments && installmentPrice && (
+            <View style={Styles.HowPayment}>
+              <Text>{`${installments}x de R$ ${convertToPriceText(installmentPrice)}`}</Text>
+            </View>
+          )}
         </View>
         <TouchableOpacity
           onPress={() => addProductToCart(setLoading, setModalBuyVisible)}

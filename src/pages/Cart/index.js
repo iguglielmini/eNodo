@@ -31,11 +31,15 @@ import ArrowIcon from '@assets/svg/arrow';
 import ApiShopping from '@modules/api/api-shopping';
 
 // Services
-import { updateCartDelivery, clearProductDelivery } from '@modules/services/delivery';
+import { updateCartDelivery } from '@modules/services/delivery';
 
 // Utils
 import DeviceStorage from '@modules/services/device-storage';
-import { convertToPriceText, calcTotalQuantityCart, changeStatusBar } from '@modules/utils';
+import {
+  convertToPriceText,
+  calcTotalQuantityCart,
+  changeStatusBar,
+} from '@modules/utils';
 
 // Redux
 import { saveLengthCart } from '@redux/actions';
@@ -68,7 +72,6 @@ class Cart extends Component {
 
     try {
       const { data } = await ApiShopping.getBasket();
-
       await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
       await this.getCart();
     } catch (error) {
@@ -134,21 +137,24 @@ class Cart extends Component {
     }
   };
 
-  handleClearCep = async () => {
-    try {
-      await clearProductDelivery();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // handleClearCep = async () => {
+  //   try {
+  //     await clearCartDelivery();
+
+  //     await DeviceStorage.setItem('@BelshopApp:cart', {
+  //       ...this.state.cart,
+  //       postalCode: null
+  //     });
+
+  //     await this.getCart();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   render() {
     const { navigation } = this.props;
-    const {
-      cart,
-      scrollY,
-      loading,
-    } = this.state;
+    const { cart, scrollY, loading } = this.state;
 
     const HeaderTitleBottom = scrollY.interpolate({
       inputRange: [
@@ -173,10 +179,7 @@ class Cart extends Component {
     });
 
     const HeaderTitleSize = scrollY.interpolate({
-      inputRange: [
-        0,
-        HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT,
-      ],
+      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
       outputRange: [26, 18],
       extrapolate: 'clamp',
     });
@@ -212,30 +215,30 @@ class Cart extends Component {
                   <Animated.Text
                     style={[
                       Styles.titlePage,
-                      { fontSize: HeaderTitleSize, lineHeight: 26 }
+                      { fontSize: HeaderTitleSize, lineHeight: 26 },
                     ]}
                   >
-                  Carrinho
+                    Carrinho
                   </Animated.Text>
                 </Animated.View>
                 {cart.items.length > 0 && (
-                <Animated.View
-                  style={[
-                    Styles.containerTitlePrice,
-                    { position: 'absolute', bottom: HeaderTitleBottom },
-                  ]}
-                >
-                  <Text style={Styles.TitleHeader}>
-                    {convertToPriceText(cart.totalPrice)}
-                  </Text>
-                </Animated.View>
+                  <Animated.View
+                    style={[
+                      Styles.containerTitlePrice,
+                      { position: 'absolute', bottom: HeaderTitleBottom },
+                    ]}
+                  >
+                    <Text style={Styles.TitleHeader}>
+                      {convertToPriceText(cart.totalPrice)}
+                    </Text>
+                  </Animated.View>
                 )}
               </View>
             </LinearGradient>
             {loading && (
-            <View style={DefaultStyles.loading}>
-              <ActivityIndicator size="large" color="#ffffff" />
-            </View>
+              <View style={DefaultStyles.loading}>
+                <ActivityIndicator size="large" color="#000000" />
+              </View>
             )}
             <ScrollView
               alwaysBounceVertical
@@ -259,46 +262,41 @@ class Cart extends Component {
                 }
               )}
             >
-              {cart.items.length > 0 ? (
+              {cart.items.length > 0 && (
                 <>
                   <Section style={Styles.container}>
                     <CardCartProduct
                       cart={cart}
                       handleSaveCep={this.handleSaveCep}
-                      handleClearCep={this.handleClearCep}
+                      // handleClearCep={this.handleClearCep}
                       selectQuantity={this.selectQuantity}
                       removeProduct={this.handleRemoveProduct}
                     />
-                    <PriceTotal totalPrice={cart.totalPrice} />
+                    <PriceTotal cart={cart} />
                     <PaymentBanner />
                   </Section>
                   <View style={Styles.LinkHelp}>
                     <LinkHelp data={LinkHelpMock} />
                   </View>
                 </>
-              ) : (
-                <>
-                  {loading ? (
-                    <View style={DefaultStyles.loading}>
-                      <ActivityIndicator size="large" color="#ffffff" />
+              )}
+              {!loading && !cart.items.length && (
+                <Section style={[Styles.container, Styles.containerNotFound]}>
+                  <Text style={Styles.titlePageNotFound}>
+                    Você ainda não adicionou produtos em seu carrinho
+                  </Text>
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <View style={Styles.btnNotFound}>
+                      <Text style={{ marginRight: 8 }}>Continue comprando</Text>
+                      <ArrowIcon />
                     </View>
-                  ) : (
-                    <Section style={[Styles.container, Styles.containerNotFound]}>
-                      <Text style={Styles.titlePageNotFound}>
-                      Você ainda não adicionou produtos em seu carrinho
-                      </Text>
-                      <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <View style={Styles.btnNotFound}>
-                          <Text style={{ marginRight: 8 }}>Continue comprando</Text>
-                          <ArrowIcon />
-                        </View>
-                      </TouchableOpacity>
-                    </Section>
-                  )}
-                </>
+                  </TouchableOpacity>
+                </Section>
               )}
             </ScrollView>
-            {cart.items.length > 0 && <FloatCartButton navigation={navigation} />}
+            {cart.items.length > 0 && (
+              <FloatCartButton navigation={navigation} />
+            )}
           </View>
         </SafeAreaView>
       </>
@@ -314,9 +312,7 @@ const mapStateToProps = store => ({
   delivery: store.delivery,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  saveLengthCart,
-}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ saveLengthCart }, dispatch);
 
 export default connect(
   mapStateToProps,

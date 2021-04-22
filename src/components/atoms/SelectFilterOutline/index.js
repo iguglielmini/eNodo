@@ -20,7 +20,7 @@ function SelectFilter({ data, onSelect }) {
         >
           <Text>{item.label}</Text>
           <View style={Styles.iconSpace}>
-            <IconClose />
+            <IconClose onPress={() => onSelect(item.value)} />
           </View>
         </View>
       </TouchableOpacity>

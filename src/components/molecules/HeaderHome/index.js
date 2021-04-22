@@ -9,27 +9,35 @@ import Badge from '@components/atoms/Badge';
 
 /* Icons */
 import FavoriteIcon from '@assets/svg/favorite';
+import { BLACK } from '@assets/style/colors';
 
 import Styles from './styles';
 
 function HeaderHome({
-  title, theme, lengthCart, navigation, user
+  title, color, lengthCart, navigation, invertTitleTheme, user
 }) {
+  const theme = color === BLACK ? 'dark' : 'light';
+  let titleTheme = theme;
+
+  if (invertTitleTheme) {
+    titleTheme = color === BLACK ? 'light' : 'dark';
+  }
+
   function handlerFavorite() {
     if (user.id) {
-      return navigation.navigate('FilterResult', {
-        hideFilterButton: true,
-        title: 'Favoritos',
-        isFavorite: true,
-      });
+      return navigation.navigate('Favorites');
     }
-    return navigation.navigate('Login');
+    return navigation.navigate('Login', {
+      replace: true,
+      to: 'Favorites',
+      title: 'Favoritos',
+    });
   }
 
   return (
-    <Title title={title} theme={theme} styleFont={Styles.title}>
+    <Title title={title} theme={titleTheme} styleFont={Styles.title}>
       <TouchableOpacity onPress={handlerFavorite}>
-        <FavoriteIcon size={24} theme={theme} />
+        <FavoriteIcon size={24} color={color} name="Favorite" />
       </TouchableOpacity>
       <TouchableOpacity
         style={Styles.bagIcon}
@@ -43,13 +51,15 @@ function HeaderHome({
 
 HeaderHome.propTypes = {
   title: PropTypes.string,
-  theme: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
   lengthCart: PropTypes.number.isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
+  invertTitleTheme: PropTypes.bool
 };
 
 HeaderHome.defaultProps = {
   title: '',
+  invertTitleTheme: false,
 };
 
 const mapStateToProps = store => ({

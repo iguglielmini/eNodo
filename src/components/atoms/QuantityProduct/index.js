@@ -12,13 +12,13 @@ import { convertToPriceText } from '@modules/utils';
 import Styles from './styles';
 
 function QuantityProduct({
-  quantity, onSelect, price, removeProduct
+  quantity, onSelect, price, removeProduct, stock
 }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const newItensData = [];
-    for (let qtd = 1; qtd <= 99; qtd += 1) {
+    for (let qtd = 1; qtd <= stock; qtd += 1) {
       const item = { value: qtd.toString(), label: qtd.toString() };
       if (qtd === 1) item.selected = true;
       newItensData.push(item);
@@ -26,36 +26,36 @@ function QuantityProduct({
     setItems(newItensData);
   }, []);
 
-  if (!items.length) return null;
-
   return (
     <>
       <View style={Styles.containerAddProduct}>
-        <View style={Styles.container}>
-          <RNPickerSelect
-            items={items}
-            placeholder={{}}
-            fixAndroidTouchableBug
-            value={String(quantity)}
-            useNativeAndroidPickerStyle={false}
-            onValueChange={value => onSelect(value)}
-            Icon={() => <IconArrowDonw />}
-            style={{
-              inputIOS: Styles.viewContainer,
-              inputAndroid: Styles.viewContainer,
-              iconContainer: Styles.iconContainer,
-              pickerSelectStyles: Styles.pickerSelectStyles,
-            }}
-          />
-          <Text style={Styles.quantyPrice}>
-            {convertToPriceText(((price && price.current) || 0) * quantity)}
-          </Text>
-          {price && price.previous && (
-            <Text style={Styles.quantyLastPrice}>
-              {convertToPriceText(price.previous)}
+        {items.length > 0 && (
+          <View style={Styles.container}>
+            <RNPickerSelect
+              items={items}
+              placeholder={{}}
+              fixAndroidTouchableBug
+              value={String(quantity)}
+              useNativeAndroidPickerStyle={false}
+              onValueChange={value => onSelect(value)}
+              Icon={() => <IconArrowDonw />}
+              style={{
+                inputIOS: Styles.viewContainer,
+                inputAndroid: Styles.viewContainer,
+                iconContainer: Styles.iconContainer,
+                pickerSelectStyles: Styles.pickerSelectStyles,
+              }}
+            />
+            <Text style={Styles.quantyPrice}>
+              {convertToPriceText(((price && price.current) || 0) * quantity)}
             </Text>
-          )}
-        </View>
+            {price && price.previous && (
+              <Text style={Styles.quantyLastPrice}>
+                {convertToPriceText(price.previous)}
+              </Text>
+            )}
+          </View>
+        )}
 
         <TouchableOpacity onPress={removeProduct}>
           <Text style={Styles.btnText}>Remover</Text>

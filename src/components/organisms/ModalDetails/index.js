@@ -5,10 +5,10 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 
+// Icons
+import CloseIcon from '@assets/svg/close';
 /** Styles */
 import Styles from './styles';
-// Icons
-import CloseIcon from '../../../assets/svg/close';
 
 const ModalDetails = ({ visible, setVisible, details }) => (
   <Modal
@@ -19,7 +19,7 @@ const ModalDetails = ({ visible, setVisible, details }) => (
     <View style={Styles.cardModal}>
       <View style={Styles.containerTitle}>
         <TouchableOpacity onPress={() => setVisible(false)}>
-          <CloseIcon />
+          <CloseIcon onPress={() => setVisible(false)} />
         </TouchableOpacity>
       </View>
       <ScrollView

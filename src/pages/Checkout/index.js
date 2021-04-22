@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import WebView from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
 import { ActivityIndicator, View } from 'react-native';
@@ -9,6 +11,8 @@ import DeviceStorage from '@modules/services/device-storage';
 import { useToast } from '@components/molecules/Toast';
 import ApiAuth from '@modules/api/api-auth';
 
+import { saveLengthCart } from '@redux/actions';
+
 import { BLACK } from '@assets/style/colors';
 import ArrowVIcon from '@assets/svg/arrowv';
 import DefaultStyles from '@assets/style/default';
@@ -16,7 +20,8 @@ import config from '@/config';
 import styles from './style';
 
 
-const Checkout = ({ navigation }) => {
+const Checkout = (props) => {
+  const { navigation } = props;
   const [loading, setLoading] = useState(true);
   const [source, setSource] = useState(null);
   const [redirect, setRedirect] = useState('');
@@ -74,17 +79,33 @@ const Checkout = ({ navigation }) => {
     if (!loadingPage && url !== redirect && url !== 'about:blank') {
       const filter = checkoutConfig.whitelist.filter(item => item.indexOf(url) === -1);
       if (filter.length === 0) {
-        ShoppingService.getBasket().then(async (response) => {
-          const { data } = response;
-          if (data && data.basket) {
-            await DeviceStorage.setItem('@BelshopApp:cart', data.basket);
-            if (data.basket.items.length > 0) navigation.goBack();
-            else navigation.navigate('Home');
-          }
-        });
+        goBack();
       }
     }
   }
+
+  const goBack = async () => {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+
+    await ApiAuth.session();
+    const { data } = await ShoppingService.getBasket();
+
+    if (data && data.basket) {
+      const { basket } = data;
+      await DeviceStorage.setItem('@BelshopApp:cart', basket);
+
+      setLoading(false);
+
+      props.saveLengthCart(basket.totalItems);
+
+      if (basket.items.length > 0) navigation.goBack();
+      else navigation.navigate('Home');
+    }
+  };
 
   useEffect(() => {
     loadCheckout();
@@ -116,7 +137,7 @@ const Checkout = ({ navigation }) => {
         />
         )}
         <View style={styles.btnWrapper}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={goBack}>
             <View style={styles.btnImageIcon}>
               <ArrowVIcon />
             </View>
@@ -128,4 +149,11 @@ const Checkout = ({ navigation }) => {
   );
 };
 
-export default Checkout;
+const mapDispatchToProps = dispatch => bindActionCreators({
+  saveLengthCart,
+}, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Checkout);

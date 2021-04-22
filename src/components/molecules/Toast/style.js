@@ -28,7 +28,7 @@ export default StyleSheet.create({
     shadowRadius: 9,
     alignItems: 'flex-start',
     justifyContent: 'center',
-    zIndex: 100000,
+    zIndex: 1000000,
   },
   error: {
     backgroundColor: $error,

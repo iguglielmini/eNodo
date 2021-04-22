@@ -1,15 +1,14 @@
-import axios from 'axios';
 import DeviceStorage from '@modules/services/device-storage';
 import {
-  saveUser,
   clearUser,
-  saveLengthCart,
-  favoritesUser,
+
+  favoritesUser, saveLengthCart, saveUser
 } from '@redux/actions';
+import axios from 'axios';
+import store from '@redux';
 import config from '@/config';
 import APIRturn from './utils/return';
 
-import store from '@redux';
 
 export default class Api {
   constructor() {
@@ -103,9 +102,11 @@ export default class Api {
     });
   }
 
-  async clearUser(expired) {
+  async clearUser(expired, keepCart) {
     store.dispatch(clearUser(expired));
-    store.dispatch(saveLengthCart(0));
+    if (!keepCart) {
+      store.dispatch(saveLengthCart(0));
+    }
     store.dispatch(favoritesUser(null));
 
     await DeviceStorage.multiRemove([

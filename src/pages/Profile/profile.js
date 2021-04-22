@@ -11,12 +11,13 @@ import { SafeAreaView } from 'react-navigation';
 
 // Components
 import LinkHelp from '@components/atoms/LinkHelp';
-import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
+import OrderList from '@components/organisms/OrderList';
 import CarouselFavorites from '@components/organisms/CarouselFavorites';
 
 // Redux, Storage, Utils e API
 import Api from '@modules/api/api-home';
 import ApiProfile from '@modules/api/api-profile';
+import ApiShopping from '@modules/api/api-shopping';
 // Styles
 import DefaultStyles from '@assets/style/default';
 import Styles from './styles';
@@ -29,21 +30,44 @@ class Profile extends Component {
       homeData: [],
       loading: true,
       favorites: [],
+      orders: [],
     };
   }
 
   componentDidMount() {
-    this.getData();
-    this.getFavorites();
-  }
-
-  getData = () => {
-    Api.getHome()
-      .then(({ data }) => {
-        this.setState({ homeData: data });
+    Promise.all([
+      Api.getHome(),
+      ApiShopping.getUserOrders(),
+      this.getFavorites(),
+    ])
+      .then((data) => {
+        const [
+          { data: homeData },
+          {
+            data: { orders },
+          },
+          {
+            data: { items: favorites },
+          },
+        ] = data;
+        this.setState({
+          homeData,
+          orders,
+          favorites,
+        });
       })
       .finally(() => this.setState({ loading: false }));
-  };
+  }
+
+  getFavorites = () => ApiProfile.getFavoritesDetails();
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps() {
+    this.getFavorites().then(({ data }) => {
+      const { items } = data;
+      this.setState({ favorites: items });
+    });
+  }
 
   renderLinks = () => {
     const { homeData } = this.state;
@@ -65,16 +89,8 @@ class Profile extends Component {
     });
   };
 
-  getFavorites = async () => {
-    ApiProfile.getFavoritesDetails()
-      .then(({ data }) => {
-        const { items } = data;
-        this.setState({ favorites: items });
-      }).finally(() => this.setState({ loading: false }));
-  };
-
   render() {
-    const { loading, favorites } = this.state;
+    const { loading, favorites, orders } = this.state;
     const { navigation, user } = this.props;
 
     return (
@@ -99,17 +115,11 @@ class Profile extends Component {
             </View>
           </View>
           <View style={Styles.contentOrder}>
-            <Text style={Styles.TitleOrder}>Seus Pedidos</Text>
-            <Text style={Styles.subTitleOrder}>
-              Você ainda não realizou nenhum pedido na Belshop
-            </Text>
-            <View style={Styles.btnContent}>
-              <ButtonSeeAll
-                theme="light"
-                title="Continue comprando"
-                onPress={() => navigation.navigate('Home')}
-              />
-            </View>
+            <OrderList
+              orders={orders}
+              navigation={navigation}
+              loading={loading}
+            />
           </View>
           <View style={Styles.contentFavorite}>
             <CarouselFavorites data={favorites} navigation={navigation} />
@@ -122,8 +132,10 @@ class Profile extends Component {
 }
 const mapStateToProps = store => ({
   user: store.user,
+  favorites: store.user.favorites,
 });
 
 export default connect(
-  mapStateToProps, null
+  mapStateToProps,
+  null
 )(Profile);

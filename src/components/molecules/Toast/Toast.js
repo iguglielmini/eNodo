@@ -164,7 +164,7 @@ const Toast = () => {
               }}
               onPress={() => close()}
             >
-              <CloseIcon size={14} fill={WHITE} />
+              <CloseIcon size={14} fill={WHITE} onPress={() => close()} />
             </TouchableOpacity>
           </View>
         </Animated.View>

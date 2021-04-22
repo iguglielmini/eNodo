@@ -6,8 +6,9 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  DeviceEventEmitter
 } from 'react-native';
-import { DeviceEventEmitter } from 'react-native';
+
 import ToggleSwitch from 'toggle-switch-react-native';
 
 import DeviceStorage from '@modules/services/device-storage';
@@ -39,7 +40,7 @@ class Notification extends Component {
     this.setState({ notificationActive: notifyOptions.allOn });
   }
 
-  addOrRemove = value => {
+  addOrRemove = (value) => {
     const { actived } = this.state;
     const index = actived.indexOf(value);
 
@@ -49,7 +50,7 @@ class Notification extends Component {
     this.setState({ actived });
   };
 
-  handleActivedAllNotification = async(isOn) => {
+  handleActivedAllNotification = async (isOn) => {
     this.setState({
       actived: [],
       notificationActive: isOn,
@@ -61,7 +62,7 @@ class Notification extends Component {
 
   handleOnClick = (item, index, isOn) => {
     this.addOrRemove(index);
-    console.log(isOn, 'aqui');
+    console.log(isOn);
     DeviceEventEmitter.emit('changePermissionNotification');
   };
 
@@ -98,8 +99,8 @@ class Notification extends Component {
                 />
               </View>
             </View>
-            {user.id &&
-              PushNotificationMock.map((item, index) => {
+            {user.id
+              && PushNotificationMock.map((item, index) => {
                 const key = index;
                 const selfIsOn = actived.indexOf(key) !== -1;
 

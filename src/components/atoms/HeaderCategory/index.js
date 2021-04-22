@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { WHITE } from '@assets/style/colors';
 import Badge from '@components/atoms/Badge';
 import { View, TouchableOpacity } from 'react-native';
 
@@ -37,7 +38,7 @@ function HeaderCategory({
     <>
       <View style={Styles.ContainerHeader}>
         <TouchableOpacity onPress={handleGoBack}>
-          <ArrowVIcon color="#ffffff" />
+          <ArrowVIcon color={WHITE} />
         </TouchableOpacity>
         {!hideOptionsButtons && (
           <View style={Styles.headerButtons}>
@@ -45,10 +46,10 @@ function HeaderCategory({
               onPress={handlerFavorite}
               style={Styles.buttonFavorite}
             >
-              <FavoriteIcon color="#ffffff" />
+              <FavoriteIcon color={WHITE} />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleShowCart} style={Styles.buttonBag}>
-              <Badge count={lengthCart} theme={theme} />
+              <Badge count={lengthCart} theme={theme} color="#ffffff" />
             </TouchableOpacity>
           </View>
         )}
@@ -66,8 +67,8 @@ HeaderCategory.propTypes = {
 };
 
 HeaderCategory.defaultProps = {
-  lengthCart: 0,
   theme: 'dark',
+  lengthCart: 0,
   hideOptionsButtons: false,
 };
 

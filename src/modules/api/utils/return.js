@@ -15,7 +15,6 @@ function apiReturn(request) {
           throw new AuthError(response);
         }
       }
-      // return Alert.alert(APIErrorHandler.getErrorMessages(response).messages.join(''));
 
       throw new Error(APIErrorHandler.getErrorMessages(response).messages.join(''));
     });

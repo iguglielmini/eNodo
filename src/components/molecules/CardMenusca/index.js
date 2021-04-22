@@ -33,11 +33,16 @@ function CardMenusca(props) {
 
 
   function handlerOnFavorite() {
-    if (!user.id) return navigation.navigate('Login');
+    if (!user.id) {
+      return navigation.navigate('Login', {
+        replace: true,
+        to: 'Favorites',
+        title: 'Favoritos',
+      });
+    }
 
     if (!isFavorited) addFavorite();
     else removeFavorite();
-
     return null;
   }
 

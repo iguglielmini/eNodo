@@ -106,6 +106,7 @@ export async function updateProductDelivery(formatedCep, params) {
 
     return data.deliveryOption;
   } catch (error) {
+    console.log(error);
     return defaultDeliveryOption;
   }
 }
@@ -133,6 +134,26 @@ export async function clearProductDelivery() {
   }
 }
 
+export async function clearCartDelivery() {
+  try {
+    const { data } = await ApiShopping.basketSetPostalCode({
+      postalCode: null
+    });
+
+    const { basket } = data;
+    const payload = {
+      formatedCep: null,
+      cep: null,
+      basket,
+    };
+
+    store.dispatch(updateDelivery(payload));
+
+    return basket;
+  } catch (error) {
+    return [];
+  }
+}
 export async function loadData() {
   const data = await DeviceStorage.getItem('@BelshopApp:delivery');
   return data;
@@ -151,39 +172,3 @@ export async function start() {
 
   store.subscribe(handleChange);
 }
-
-// export function updateCartDelivery(cep) {
-//   return async (dispatch) => {
-//     const { data } = await ApiShopping.basketSetPostalCode({
-//       postalCode: cleanCep(cep)
-//     });
-
-//     // dispatch(updateDelivery(payload));
-
-//     // ApiShopping.basketSetPostalCode({ postalCode: textCep })
-//     //   .then(async ({ data }) => {
-//     //     const { basket } = data;
-//     //     await DeviceStorage.setItem('@BelshopApp:cart', basket);
-//     //     await DeviceStorage.setItem('@BelshopApp:delivery', {
-//     //       postalCode: cep,
-//     //       ...basket.selectedDeliveryOption,
-//     //     });
-//     //     await this.getDelivery();
-//     //     await this.getCart();
-//     //   })
-//     //   .finally(() => );
-//   };
-// }
-
-// export function updateProductDelivery(cep, params) {
-//   return async (dispatch) => {
-//     const { data } = await ApiShopping.getProductDelivery({
-//       ...params,
-//       cep: cleanCep(cep),
-//     });
-//     // const { deliveryOption } = data;
-
-//     // const payload = { ...params };
-//     // dispatch(updateDelivery(payload));
-//   };
-// }

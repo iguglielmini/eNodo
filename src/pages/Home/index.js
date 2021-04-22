@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Image, ScrollView } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 
 /* Components */
 import Title from '@components/atoms/Title';
@@ -10,9 +16,10 @@ import Section from '@components/atoms/Section';
 import LinkHelp from '@components/atoms/LinkHelp';
 import ListCard from '@components/molecules/ListCard';
 import IntroCard from '@components/molecules/IntroCard';
+import HeroBanner from '@components/molecules/HeroBanner';
+import HeaderHome from '@components/molecules/HeaderHome';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 import CategoryList from '@components/molecules/CategoryList';
-import ImageIntroCard from '@components/molecules/ImageIntroCard';
 import CarouselBranding from '@components/organisms/CarouselBranding';
 
 import { withToast } from '@components/molecules/Toast';
@@ -34,17 +41,16 @@ import { WHITELIGHT, BLACK, WHITE } from '@assets/style/colors';
 import { SafeAreaView } from 'react-navigation';
 import { SPACE_HEADER } from '@assets/style/wrapper';
 import Styles from './styles';
-import HeroBanner from '../../components/molecules/HeroBanner';
-import HeaderHome from '../../components/molecules/HeaderHome';
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
-    changeStatusBar('dark-content');
+    changeStatusBar('dark-content', WHITELIGHT);
 
     this.state = {
       data: [],
+      loading: true,
     };
 
     this.updateLengthCart();
@@ -67,8 +73,9 @@ class Home extends Component {
   };
 
   checkSessionExpired = () => {
-    if (this.props.user.expired) {
-      this.props.toast.open({
+    const { toast, user } = this.props;
+    if (user.expired) {
+      toast.open({
         title: 'Conta',
         message: 'Sua sessão expirou, por favor, realize login novamente.',
         type: 'warning',
@@ -79,21 +86,29 @@ class Home extends Component {
   loadData = () => {
     changeStatusBar('dark-content', WHITELIGHT);
     this.getData();
+    this.getFavorites();
   };
 
   getData = async () => {
     const { data } = await ApiHome.getHome();
-    if (data) this.setState({ data });
+    const { navigation } = this.props;
+    if (data) {
+      this.setState({ data });
+    } else {
+      navigation.navigate('LoadError', { page: 'Home', reload: true });
+    }
+    setTimeout(() => this.setState({ loading: false }), 500);
   };
 
-  updateLengthCart = async () => {
-    try {
-      const { data } = await ApiShopping.getBasket();
-      this.props.saveLengthCart(data.basket.totalItems);
-    } catch (error) {
-      console.log(error);
-      this.props.saveLengthCart(0);
-    }
+  updateLengthCart = () => {
+    ApiShopping.getBasket()
+      .then(({ data }) => {
+        const { basket } = data;
+        this.props.saveLengthCart(basket.totalItems);
+      })
+      .catch(() => {
+        this.props.saveLengthCart(0);
+      });
   };
 
   generateSections = (navigation, lengthCart) => {
@@ -105,7 +120,7 @@ class Home extends Component {
     function handleGoFilterResult(params) {
       navigation.navigate('FilterResult', {
         ...params,
-        hideFilterButton: true,
+        hideFilterButton: false,
       });
     }
 
@@ -116,11 +131,11 @@ class Home extends Component {
 
     data.forEach((section, index) => {
       const {
-        title, theme, widgets, style
+        title, theme, widgets, style, banner
       } = section;
 
       widgets.forEach((widget, widgetIndex) => {
-        const key = widgetIndex + index;
+        const key = `widget-${widgetIndex}-${index}`;
         const {
           items, template, highlight, showAll, searchQuery
         } = widget;
@@ -128,26 +143,30 @@ class Home extends Component {
         if (!items.length) return;
 
         function showMore(targetType, target) {
-          let params;
-
           if (target && targetType) {
-            params = queryStringToJSON(target);
+            const { targetTitle, brand } = queryStringToJSON(target);
 
             switch (targetType) {
               case 'search':
                 navigation.navigate('FilterResult', {
-                  params,
+                  brand,
+                  title: targetTitle,
                   hideFilterButton: true,
                 });
                 break;
               case 'product':
                 navigation.navigate('ProductDetails', {
-                  params,
+                  slug: target,
                 });
                 break;
               case 'category':
                 navigation.navigate('Category', {
-                  params,
+                  slug: target,
+                });
+                break;
+              case 'webview':
+                navigation.navigate('ExternalLink', {
+                  source: { uri: target },
                 });
                 break;
               default:
@@ -157,10 +176,10 @@ class Home extends Component {
             return;
           }
 
-          params = queryStringToJSON(searchQuery);
+          const params = queryStringToJSON(searchQuery);
 
           navigation.navigate('FilterResult', {
-            params,
+            ...params,
             hideFilterButton: true,
           });
         }
@@ -183,7 +202,7 @@ class Home extends Component {
 
           case 'swiper':
             tempSections.push(
-              <Section style={{ paddingTop: 16 }} key={key}>
+              <Section style={{ paddingTop: 80 }} key={key}>
                 <CarouselBranding
                   showFooter
                   data={items}
@@ -202,7 +221,11 @@ class Home extends Component {
               if (style === 'queridinhos') {
                 tempSections.push(
                   <Section
-                    style={[Styles.belSection, Styles.section]}
+                    style={[
+                      Styles.belSection,
+                      Styles.section,
+                      { paddingTop: 160 },
+                    ]}
                     key={key}
                   >
                     <View style={Styles.containerBel}>
@@ -225,7 +248,9 @@ class Home extends Component {
                     </View>
                     <ListCard data={items} navigation={navigation} />
                     {showAll && (
-                      <ButtonSeeAll theme={theme} onPress={showMore} />
+                      <View style={{ marginLeft: 16, marginTop: 48 }}>
+                        <ButtonSeeAll theme={theme} onPress={showMore} />
+                      </View>
                     )}
                   </Section>
                 );
@@ -252,7 +277,7 @@ class Home extends Component {
                   ) : (
                     <Title
                       title={'Promos \nda Semana'}
-                      style={Styles.belTitle}
+                      style={Styles.belTitlePromo}
                     />
                   )}
 
@@ -261,20 +286,41 @@ class Home extends Component {
                     navigation={navigation}
                     theme={theme}
                   />
-                  {showAll && <ButtonSeeAll theme={theme} onPress={showMore} />}
+                  {showAll && (
+                    <View style={{ marginLeft: 16, marginTop: 48 }}>
+                      <ButtonSeeAll theme={theme} onPress={showMore} />
+                    </View>
+                  )}
                 </Section>
               );
             }
 
             if (style === 'default' && theme === 'dark') {
+              const { width } = Dimensions.get('window');
+
               tempSections.push(
-                <Section style={{ paddingTop: 48 }} theme={theme} key={key}>
+                <Section
+                  style={{
+                    paddingTop: 48,
+                    paddingBottom: 48,
+                    marginTop: 80,
+                  }}
+                  theme={theme}
+                  key={key}
+                >
                   <Title
                     theme={theme}
                     title={title}
                     style={Styles.novidadeBellTitle}
                   />
-                  <ImageIntroCard />
+                  <Image
+                    source={{
+                      uri: banner.url,
+                      width,
+                      height: width,
+                    }}
+                    style={Styles.newsBanner}
+                  />
                   <View style={Styles.section}>
                     <ListCard
                       data={items}
@@ -282,7 +328,11 @@ class Home extends Component {
                       navigation={navigation}
                     />
                   </View>
-                  {showAll && <ButtonSeeAll theme={theme} onPress={showMore} />}
+                  {showAll && (
+                    <View style={{ marginLeft: 16, marginTop: 48 }}>
+                      <ButtonSeeAll theme={theme} onPress={showMore} />
+                    </View>
+                  )}
                 </Section>
               );
             }
@@ -290,7 +340,7 @@ class Home extends Component {
 
           case 'bullets':
             tempSections.push(
-              <Section key={key}>
+              <Section key={key} style={{ marginTop: 80 }}>
                 <Title title={title} style={{ marginLeft: 16 }} />
                 <CategoryList
                   data={items}
@@ -303,7 +353,7 @@ class Home extends Component {
 
           case 'links':
             tempSections.push(
-              <Section key={key} style={{ paddingVertical: 0 }}>
+              <Section key={key} style={{ paddingVertical: 0, marginTop: 80 }}>
                 <LinkHelp data={items} theme="dark" />
               </Section>
             );
@@ -317,9 +367,15 @@ class Home extends Component {
 
   render() {
     const { navigation, lengthCart } = this.props;
+    const { loading } = this.state;
 
     return (
       <SafeAreaView>
+        {loading && (
+          <View style={Styles.loadingView}>
+            <ActivityIndicator size="large" color="#ffffff" />
+          </View>
+        )}
         <ScrollView alwaysBounceVertical showsVerticalScrollIndicator={false}>
           {this.generateSections(navigation, lengthCart)}
         </ScrollView>
@@ -337,9 +393,13 @@ const mapStateToProps = store => ({
   user: store.user,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  saveLengthCart, favoritesUser
-}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    saveLengthCart,
+    favoritesUser,
+  },
+  dispatch
+);
 
 export default connect(
   mapStateToProps,

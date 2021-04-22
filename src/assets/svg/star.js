@@ -13,8 +13,8 @@ const Star = ({ size, fill, stroke }) => (
     <Path
       fill={fill}
       stroke={stroke}
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M7.70634 11L4.17963 12.8541L4.85318 8.92705L2 6.1459L5.94298 5.57295L7.70634 2L9.46971 5.57295L13.4127 6.1459L10.5595 8.92705L11.233 12.8541L7.70634 11Z"
     />
   </Svg>

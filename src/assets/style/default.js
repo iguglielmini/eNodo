@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { BGGREY, BLACK, WHITE } from '@assets/style/colors';
+import {
+  BGGREY, BLACK, WHITE, TEXTPINK
+} from '@assets/style/colors';
 
 export default StyleSheet.create({
   loading: {
@@ -12,7 +14,7 @@ export default StyleSheet.create({
     position: 'absolute',
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   viewWhite: {
     flex: 1,
@@ -25,5 +27,9 @@ export default StyleSheet.create({
   viewGrey: {
     flex: 1,
     backgroundColor: BGGREY
+  },
+  viewPink: {
+    flex: 1,
+    backgroundColor: TEXTPINK
   },
 });

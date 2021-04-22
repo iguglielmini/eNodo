@@ -32,7 +32,7 @@ class Filter extends Component {
 
     changeStatusBar('light-content');
 
-    const { route, navigation } = this.props;
+    const { route, navigation } = props;
     const { slug, title } = route.params;
 
     this.state = {
@@ -54,8 +54,9 @@ class Filter extends Component {
   getData = (slug) => {
     ApiCategory.getCategory(slug)
       .then(({ data }) => {
-        const { widgets } = data;
-        this.setState({ widgets });
+        const { widgets, title } = data;
+        console.log(widgets);
+        this.setState({ widgets, title });
       })
       .finally(() => this.setState({ loading: false }));
   };
@@ -82,7 +83,7 @@ class Filter extends Component {
         <View style={Styles.container}>
           {/* Header */}
           <HeaderCategory
-            theme="dark"
+            theme="light"
             lengthCart={lengthCart}
             navigation={navigation}
             handleGoBack={() => {
@@ -108,10 +109,7 @@ class Filter extends Component {
               {widgets.map((widget, index) => {
                 const key = index;
                 const {
-                  title: widgetTitle,
-                  template,
-                  items,
-                  filters,
+                  title: widgetTitle, template, items, filters
                 } = widget;
 
                 // section 1

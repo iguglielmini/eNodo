@@ -56,6 +56,13 @@ export const TitleMediumBold = {
   lineHeight: 24
 };
 
+export const OnboardingTitle = {
+  fontFamily: FONT_FAMILY,
+  fontWeight: FONT_WEIGHT_BOLD,
+  fontSize: 22,
+  lineHeight: 26
+};
+
 export const TitleLarge = {
   fontFamily: FONT_FAMILY,
   fontWeight: FONT_WEIGHT_BOLD,

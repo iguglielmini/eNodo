@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import {
   SPACE_16,
   SPACE_20,
@@ -6,7 +6,11 @@ import {
   SPACE_40,
   SPACE_44,
   SPACE_48,
+  SPACE_64,
 } from '@assets/style/wrapper';
+import { PRIMARY } from '@assets/style/colors';
+
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   hero: {
@@ -25,6 +29,12 @@ export default StyleSheet.create({
     paddingLeft: 0,
     marginBottom: 0,
     paddingBottom: 0,
+  },
+  belTitlePromo: {
+    marginLeft: 0,
+    marginBottom: 0,
+    paddingLeft: SPACE_32,
+    paddingBottom: SPACE_64,
   },
   containerBel: {
     flexDirection: 'row',
@@ -52,5 +62,18 @@ export default StyleSheet.create({
   },
   novidadeBellTitle: {
     paddingHorizontal: SPACE_32,
+  },
+  newsBanner: {
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+    marginBottom: 40,
+    marginLeft: 16,
+  },
+  loadingView: {
+    height,
+    width,
+    backgroundColor: PRIMARY,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

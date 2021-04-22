@@ -8,15 +8,18 @@ import ArrowIcon from '@assets/svg/arrow';
 import Styles from './styles';
 
 const ButtonSeeAll = ({
-  theme, style, title, onPress, showArrow
+  theme,
+  style,
+  title,
+  onPress,
+  containerStyle,
+  showArrow,
 }) => (
   <>
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={containerStyle}>
       <View style={Styles.container}>
         <Text style={[Styles.textButton, Styles[theme], style]}>{title}</Text>
-        {showArrow && (
-          <ArrowIcon color={theme === 'dark' ? WHITE : BLACK} />
-        )}
+        {showArrow && <ArrowIcon color={theme === 'dark' ? WHITE : BLACK} />}
       </View>
     </TouchableOpacity>
   </>
@@ -27,12 +30,14 @@ ButtonSeeAll.propTypes = {
   title: PropTypes.string,
   theme: PropTypes.string,
   style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  containerStyle: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   showArrow: PropTypes.bool,
 };
 
 ButtonSeeAll.defaultProps = {
   onPress: () => {},
   style: null,
+  containerStyle: null,
   theme: 'dark',
   title: 'Ver Todos',
   showArrow: true,

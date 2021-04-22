@@ -11,10 +11,11 @@ export default StyleSheet.create({
     paddingHorizontal: 32,
   },
   containerBottom: {
-    borderTopColor: '#A1A6AF',
-    borderTopWidth: 1,
     paddingTop: 56,
+    paddingBottom: 56,
+    borderTopWidth: 1,
     paddingHorizontal: 32,
+    borderTopColor: '#A1A6AF',
   },
   containerHeader: {
     flexDirection: 'row',

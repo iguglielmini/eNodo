@@ -1,7 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { TitleLarge, TitleSmall } from '@assets/style/typography';
 import { BORDERGREY, TEXTBLACK, WHITE } from '@assets/style/colors';
-import {  SPACE_16, SPACE_32, SPACE_40, SPACE_48 } from '@assets/style/wrapper';
+import {
+  SPACE_16, SPACE_32, SPACE_40, SPACE_48
+} from '@assets/style/wrapper';
+
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   contentFavorites: {
@@ -22,17 +26,31 @@ export default StyleSheet.create({
   btnContent: {
     paddingBottom: 60,
   },
+  container: {
+    width,
+  },
   cardContainer: {
-    height: 180,
-    borderRadius: 5,
-    backgroundColor: WHITE,
+    flex: 1,
+    height: 160,
     marginRight: SPACE_16 / 2,
   },
   cardImage: {
     width: '100%',
     height: '100%',
+    borderRadius: 5,
+    resizeMode: 'cover',
+    overflow: 'hidden',
+    backgroundColor: WHITE,
   },
-  paginationContainer: { marginLeft: 'auto' },
+  contentFooter: {
+    width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: SPACE_40,
+    paddingRight: SPACE_32,
+    paddingBottom: SPACE_48,
+    justifyContent: 'space-between',
+  },
   Themecolor: { color: '#0D0D0D' },
   paginationDot: {
     width: 6,
@@ -51,10 +69,5 @@ export default StyleSheet.create({
   },
   paginationDotPreviewLast: {
     transform: [{ scale: 0.8 }],
-  },
-  buttonSeeAll: {
-    bottom: 30,
-    position: 'absolute',
-    marginLeft: SPACE_32,
   },
 });

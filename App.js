@@ -15,9 +15,9 @@ import DeviceStorage from '@modules/services/device-storage';
 import { start as deliveryStart } from '@modules/services/delivery';
 import { navigationRef, navigate } from '@modules/helpers/root-navigation';
 
+import { NavigationContainer } from '@react-navigation/native';
 import config from '@/config';
 import reduxStore from '@redux';
-import { NavigationContainer } from '@react-navigation/native';
 
 import Router from './router';
 
@@ -30,21 +30,23 @@ class App extends Component {
 
     GlobalEvent();
 
-    this.state = {
-      loaded: false,
-    };
-
     this.OneSignalInit();
     configureFontWeight();
     crashlytics().log('App mounted.');
-    DeviceEventEmitter.addListener('changePermissionNotification', this.OneSignalInit);
+    DeviceEventEmitter.addListener(
+      'changePermissionNotification',
+      this.OneSignalInit
+    );
   }
 
   async componentDidMount() {
-    await Promise.all([AuthService.start(), deliveryStart()]);
-    setTimeout(() => SplashScreen.hide(), 500);
-
-    this.setState({ loaded: true });
+    try {
+      await Promise.all([AuthService.start(), deliveryStart()]);
+    } catch (err) {
+      navigate('LoadError', { reload: true });
+    } finally {
+      SplashScreen.hide();
+    }
   }
 
   componentWillUnmount() {
@@ -53,20 +55,22 @@ class App extends Component {
 
   OneSignalConfig = () => {
     OneSignal.init(config.oneSignalKey, {
-
       kOSSettingsKeyAutoPrompt: false,
       kOSSettingsKeyInFocusDisplayOption: 2,
-    })
+    });
     OneSignal.inFocusDisplaying(2);
-  }
-  
-  OneSignalInit = async() => {
-    const notifyOptions = await DeviceStorage.getItem('@BelshopApp:Notifications');
-    console.log('Notify Options ', notifyOptions);
-    
-    if (!notifyOptions) return this.OneSignalConfig();
-    if (notifyOptions.allOn) this.OneSignalConfig();
-  }
+    OneSignal.addEventListener('received', this.onReceivedNotifications);
+  };
+
+  // eslint-disable-next-line consistent-return
+  OneSignalInit = async () => {
+    const notifyOptions = await DeviceStorage.getItem(
+      '@BelshopApp:Notifications'
+    );
+
+    if (!notifyOptions) return;
+    if (notifyOptions && notifyOptions.allOn) this.OneSignalConfig();
+  };
 
   onReceivedNotifications = async ({ payload }) => {
     const { launchURL } = payload;
@@ -74,15 +78,14 @@ class App extends Component {
     ApiProduct.redirectNotification(launchURL).then(({ data }) => {
       const { type, target } = data;
 
+      if (type === 'none') navigate('Home');
+      if (type === 'search') navigate('Search');
+      if (type === 'brand') navigate('FilterResult', { slug: target });
       if (type === 'product') navigate('ProductDetails', { slug: target });
     });
   };
 
   render() {
-    const { loaded } = this.state;
-
-    if (!loaded) return null;
-
     return (
       <NavigationContainer ref={navigationRef}>
         <Provider store={reduxStore}>

@@ -28,83 +28,109 @@ import ApiShopping from '@modules/api/api-shopping';
 import DeviceStorage from '@modules/services/device-storage';
 
 import { changeStatusBar } from '@modules/utils';
-import Validator from '@modules/validators/index';
-
+import { EmailRegExp } from '@modules/validators/index';
 import { setCep } from '@modules/services/delivery';
-import { saveLengthCart, favoritesUser } from '@redux/actions';
+import { favoritesUser } from '@redux/actions';
 
 /* Styles */
 import DefaultStyles from '@assets/style/default';
+import { BLACK, WHITE, GREY } from '@assets/style/colors';
 import config from '@/config';
 import Styles from './styles';
 
-function Login({ route, navigation, hideGoBack }) {
+const Login = (props) => {
+  const {
+    route, navigation, hideGoBack, favoritesUser: favoritesUserAction,
+  } = props;
   const { urls } = config;
+
+  // TODO: move no useEffect
   navigation.addListener('focus', () => changeStatusBar('dark-content'));
 
-  const validator = new Validator();
   const inputPaswordRef = createRef();
   const { open: openToast } = useToast();
   const [loading, setLoading] = useState(false);
   const {
-    control, handleSubmit, errors, setError
+    control, handleSubmit, errors,
   } = useForm();
 
-  function getErrors(error) {
-    if (errors && errors[error]) return errors[error].message;
-    return null;
-  }
+  const getProfile = async () => {
+    const { data } = await ApiProfile.getProfile();
+    ApiAuth.saveUser(data);
+  };
 
-  async function onSubmitLogin({ email, password }) {
-    const isValidEmail = validator.isValidEmail(email);
-    if (!isValidEmail) setError('email', { message: 'E-mail inválido.' });
+  const getBasket = async () => {
+    const { data } = await ApiShopping.getBasket();
+    const { basket } = data;
 
+    if (basket) {
+      setCep({ cep: basket.postalCode });
+    }
+  };
+
+  const getFavorites = async () => {
+    const { data } = await ApiProfile.getFavorites();
+
+    DeviceStorage.setItem('@BelshopApp:favorites', data.items);
+    favoritesUserAction(data.items);
+  };
+
+  const handleLogin = async ({ email, password }) => {
     setLoading(true);
 
-    await ApiAuth.login({
-      password,
-      username: email,
-    })
-      .then(async () => {
-        openToast({
-          type: 'success',
-          title: 'Acesse sua conta',
-          message: 'Login efetuado com sucesso!',
-        });
+    try {
+      await ApiAuth.login({
+        username: email,
+        password,
+      });
+    } catch (error) {
+      setLoading(false);
 
-        Promise.all([ApiProfile.getProfile(), ApiShopping.getBasket()]).then(
-          (response) => {
-            const profile = response[0].data;
-            const { basket } = response[1].data;
+      return openToast({
+        title: 'Acesse sua conta',
+        message: error.message,
+        type: 'error',
+      });
+    }
 
-            if (basket.postalCode) setCep({ cep: basket.postalCode });
-            ApiAuth.saveUser(profile);
-          }
-        );
+    try {
+      await Promise.all([
+        getProfile(),
+        getBasket(),
+        getFavorites(),
+      ]);
 
-        if (route.params) {
-          const { to, replace, params } = route.params;
-          setTimeout(() => {
-            const action = replace ? 'replace' : 'navigate';
-            navigation[action](to, params);
-          }, 500);
-        }
-      })
-      .catch(({ message }) => {
-        setLoading(false);
+      const { to, replace, params } = route.params;
+      if (to) {
+        setTimeout(() => {
+          const action = replace ? 'replace' : 'navigate';
+          navigation[action](to, params);
+        }, 500);
+      }
 
-        openToast({
-          message,
-          type: 'error',
-          title: 'Acesse sua conta',
-        });
+      openToast({
+        title: 'Acesse sua conta',
+        message: 'Login efetuado com sucesso!',
+        type: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+      openToast({
+        title: 'Acesse sua conta',
+        message:
+          'Erro ao tentar pegar as informações do seu usuário, por favor tentar novamente mais tarde. Se o problema persisistir entre em contato com o suporte.',
+        type: 'error',
       });
 
-    ApiProfile.getFavorites().then(({ data }) => {
-      DeviceStorage.setItem('@BelshopApp:favorites', data.items);
-      this.props.favoritesUser(data.items);
-    });
-  }
+      setLoading(false);
+    }
+
+    return null;
+  };
+
+  // useEffect(() => {
+  //   changeStatusBar('dark-content');
+  // }, []);
 
   return (
     <SafeAreaView style={DefaultStyles.viewGrey}>
@@ -114,7 +140,7 @@ function Login({ route, navigation, hideGoBack }) {
             style={Styles.btnBack}
             onPress={() => navigation.goBack()}
           >
-            <ArrowVIcon color="#000" />
+            <ArrowVIcon color={BLACK} />
           </TouchableOpacity>
           <LinearGradient
             end={{ x: 0, y: 1 }}
@@ -130,9 +156,14 @@ function Login({ route, navigation, hideGoBack }) {
           <View style={Styles.inputWrapper}>
             <Controller
               name="email"
+              defaultValue=""
               control={control}
               rules={{
                 required: 'Campo e-mail deve ser preenchido.',
+                pattern: {
+                  value: EmailRegExp,
+                  message: 'E-mail inválido.'
+                }
               }}
               render={({ onBlur, onChange, value }) => (
                 <Input
@@ -144,11 +175,11 @@ function Login({ route, navigation, hideGoBack }) {
                   autoCapitalize="none"
                   onChangeText={onChange}
                   autoCompleteType="email"
-                  onErrorText={getErrors('email')}
+                  errorText={errors?.email?.message}
                   textContentType="emailAddress"
                   style={[
                     Styles.input,
-                    { backgroundColor: loading ? '#e6e6e6' : '#fff' },
+                    { backgroundColor: loading ? GREY : WHITE },
                   ]}
                   onSubmitEditing={() => inputPaswordRef.current.ref.focus()}
                 />
@@ -158,6 +189,7 @@ function Login({ route, navigation, hideGoBack }) {
           <View style={Styles.inputWrapper}>
             <Controller
               name="password"
+              defaultValue=""
               control={control}
               rules={{
                 required: 'Campo senha deve ser preenchido.',
@@ -172,11 +204,12 @@ function Login({ route, navigation, hideGoBack }) {
                   ref={inputPaswordRef}
                   onChangeText={onChange}
                   textContentType="password"
-                  onErrorText={getErrors('password')}
+                  errorText={errors?.password?.message}
                   style={[
                     Styles.input,
-                    { backgroundColor: loading ? '#e6e6e6' : '#fff' },
+                    { backgroundColor: loading ? GREY : WHITE },
                   ]}
+                  onSubmitEditing={handleSubmit(handleLogin)}
                 />
               )}
             />
@@ -193,10 +226,10 @@ function Login({ route, navigation, hideGoBack }) {
           <TouchableOpacity
             style={Styles.btn}
             disabled={loading}
-            onPress={handleSubmit(onSubmitLogin)}
+            onPress={handleSubmit(handleLogin)}
           >
             {loading ? (
-              <ActivityIndicator size="small" color="#ffffff" />
+              <ActivityIndicator size="small" color={WHITE} />
             ) : (
               <Text style={Styles.textBtn}>Acessar</Text>
             )}
@@ -217,7 +250,7 @@ function Login({ route, navigation, hideGoBack }) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 Login.propTypes = {
   route: PropTypes.objectOf(PropTypes.any),
@@ -231,7 +264,7 @@ Login.defaultProps = {
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  saveLengthCart, favoritesUser
+  favoritesUser
 }, dispatch);
 
 export default connect(

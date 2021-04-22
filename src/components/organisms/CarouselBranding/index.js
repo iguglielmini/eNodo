@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
+  View, Text, Image, Dimensions, TouchableOpacity
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
@@ -25,16 +21,18 @@ const Card = ({ data, showTitle, onPress }) => (
     {data.map((item, index) => {
       const key = index;
       const { title, image, searchQuery } = item;
-
       return (
         <TouchableOpacity
           key={key}
           activeOpacity={1}
           onPress={() => {
-            const params = Object.assign({
-              searchTerms: null,
-              isFavorite: false,
-            }, queryStringToJSON(searchQuery));
+            const params = Object.assign(
+              {
+                searchTerms: null,
+                isFavorite: false,
+              },
+              queryStringToJSON(searchQuery),
+            );
             onPress(params);
           }}
         >
@@ -48,7 +46,13 @@ const Card = ({ data, showTitle, onPress }) => (
             </View>
             {showTitle && (
               <View style={Styles.titleCard}>
-                <Text numberOfLines={2} ellipsizeMode="tail" style={Styles.titleCardText}>{textCapitalize(title)}</Text>
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={Styles.titleCardText}
+                >
+                  {textCapitalize(title)}
+                </Text>
               </View>
             )}
           </View>
@@ -57,6 +61,7 @@ const Card = ({ data, showTitle, onPress }) => (
     })}
   </View>
 );
+
 const CarouselBranding = ({
   data,
   title,
@@ -65,6 +70,7 @@ const CarouselBranding = ({
   showTitle,
   styleTitle,
   showFooter,
+  showButton,
   navigation,
 }) => {
   const [itens, setItens] = useState([]);
@@ -122,6 +128,7 @@ const CarouselBranding = ({
           <Pagination
             inactiveDotScale={1}
             inactiveDotOpacity={0.2}
+            inactiveDotColor={Styles[theme].color}
             activeDotIndex={indexDot}
             dotsLength={sections.length}
             dotColor={Styles[theme].color}
@@ -129,6 +136,10 @@ const CarouselBranding = ({
             containerStyle={Styles.paginationContainer}
             dotContainerStyle={{ marginHorizontal: 0 }}
           />
+        </>
+      )}
+      {showButton && (
+        <>
           <View style={Styles.buttonSeeAll}>
             <ButtonSeeAll theme={theme} />
           </View>
@@ -142,6 +153,7 @@ CarouselBranding.propTypes = {
   theme: PropTypes.string,
   showTitle: PropTypes.bool,
   showFooter: PropTypes.bool,
+  showButton: PropTypes.bool,
   styleTitle: PropTypes.objectOf(PropTypes.any),
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   navigation: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -153,6 +165,7 @@ CarouselBranding.defaultProps = {
   showTitle: true,
   onPress: () => {},
   showFooter: false,
+  showButton: false,
 };
 
 export default CarouselBranding;

@@ -20,15 +20,17 @@ function CardCartProduct({
   cart,
   removeProduct,
   handleSaveCep,
-  handleClearCep,
+  handleClearCep = null,
   selectQuantity,
 }) {
   const { items, selectedDeliveryOption: delivery } = cart;
   const [modalCepVisible, setModalCepVisible] = useState(false);
 
-  const formatedCep = cart ? formatCep(cart.postalCode) : null;
+  const formatedCep = cart?.postalCode ? formatCep(cart.postalCode) : null;
 
-  const getDeliveryCaption = () => (`${delivery.estimatedTime} via ${delivery.name} - ${convertToPriceText(delivery.amount)}\n`);
+  const getDeliveryCaption = () => `${delivery.estimatedTime} via ${delivery.name} - ${convertToPriceText(
+    delivery.amount
+  )}\n`;
 
   return (
     <>
@@ -59,6 +61,7 @@ function CardCartProduct({
                 />
               </View>
               <QuantityProduct
+                stock={product.stock || 0}
                 price={product.price}
                 quantity={item.quantity}
                 removeProduct={() => removeProduct(item.basketItemId)}

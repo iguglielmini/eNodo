@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View/* , Text */ } from 'react-native';
 
 // Components
 import Title from '@components/atoms/Title';
@@ -10,24 +10,28 @@ import { convertToPriceText } from '../../../modules/utils';
 // Styles
 import Styles from './styles';
 
-const PriceTotal = ({ totalPrice }) => (
-  <>
-    <View style={Styles.container}>
-      <Title
-        title="Total"
-        styleFont={Styles.subTitle}
-        style={Styles.itemText}
-      />
-      <View style={Styles.containerPrice}>
+const PriceTotal = ({ cart }) => {
+  const { totalPrice } = cart;
+
+  return (
+    <>
+      <View style={Styles.container}>
         <Title
-          style={Styles.itemText}
+          title="Total"
           styleFont={Styles.subTitle}
-          title={convertToPriceText(totalPrice)}
+          style={Styles.itemText}
         />
-        <Text style={Styles.subTitlePrice}>em até 7x de R$ 43,60</Text>
+        <View style={Styles.containerPrice}>
+          <Title
+            style={Styles.itemText}
+            styleFont={Styles.subTitle}
+            title={convertToPriceText(totalPrice)}
+          />
+          {/* <Text style={Styles.subTitlePrice}>em até 7x de R$ 43,60</Text> */}
+        </View>
       </View>
-    </View>
-  </>
-);
+    </>
+  );
+};
 
 export default PriceTotal;

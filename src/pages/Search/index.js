@@ -49,7 +49,7 @@ class Search extends Component {
 
     props.navigation.addListener(
       'focus',
-      () => changeStatusBar('dark-content', BLACK)
+      () => changeStatusBar('light-content', BLACK)
     );
   }
 
@@ -101,6 +101,7 @@ class Search extends Component {
     const { data } = await ApiCatalog.getCatalogSearch({ terms: search });
 
     navigation.navigate('FilterResult', {
+      terms: search,
       searchTerms: data,
       isFavorite: false,
       hideOptionsButtons: true,
@@ -141,6 +142,7 @@ class Search extends Component {
               style={Styles.inputSearch}
               placeholderTextColor="#F3F3F3"
               onChangeText={this.handlerSearch}
+              onSubmitEditing={() => this.handlerTermSearch(search)}
             />
             {search.length > 0 && (
               <CloseIcon color="#ffffff" onPress={this.handlerClear} />

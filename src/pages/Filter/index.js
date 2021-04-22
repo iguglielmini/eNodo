@@ -50,8 +50,8 @@ class Filter extends Component {
     const { route } = this.props;
     const { filters } = route.params;
     const {
-      facets,
       sort,
+      facets,
     } = filters;
 
     const sortSelected = sort.options.filter(item => item.selected);
@@ -69,7 +69,7 @@ class Filter extends Component {
 
     if (sortSelected.length > 0) { this.setState({ dropSelected: sortSelected[0] }); }
 
-    this.setState({ filters });
+    this.setState({ filters, seletedItems });
   };
 
   handleDropSelect = (selected) => {
@@ -86,6 +86,7 @@ class Filter extends Component {
     }
 
     this.setState({ seletedItems });
+    console.log('Filter Selecionado', seletedItems);
   };
 
   clearFilter = () => {
@@ -99,12 +100,14 @@ class Filter extends Component {
     const { seletedItems, dropSelected, filters } = this.state;
 
     const {
+      terms,
       category,
       // brand,
       // datasource
     } = filters;
 
     const params = {
+      terms,
       title: '',
       isFavorite: false,
       searchTerms: null,
