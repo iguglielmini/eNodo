@@ -40,13 +40,9 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    try {
-      await Promise.all([AuthService.start(), deliveryStart()]);
-    } catch (err) {
-      navigate('LoadError', { reload: true });
-    } finally {
-      SplashScreen.hide();
-    }
+    Promise.all([AuthService.start(), deliveryStart()])
+      .catch(() => navigate('LoadError', { reload: true }))
+      .finally(() => SplashScreen.hide());
   }
 
   componentWillUnmount() {
@@ -58,6 +54,7 @@ class App extends Component {
       kOSSettingsKeyAutoPrompt: false,
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
+    OneSignal.enableVibrate(true);
     OneSignal.inFocusDisplaying(2);
     OneSignal.addEventListener('received', this.onReceivedNotifications);
   };
@@ -72,10 +69,13 @@ class App extends Component {
     if (notifyOptions && notifyOptions.allOn) this.OneSignalConfig();
   };
 
-  onReceivedNotifications = async ({ payload }) => {
-    const { launchURL } = payload;
+  onReceivedNotifications = ({ payload }) => {
+    const { additionalData } = payload;
 
-    ApiProduct.redirectNotification(launchURL).then(({ data }) => {
+    if (!additionalData) return;
+
+    const { productURL } = additionalData;
+    ApiProduct.redirectNotification(productURL).then(({ data }) => {
       const { type, target } = data;
 
       if (type === 'none') navigate('Home');

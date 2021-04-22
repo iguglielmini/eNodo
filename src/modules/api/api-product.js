@@ -26,4 +26,8 @@ export default new class ProdutcService extends Api {
     */
     return APIRturn(this.post(`/product/${slug}/review`, data));
   }
+
+  async redirectNotification(url) {
+    return APIRturn(this.get('/redirect', { params: { url } }));
+  }
 }();
