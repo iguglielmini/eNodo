@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, Image, TouchableOpacity, Platform
 } from 'react-native';
@@ -13,6 +13,11 @@ import { WHITE } from '@assets/style/colors';
 import Styles from './styles';
 
 function CardOnboarding({ item, navigation }) {
+  const [configNotify, setConfigNotify] = useState({
+    alert: false,
+    badge: false,
+    sound: false,
+  });
   const { image, content, actionButton } = item;
 
   function dispatchScreen() {
@@ -20,14 +25,20 @@ function CardOnboarding({ item, navigation }) {
     navigation.dispatch(pushAction);
   }
 
+  async function configNotification(options) {
+    if (options) setConfigNotify(options);
+    await OneSignal.requestPermissions(configNotify);
+  }
+
   async function goHomeScreen() {
-    if (Platform.OS === 'ios') {
-      await OneSignal.requestPermissions({
-        alert: true,
-        badge: true,
-        sound: true,
-      });
-    }
+    configNotification({ alert: true, badge: true, sound: true });
+    await DeviceStorage.setItem('@BelshopApp:finishedOnboarding', true);
+    await DeviceStorage.setItem('@BelshopApp:Notifications', { allOn: true });
+    dispatchScreen();
+  }
+
+  async function noNotify() {
+    configNotification();
     await DeviceStorage.setItem('@BelshopApp:finishedOnboarding', true);
     dispatchScreen();
   }
@@ -46,7 +57,7 @@ function CardOnboarding({ item, navigation }) {
               <Text>Ativar Notificação</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity onPress={noNotify}>
               <Text styles={{ color: WHITE }}>Agora não!</Text>
             </TouchableOpacity>
           </View>

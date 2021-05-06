@@ -33,7 +33,7 @@ export default StyleSheet.create({
     width: '100%',
     borderRadius: 5,
     overflow: 'hidden',
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     backgroundColor: WHITE,
   },
   priceContainer: {

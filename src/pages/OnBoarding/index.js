@@ -37,7 +37,7 @@ class OnBoarding extends Component {
     );
 
     if (finished) {
-      return navigation.navigate('Home');
+      return navigation.replace('Home');
     }
 
     return this.setState({ loading: false });

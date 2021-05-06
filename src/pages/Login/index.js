@@ -40,7 +40,10 @@ import Styles from './styles';
 
 const Login = (props) => {
   const {
-    route, navigation, hideGoBack, favoritesUser: favoritesUserAction,
+    route,
+    navigation,
+    hideGoBack,
+    favoritesUser: favoritesUserAction,
   } = props;
   const { urls } = config;
 
@@ -50,9 +53,7 @@ const Login = (props) => {
   const inputPaswordRef = createRef();
   const { open: openToast } = useToast();
   const [loading, setLoading] = useState(false);
-  const {
-    control, handleSubmit, errors,
-  } = useForm();
+  const { control, handleSubmit, errors } = useForm();
 
   const getProfile = async () => {
     const { data } = await ApiProfile.getProfile();
@@ -94,11 +95,12 @@ const Login = (props) => {
     }
 
     try {
-      await Promise.all([
-        getProfile(),
-        getBasket(),
-        getFavorites(),
-      ]);
+      const { favoritedProduct } = route.params;
+      if (favoritedProduct) {
+        const { id, sku } = favoritedProduct;
+        await ApiProfile.addFavorites(id, sku);
+      }
+      await Promise.all([getProfile(), getBasket(), getFavorites()]);
 
       const { to, replace, params } = route.params;
       if (to) {
@@ -162,8 +164,8 @@ const Login = (props) => {
                 required: 'Campo e-mail deve ser preenchido.',
                 pattern: {
                   value: EmailRegExp,
-                  message: 'E-mail inválido.'
-                }
+                  message: 'E-mail inválido.',
+                },
               }}
               render={({ onBlur, onChange, value }) => (
                 <Input
@@ -263,9 +265,12 @@ Login.defaultProps = {
   hideGoBack: false,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  favoritesUser
-}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    favoritesUser,
+  },
+  dispatch
+);
 
 export default connect(
   null,

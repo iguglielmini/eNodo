@@ -11,7 +11,7 @@ class LoadError extends Component {
   UNSAFE_componentWillMount() {
     const { route, navigation } = this.props;
 
-    if (!route.params?.reload) navigation.navigate('OnBoarding');
+    if (!route.params?.reload) navigation.replace('OnBoarding');
   }
 
   render() {
@@ -27,7 +27,7 @@ class LoadError extends Component {
           <>
             <Text style={Styles.title}>Essa página não pode ser carregada</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate(route.params?.page)}
+              onPress={() => navigation.replace(route.params?.page)}
               style={Styles.reloadButton}
             >
               <Text>Tentar novamente</Text>

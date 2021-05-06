@@ -18,7 +18,7 @@ export default StyleSheet.create({
   cardImage: {
     maxWidth: '100%',
     maxHeight: 350,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   dot: {
     position: 'absolute',

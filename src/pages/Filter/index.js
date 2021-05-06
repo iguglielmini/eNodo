@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -36,40 +38,36 @@ class Filter extends Component {
         },
         facets: [],
       },
-      seletedItems: [],
+      selectedItems: [],
       dropSelected: null,
     };
   }
 
   componentDidMount() {
-    this.getFilters();
-  }
-
-  getFilters = () => {
-    const seletedItems = [];
     const { route } = this.props;
     const { filters } = route.params;
-    const {
-      sort,
-      facets,
-    } = filters;
+    this.getFilters(filters);
+  }
+
+  getFilters = (filters) => {
+    const { selectedItems } = this.state;
+    const { sort, facets } = filters;
 
     const sortSelected = sort.options.filter(item => item.selected);
+    const optionsFacets = facets.map(({ options }) => options.reduce(item => item));
 
-    facets.map((item) => {
-      const { options } = item;
-
-      options.map((opt) => {
-        if (opt.selected) seletedItems.push(opt.value);
-        return opt;
-      });
-
-      return item;
+    optionsFacets.forEach((opt, index) => {
+      console.log('opt filter', opt);
+      if (opt.selected) {
+        selectedItems.push(opt.value);
+      } else selectedItems.slice(index, 1);
     });
 
-    if (sortSelected.length > 0) { this.setState({ dropSelected: sortSelected[0] }); }
+    if (sortSelected.length) {
+      this.setState({ dropSelected: sortSelected[0] });
+    }
 
-    this.setState({ filters, seletedItems });
+    this.setState({ filters, selectedItems });
   };
 
   handleDropSelect = (selected) => {
@@ -77,33 +75,32 @@ class Filter extends Component {
   };
 
   handlerFilterSelect = (value) => {
-    const { seletedItems } = this.state;
+    const { selectedItems } = this.state;
+    const hasSelected = selectedItems.includes(value);
 
-    if (seletedItems.includes(value)) {
-      seletedItems.splice(seletedItems.indexOf(value), 1);
-    } else {
-      seletedItems.push(value);
+    if (hasSelected) {
+      selectedItems.splice(selectedItems.indexOf(value), 1);
+    }
+    if (!hasSelected) {
+      selectedItems.push(value);
     }
 
-    this.setState({ seletedItems });
-    console.log('Filter Selecionado', seletedItems);
+    this.setState({ selectedItems });
   };
 
   clearFilter = () => {
     this.setState({
-      seletedItems: [],
+      selectedItems: [],
     });
   };
 
   applyFilter = () => {
     const { navigation } = this.props;
-    const { seletedItems, dropSelected, filters } = this.state;
+    const { selectedItems, dropSelected, filters } = this.state;
 
     const {
       terms,
       category,
-      // brand,
-      // datasource
     } = filters;
 
     const params = {
@@ -115,15 +112,14 @@ class Filter extends Component {
       hideOptionsButtons: false,
     };
 
-    if (seletedItems.length > 0) params.facets = seletedItems;
+    if (selectedItems.length > 0) params.facets = selectedItems;
     if (category) params.category = category.value;
 
     navigation.navigate('FilterResult', params);
   };
 
   render() {
-    const { navigation } = this.props;
-    const { filters, dropSelected, seletedItems } = this.state;
+    const { filters, dropSelected, selectedItems } = this.state;
     const { facets, sort } = filters;
 
     return (
@@ -131,7 +127,7 @@ class Filter extends Component {
         <View style={Styles.wrapper}>
           <View style={Styles.containerTitle}>
             <Text style={Styles.Title}>Filtrar por</Text>
-            <CloseIcon onPress={() => navigation.goBack()} />
+            <CloseIcon onPress={this.applyFilter} />
             <LinearGradient
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
@@ -171,7 +167,7 @@ class Filter extends Component {
                   <View style={Styles.containerSelect}>
                     <SelectFilter
                       data={options}
-                      selected={seletedItems}
+                      selected={selectedItems}
                       onSelect={this.handlerFilterSelect}
                     />
                   </View>

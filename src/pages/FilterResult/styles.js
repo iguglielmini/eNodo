@@ -25,8 +25,8 @@ export default StyleSheet.create({
     paddingTop: SPACE_48,
   },
   section: {
-    paddingLeft: 0,
     paddingBottom: 100,
+    paddingHorizontal: SPACE_16,
   },
   subTitle: {
     ...TitleSmall,
@@ -35,15 +35,16 @@ export default StyleSheet.create({
     ...TitleLarge,
     flexShrink: 1
   },
+  containerCard: {
+    padding: SPACE_16,
+
+  },
   wrapperTitle: {
     flexDirection: 'row',
-    paddingLeft: SPACE_32,
-    width: width - SPACE_32 - SPACE_32 - 60,
-    maxWidth: width - SPACE_32 - SPACE_32 - 60,
+    paddingLeft: SPACE_16,
   },
   containerTitle: {
     width,
-    maxWidth: width,
     alignItems: 'center',
     flexDirection: 'row',
     paddingRight: SPACE_32,
@@ -58,9 +59,6 @@ export default StyleSheet.create({
     paddingHorizontal: SPACE_16,
     justifyContent: 'space-between',
   },
-  ProductCard: {
-    paddingHorizontal: SPACE_16,
-  },
   btnFilter: {
     borderRadius: 4,
     paddingVertical: 10,
@@ -69,7 +67,8 @@ export default StyleSheet.create({
   },
   scrollSelectFilter: {
     paddingTop: SPACE_36,
-    paddingLeft: SPACE_32,
+    paddingLeft: SPACE_16,
+    paddingBottom: 84,
   },
   // Favorites not found
   contentFavoritesNotFound: {
@@ -87,5 +86,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start'
+  },
+  listFooter: {
+    width,
   }
 });

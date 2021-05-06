@@ -105,7 +105,7 @@ class Search extends Component {
       searchTerms: data,
       isFavorite: false,
       hideOptionsButtons: true,
-      title: `${data.products.length} resultados`,
+      title: `${data.pagination.itemsCount} Resultados`,
     });
   }
 

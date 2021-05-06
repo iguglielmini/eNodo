@@ -31,20 +31,10 @@ function Card(props) {
     item, style, theme, onClick, user, favorites
   } = props;
   const {
-    id, slug, sku, title, price, image, available
+    id, sku, title, price, image, available
   } = item;
 
   const { discount, current, previous } = price;
-
-  const itemDetails = {
-    slug,
-    id,
-    sku,
-    title,
-    price,
-    image,
-    available,
-  };
 
   const navigation = useNavigation();
   const { open: openToast } = useToast();
@@ -58,6 +48,7 @@ function Card(props) {
         replace: true,
         to: 'Favorites',
         title: 'Favoritos',
+        favoritedProduct: { id, sku },
       });
     }
 
@@ -116,10 +107,10 @@ function Card(props) {
       <TouchableOpacity
         activeOpacity={1}
         style={[Styles.card, style]}
-        onPress={() => onClick(itemDetails)}
+        onPress={() => onClick(item)}
       >
         <ImageBackground
-          resizeMode="cover"
+          resizeMode="contain"
           style={Styles.containerImage}
           source={
             !image

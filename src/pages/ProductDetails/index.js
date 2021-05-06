@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  View, Text, ScrollView, ActivityIndicator
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  Image,
+  Dimensions,
 } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -20,7 +25,7 @@ import CarouselProduct from '@components/organisms/CarouselProduct';
 
 /** icons */
 import ArrowVIcon from '@assets/svg/arrowv';
-import LogoIcon from '@assets/svg/logoIcon';
+// import LogoIcon from '@assets/svg/logoIcon';
 import DetailIcon from '@assets/svg/detail';
 import FavoriteIcon from '@assets/svg/favorite';
 
@@ -111,9 +116,7 @@ class ProductDetails extends Component {
   getData = async () => {
     const { route } = this.props;
     const {
-      itemDetails: {
-        slug, available, title, price, image
-      },
+      slug, available, title, price, image
     } = route.params;
 
     this.setState({
@@ -121,7 +124,7 @@ class ProductDetails extends Component {
         title,
         available,
         price,
-        gallery: [image],
+        image,
       },
     });
 
@@ -200,7 +203,6 @@ class ProductDetails extends Component {
       .then(({ data }) => {
         setLoading(false);
         setModalBuyVisible(true);
-
         if (data) {
           const {
             basket: { items },
@@ -244,7 +246,14 @@ class ProductDetails extends Component {
   handlerOnFavorite = (id, sku, isFavorited) => {
     const { user, navigation, toast } = this.props;
 
-    if (!user.id) return navigation.navigate('Login');
+    if (!user.id) {
+      return navigation.navigate('Login', {
+        replace: true,
+        to: 'Favorites',
+        title: 'Favoritos',
+        favoritedProduct: { id, sku },
+      });
+    }
 
     let saveOrDelete = ApiProfile.addFavorites(id, sku);
     if (isFavorited) {
@@ -265,6 +274,7 @@ class ProductDetails extends Component {
   };
 
   render() {
+    const { width } = Dimensions.get('window');
     const { navigation, delivery, favorites } = this.props;
     const {
       product,
@@ -276,17 +286,16 @@ class ProductDetails extends Component {
       deliveryCalculating,
       productsAssociations,
     } = this.state;
-
     const {
-      brand, price, available, sku, id
+      brand, price, available, sku, id, image, gallery
     } = product;
     const findFavorited = favorites && favorites.find(productItem => productItem.product === id);
 
     return (
       <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: '#fff' }} />
+        <View style={{ flex: 0, backgroundColor: '#fff' }} />
         <SafeAreaView style={DefaultStyles.viewGrey}>
-          <SafeAreaView style={Styles.saveAreaHeader}>
+          <View style={Styles.saveAreaHeader}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={Styles.btnImageIcon}
@@ -299,7 +308,7 @@ class ProductDetails extends Component {
             >
               <FavoriteIcon fill={findFavorited ? BLACK : 'none'} />
             </TouchableOpacity>
-          </SafeAreaView>
+          </View>
           <ScrollView
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
@@ -307,7 +316,15 @@ class ProductDetails extends Component {
               paddingBottom: product && available ? 50 : 0,
             }}
           >
-            <CarouselProduct gallery={product.gallery} />
+            {loading && (
+              <View style={Styles.preloadPhotoView}>
+                <Image
+                  source={{ uri: image?.url, width, height: 350 }}
+                  style={Styles.cardPreload}
+                />
+              </View>
+            )}
+            <CarouselProduct gallery={gallery} />
             <View style={Styles.wrapperPage}>
               <View style={Styles.containerTitle}>
                 {loading ? (
@@ -324,7 +341,9 @@ class ProductDetails extends Component {
                   <View style={Styles.detailsProduct}>
                     <DetailIcon />
                     <View style={Styles.description}>
-                      <Text style={Styles.descriptionTitle}>Prazo de Entrega</Text>
+                      <Text style={Styles.descriptionTitle}>
+                        Prazo de Entrega
+                      </Text>
                       {deliveryCalculating ? (
                         <ActivityIndicator size="small" color="#000" />
                       ) : (
@@ -335,7 +354,7 @@ class ProductDetails extends Component {
                               {' '}
                               {deliveryOption.estimatedTime}
                               {' '}
-                              após
+após
                               a postagem do produto. &nbsp;
                               <Text
                                 style={Styles.btnModal}
@@ -371,6 +390,7 @@ class ProductDetails extends Component {
 
                 {available ? (
                   <View />
+                ) : (
                   // <View style={Styles.detailsProduct}>
                   //   <LogoIcon />
                   //   <View style={Styles.description}>
@@ -386,7 +406,6 @@ class ProductDetails extends Component {
                   //     </Text>
                   //   </View>
                   // </View>
-                ) : (
                   <View style={Styles.detailsProduct}>
                     <Text style={Styles.unavailableText}>
                       Produto indisponível

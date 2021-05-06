@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// Component
 
+// Component
+import Card from '@components/molecules/Card';
 import Section from '@components/atoms/Section';
-import ListCard from '@components/molecules/ListCard';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 import HeaderCategory from '@components/atoms/HeaderCategory';
 import SelectFilterOutline from '@components/atoms/SelectFilterOutline';
@@ -13,17 +13,14 @@ import {
   View,
   Text,
   Alert,
+  FlatList,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 
-// icons
-import ArrowIcon from '@assets/svg/arrow';
-
 // APIS
-import ApiProfile from '@modules/api/api-profile';
 import ApiCatalogy from '@modules/api/api-catalog';
 
 import { changeStatusBar, textCapitalize } from '@modules/utils';
@@ -39,44 +36,47 @@ class Filter extends Component {
 
     this.state = {
       filters: {},
+      itemsCount: 0,
       pageCount: 1,
       pageNumber: 1,
       loading: false,
       filtersQuery: [],
       filterProducts: [],
+      loadingShowMore: false,
     };
 
-    props.navigation.addListener('focus', () =>
-      changeStatusBar('light-content', BLACK)
-    );
+    props.navigation.addListener('focus', () => changeStatusBar('light-content', BLACK));
   }
 
   componentDidMount() {
     const {
       route: { params },
     } = this.props;
-    this.loadData(params);
+    this.loadData(params, 'loading');
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps({ route }) {
     const { params } = route;
-    this.loadData(params);
+    this.loadData(params, 'loading');
   }
 
-  loadData = params => {
-    if (!params.searchTerms && !params.isFavorite) this.getFilterData(params);
+  loadData = (params, loading) => {
+    if (!params.searchTerms && !params.isFavorite) {
+      this.getFilterData(params, loading);
+    }
     if (params.searchTerms && !params.isFavorite) this.getFilterTerms(params);
-    if (!params.searchTerms && params.isFavorite) this.getFavorites();
   };
 
-  getFilterData = params => {
+  getFilterData = (params, loading) => {
     const { filterProducts } = this.state;
-    this.setState({ loading: true });
+    this.setState({ [loading]: true });
 
     ApiCatalogy.getCatalogSearch(params)
       .then(({ data }) => {
-        const { products, current, filters, pagination } = data;
+        const {
+          products, current, filters, pagination
+        } = data;
 
         if (!products.length) {
           Alert.alert('Ooops!', 'Produto(s) não disponível(eis).', [
@@ -88,41 +88,34 @@ class Filter extends Component {
           return;
         }
 
-        products.map(item => {
-          filterProducts.push(item);
-        });
         if (current) this.setState({ filtersQuery: current.facets });
 
-        this.setState({ filters, filterProducts, ...pagination });
+        if (pagination.pageCount > pagination.pageNumber) {
+          products.map(item => filterProducts.push(item));
+          this.setState({ filterProducts });
+        } else {
+          this.setState({ filterProducts: products });
+        }
+
+        this.setState({ filters, ...pagination });
       })
-      .finally(() => this.setState({ loading: false }));
+      .finally(() => this.setState({ [loading]: false }));
   };
 
-  getFilterTerms = params => {
+  getFilterTerms = (params) => {
     const { searchTerms } = params;
-    const { products, current, filters, pagination } = searchTerms;
+    const {
+      products, current, filters, pagination
+    } = searchTerms;
     const { filterProducts } = this.state;
 
-    products.map(item => {
-      filterProducts.push(item);
-    });
+    products.map(item => filterProducts.push(item));
 
     if (current) this.setState({ filtersQuery: current.facets });
     this.setState({ filters, filterProducts, ...pagination });
   };
 
-  getFavorites = () => {
-    this.setState({ loading: true });
-
-    ApiProfile.getFavoritesDetails()
-      .then(({ data }) => {
-        const { items } = data;
-        this.setState({ filterProducts: items });
-      })
-      .finally(() => this.setState({ loading: false }));
-  };
-
-  handleRemoveOneFilter = value => {
+  handleRemoveOneFilter = (value) => {
     const { route } = this.props;
     const { params } = route;
     const { filtersQuery } = this.state;
@@ -135,16 +128,22 @@ class Filter extends Component {
     this.setState({ filtersQuery });
   };
 
-  handleShowModalFilter = params => {
+  handleShowModalFilter = (params) => {
     const { terms } = params;
     const { filters } = this.state;
     const { navigation } = this.props;
+
+    this.setState({ filtersQuery: [], filterProducts: [] });
+
     navigation.navigate('Filter', { filters: { ...filters, terms } });
   };
 
   showMore = () => {
-    let { pageNumber, pageCount } = this.state;
+    const { pageCount } = this.state;
+    let { pageNumber } = this.state;
+
     pageNumber += 1;
+
     const {
       route: { params },
     } = this.props;
@@ -154,20 +153,73 @@ class Filter extends Component {
       params.pageNumber = pageCount;
     }
 
-    this.loadData(params);
+    this.loadData(params, 'loadingShowMore');
+  };
+
+  listHeader = () => {
+    const { route } = this.props;
+    const { terms, title, hideFilterButton } = route.params;
+    const { filtersQuery, itemsCount, loading } = this.state;
+
+    return (
+      <>
+        <View style={[Styles.content, Styles.containerTitle]}>
+          <View style={Styles.wrapperTitle}>
+            {!loading && (
+              <Text style={Styles.title}>
+                {textCapitalize(!title ? `${itemsCount} Resultados` : title)}
+              </Text>
+            )}
+          </View>
+          {!hideFilterButton && (
+            <TouchableOpacity
+              style={Styles.btnFilter}
+              onPress={() => this.handleShowModalFilter({ terms })}
+            >
+              <Text>Filtrar</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        {filtersQuery.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={Styles.scrollSelectFilter}
+          >
+            <SelectFilterOutline
+              isSelected
+              data={filtersQuery}
+              onSelect={this.handleRemoveOneFilter}
+            />
+          </ScrollView>
+        )}
+      </>
+    );
+  };
+
+  listFooter = () => {
+    const { pageCount, pageNumber, loadingShowMore } = this.state;
+
+    return (
+      <Section style={[Styles.section, Styles.listFooter]}>
+        <View style={{ paddingTop: 32 }}>
+          {(pageCount > pageNumber && !loadingShowMore) && (
+            <ButtonSeeAll
+              theme="light"
+              title="Ver mais"
+              onPress={this.showMore}
+            />
+          )}
+          {loadingShowMore && <ActivityIndicator size="large" color="#000" />}
+        </View>
+      </Section>
+    );
   };
 
   render() {
-    const { loading, filtersQuery, filterProducts, pageCount } = this.state;
-
+    const { loading, filterProducts } = this.state;
     const { navigation, lengthCart, route } = this.props;
-    const {
-      title,
-      terms,
-      isFavorite,
-      hideFilterButton,
-      hideOptionsButtons,
-    } = route.params;
+    const { isFavorite, hideOptionsButtons } = route.params;
 
     return (
       <SafeAreaView style={DefaultStyles.viewBlack}>
@@ -177,7 +229,7 @@ class Filter extends Component {
             theme="light"
             lengthCart={lengthCart}
             navigation={navigation}
-            handleGoBack={() => navigation.goBack()}
+            handleGoBack={navigation.goBack}
             hideOptionsButtons={hideOptionsButtons || isFavorite}
           />
           {/* Section title category */}
@@ -189,78 +241,34 @@ class Filter extends Component {
                 <ActivityIndicator size="large" color="#000" />
               </View>
             )}
-            <ScrollView
-              alwaysBounceVertical
+            <FlatList
+              numColumns={2}
+              data={filterProducts}
               style={Styles.scroll}
               showsVerticalScrollIndicator={false}
-            >
-              <View style={Styles.content}>
-                <View style={Styles.containerTitle}>
-                  <View style={Styles.wrapperTitle}>
-                    {!loading && (
-                      <Text style={Styles.title}>
-                        {textCapitalize(
-                          !title ? `${filterProducts.length} Resultados` : title
-                        )}
-                      </Text>
-                    )}
-                  </View>
-                  {!hideFilterButton && (
-                    <TouchableOpacity
-                      style={Styles.btnFilter}
-                      onPress={() => this.handleShowModalFilter({ terms })}
-                    >
-                      <Text>Filtrar</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-                {filtersQuery.length > 0 && (
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={Styles.scrollSelectFilter}
-                  >
-                    <SelectFilterOutline
-                      isSelected
-                      data={filtersQuery}
-                      onSelect={this.handleRemoveOneFilter}
-                    />
-                  </ScrollView>
-                )}
-                <Section style={Styles.section}>
-                  <View style={Styles.ProductCard}>
-                    <ListCard data={filterProducts} navigation={navigation} />
-                    {/* Pagination */}
-                    {pageCount > 1 && (
-                      <View style={{ paddingTop: 32 }}>
-                        <ButtonSeeAll
-                          theme="light"
-                          title="Ver mais"
-                          onPress={this.showMore}
-                        />
-                      </View>
-                    )}
-                    {isFavorite && !filterProducts.length && (
-                      <>
-                        <View style={Styles.contentFavoritesNotFound}>
-                          <Text style={Styles.textNotFound}>
-                            Você ainda não adicionou produtos em seus favoritos.
-                          </Text>
-                          <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <View style={Styles.btnNotFound}>
-                              <Text style={{ marginRight: 8 }}>
-                                Continue comprando
-                              </Text>
-                              <ArrowIcon />
-                            </View>
-                          </TouchableOpacity>
-                        </View>
-                      </>
-                    )}
-                  </View>
-                </Section>
-              </View>
-            </ScrollView>
+              contentContainerStyle={Styles.containerCard}
+              renderItem={({ item, index }) => {
+                const key = index;
+                const isOdd = key % 2 === 1;
+
+                return (
+                  <Card
+                    key={key}
+                    item={item}
+                    theme="light"
+                    style={{
+                      marginTop: isOdd ? 64 : 0,
+                      marginLeft: isOdd ? 15 : 0,
+                    }}
+                    onClick={itemDetails => navigation.navigate('ProductDetails', itemDetails)
+                    }
+                  />
+                );
+              }}
+              ListFooterComponent={this.listFooter()}
+              ListHeaderComponent={this.listHeader()}
+              keyExtractor={(_, index) => index.toString()}
+            />
           </View>
         </View>
       </SafeAreaView>

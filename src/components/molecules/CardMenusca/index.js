@@ -23,7 +23,7 @@ function CardMenusca(props) {
     item, navigation, user, favorites
   } = props;
   const {
-    image, title, price, id, slug, sku
+    image, title, price, id, sku
   } = item;
 
   const { open: openToast } = useToast();
@@ -38,6 +38,7 @@ function CardMenusca(props) {
         replace: true,
         to: 'Favorites',
         title: 'Favoritos',
+        favoritedProduct: { id, sku },
       });
     }
 
@@ -95,7 +96,7 @@ function CardMenusca(props) {
       <TouchableOpacity
         activeOpacity={1}
         style={Styles.card}
-        onPress={() => navigation.navigate('ProductDetails', { slug, id, sku })}
+        onPress={() => navigation.navigate('ProductDetails', { itemDetails: item })}
       >
         <ImageBackground
           resizeMode="cover"

@@ -180,4 +180,11 @@ export default StyleSheet.create({
     color: TEXTGREYLIGHT,
     opacity: 0.5
   },
+  preloadPhotoView: {
+    backgroundColor: WHITE,
+    paddingVertical: 50
+  },
+  cardPreload: {
+    resizeMode: 'contain'
+  }
 });

@@ -6,7 +6,7 @@ import HeaderHome from '@components/molecules/HeaderHome';
 import ButtonSeeAll from '@components/atoms/ButtonSeeAll';
 
 // Styles
-import CachedImage from 'react-native-image-cache-wrapper';
+import FastImage from 'react-native-fast-image';
 import Styles from './styles';
 
 const { width } = Dimensions.get('window');
@@ -67,7 +67,10 @@ function HeroBanner({
               key={url}
             >
               <View style={Styles.cardImageWrapper}>
-                <CachedImage style={Styles.cardImage} source={{ uri: url }}>
+                <FastImage
+                  style={Styles.cardImage}
+                  source={{ uri: url, priority: FastImage.priority.high }}
+                >
                   {targetType !== 'none' && (
                     <View style={Styles.buttonContainer}>
                       <ButtonSeeAll
@@ -79,7 +82,7 @@ function HeroBanner({
                       />
                     </View>
                   )}
-                </CachedImage>
+                </FastImage>
               </View>
             </View>
           );
@@ -102,7 +105,7 @@ HeroBanner.propTypes = {
 
 HeroBanner.defaultProps = {
   gallery: [],
-  action: () => {},
+  action: () => { },
 };
 
 export default HeroBanner;

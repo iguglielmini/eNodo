@@ -20,13 +20,16 @@ function CarouselProduct({ gallery }) {
       >
         {gallery.map((image, index) => {
           const key = index;
-          const { width, height, url } = image;
+          if (!image) return null;
 
           return (
             <View style={Styles.cardContainer} key={key}>
               <Image
                 style={Styles.cardImage}
-                source={{ uri: url, width, height }}
+                source={{
+                  ...image,
+                  uri: image.url,
+                }}
               />
             </View>
           );

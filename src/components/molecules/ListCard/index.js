@@ -10,9 +10,7 @@ import Styles from './styles';
 
 function ListCard({ data, theme, navigation }) {
   function handleShowDetailProduct(itemDetails) {
-    navigation.navigate('ProductDetails', {
-      itemDetails,
-    });
+    navigation.navigate('ProductDetails', itemDetails);
   }
 
   if (!data.length) return null;

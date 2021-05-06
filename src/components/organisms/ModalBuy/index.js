@@ -45,7 +45,7 @@ function ModalBuy({
           <View style={Styles.containerTitle}>
             <Text style={Styles.Title}>Adicionado ao carrinho</Text>
             <TouchableOpacity onPress={() => setVisible(false)}>
-              <CloseIcon />
+              <CloseIcon onPress={() => setVisible(false)} />
             </TouchableOpacity>
           </View>
           {/* body */}
