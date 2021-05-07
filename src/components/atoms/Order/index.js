@@ -12,7 +12,6 @@ export default function Order({ data, navigation }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    console.log(data);
     setProducts(data.items);
   }, [data]);
 

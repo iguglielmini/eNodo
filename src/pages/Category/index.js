@@ -55,7 +55,6 @@ class Filter extends Component {
     ApiCategory.getCategory(slug)
       .then(({ data }) => {
         const { widgets, title } = data;
-        console.log(widgets);
         this.setState({ widgets, title });
       })
       .finally(() => this.setState({ loading: false }));

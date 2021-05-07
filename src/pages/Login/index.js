@@ -38,7 +38,7 @@ import { BLACK, WHITE, GREY } from '@assets/style/colors';
 import config from '@/config';
 import Styles from './styles';
 
-const Login = (props) => {
+const Login = props => {
   const {
     route,
     navigation,
@@ -78,31 +78,35 @@ const Login = (props) => {
 
   const handleLogin = async ({ email, password }) => {
     setLoading(true);
+    const { to, params, replace, favoritedProduct } = route.params;
 
     try {
       await ApiAuth.login({
         username: email,
         password,
-      });
-    } catch (error) {
-      setLoading(false);
+      })
+        .catch(({ message }) => {
+          openToast({
+            type: 'error',
+            message: message,
+            title: 'Acesse sua conta',
+          });
+        })
+        .finally(() => setLoading(false));
 
-      return openToast({
-        title: 'Acesse sua conta',
-        message: error.message,
-        type: 'error',
-      });
-    }
-
-    try {
-      const { favoritedProduct } = route.params;
       if (favoritedProduct) {
         const { id, sku } = favoritedProduct;
         await ApiProfile.addFavorites(id, sku);
       }
+
       await Promise.all([getProfile(), getBasket(), getFavorites()]);
 
-      const { to, replace, params } = route.params;
+      openToast({
+        title: 'Acesse sua conta',
+        message: 'Login efetuado com sucesso!',
+        type: 'success',
+      });
+
       if (to) {
         setTimeout(() => {
           const action = replace ? 'replace' : 'navigate';
@@ -110,13 +114,8 @@ const Login = (props) => {
         }, 500);
       }
 
-      openToast({
-        title: 'Acesse sua conta',
-        message: 'Login efetuado com sucesso!',
-        type: 'success',
-      });
-    } catch (error) {
-      console.log(error);
+      if (!to) navigation.goBack();
+    } catch (_) {
       openToast({
         title: 'Acesse sua conta',
         message:
@@ -218,9 +217,10 @@ const Login = (props) => {
           </View>
           <TouchableOpacity
             style={Styles.wrapperForgot}
-            onPress={() => navigation.navigate('ExternalLink', {
-              source: { uri: urls.forgot },
-            })
+            onPress={() =>
+              navigation.navigate('ExternalLink', {
+                source: { uri: urls.forgot },
+              })
             }
           >
             <Text style={Styles.forgot}>Esqueceu a senha?</Text>
@@ -241,9 +241,10 @@ const Login = (props) => {
           <Text style={Styles.title}>Você é nova por aqui?</Text>
           <TouchableOpacity
             style={Styles.btn}
-            onPress={() => navigation.navigate('ExternalLink', {
-              source: { uri: urls.signup },
-            })
+            onPress={() =>
+              navigation.navigate('ExternalLink', {
+                source: { uri: urls.signup },
+              })
             }
           >
             <Text style={Styles.textBtn}>Crie sua conta</Text>
@@ -265,12 +266,13 @@ Login.defaultProps = {
   hideGoBack: false,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    favoritesUser,
-  },
-  dispatch
-);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      favoritesUser,
+    },
+    dispatch
+  );
 
 export default connect(
   null,

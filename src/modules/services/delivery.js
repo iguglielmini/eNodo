@@ -105,8 +105,7 @@ export async function updateProductDelivery(formatedCep, params) {
     store.dispatch(updateDelivery(payload));
 
     return data.deliveryOption;
-  } catch (error) {
-    console.log(error);
+  } catch (_) {
     return defaultDeliveryOption;
   }
 }

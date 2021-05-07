@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useToast } from '@components/molecules/Toast';
 import { useNavigation } from '@react-navigation/native';
-import {
-  View, ImageBackground, Text, TouchableOpacity
-} from 'react-native';
+import { View, ImageBackground, Text, TouchableOpacity } from 'react-native';
 
 // Utils and APIS
 import { favoritesUser } from '@redux/actions';
@@ -27,26 +25,21 @@ import { BLACK } from '@assets/style/colors';
 import Styles from './styles';
 
 function Card(props) {
-  const {
-    item, style, theme, onClick, user, favorites
-  } = props;
-  const {
-    id, sku, title, price, image, available
-  } = item;
+  const { item, style, theme, onClick, user, favorites } = props;
+  const { id, sku, title, price, image, available } = item;
 
   const { discount, current, previous } = price;
 
   const navigation = useNavigation();
   const { open: openToast } = useToast();
 
-  const findFavorited = favorites && favorites.find(productItem => productItem.product === id);
+  const findFavorited =
+    favorites && favorites.find(productItem => productItem.product === id);
   const [isFavorited, setFavorited] = useState(findFavorited || false);
 
   function handlerOnFavorite() {
     if (!user.id) {
       return navigation.navigate('Login', {
-        replace: true,
-        to: 'Favorites',
         title: 'Favoritos',
         favoritedProduct: { id, sku },
       });
@@ -116,9 +109,9 @@ function Card(props) {
             !image
               ? NotFoundImage
               : {
-                ...image,
-                uri: image.url,
-              }
+                  ...image,
+                  uri: image.url,
+                }
           }
         >
           <TouchableOpacity
@@ -132,8 +125,7 @@ function Card(props) {
           <View style={Styles.discount}>
             <BadgeIcon size={48} />
             <Text style={Styles.discountText}>
-              {convertDiscount(discount)}
-              %
+              {convertDiscount(discount)}%
             </Text>
           </View>
         )}
@@ -183,7 +175,8 @@ const mapStateToProps = store => ({
   favorites: store.user.favorites,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ favoritesUser }, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ favoritesUser }, dispatch);
 
 export default connect(
   mapStateToProps,

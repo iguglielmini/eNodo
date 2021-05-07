@@ -62,7 +62,6 @@ class Notification extends Component {
 
   handleOnClick = (item, index, isOn) => {
     this.addOrRemove(index);
-    console.log(isOn);
     DeviceEventEmitter.emit('changePermissionNotification');
   };
 

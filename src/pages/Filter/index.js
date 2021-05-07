@@ -49,18 +49,16 @@ class Filter extends Component {
     this.getFilters(filters);
   }
 
-  getFilters = (filters) => {
+  getFilters = filters => {
     const { selectedItems } = this.state;
     const { sort, facets } = filters;
 
-    const sortSelected = sort.options.filter(item => item.selected);
-    const optionsFacets = facets.map(({ options }) => options.reduce(item => item));
-
-    optionsFacets.forEach((opt, index) => {
-      console.log('opt filter', opt);
-      if (opt.selected) {
-        selectedItems.push(opt.value);
-      } else selectedItems.slice(index, 1);
+    const sortSelected = sort.options.filter(({ selected }) => selected !== false);
+    facets.forEach(({ options }) => {
+      options.forEach(({ selected, value }, index) => {
+        if (selected) selectedItems.push(value);
+        else selectedItems.slice(index, 1);
+      });
     });
 
     if (sortSelected.length) {
@@ -70,11 +68,11 @@ class Filter extends Component {
     this.setState({ filters, selectedItems });
   };
 
-  handleDropSelect = (selected) => {
+  handleDropSelect = selected => {
     this.setState({ dropSelected: selected });
   };
 
-  handlerFilterSelect = (value) => {
+  handlerFilterSelect = value => {
     const { selectedItems } = this.state;
     const hasSelected = selectedItems.includes(value);
 
@@ -98,10 +96,7 @@ class Filter extends Component {
     const { navigation } = this.props;
     const { selectedItems, dropSelected, filters } = this.state;
 
-    const {
-      terms,
-      category,
-    } = filters;
+    const { terms, category } = filters;
 
     const params = {
       terms,
